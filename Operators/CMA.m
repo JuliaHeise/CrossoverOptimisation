@@ -1,4 +1,4 @@
-classdef CMA < ALGORITHM
+classdef CMA
 % <multi> <real/binary/permutation> <constrained/none>
 % Nondominated sorting genetic algorithm II
 
