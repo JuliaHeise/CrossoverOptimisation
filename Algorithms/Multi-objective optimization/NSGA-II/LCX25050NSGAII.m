@@ -1,4 +1,4 @@
-classdef DENSGAII < ALGORITHM
+classdef LCX25050NSGAII < ALGORITHM
 % <multi> <real/binary/permutation> <constrained/none>
 % Nondominated sorting genetic algorithm II
 
@@ -23,12 +23,10 @@ classdef DENSGAII < ALGORITHM
 
             %% Optimization
             while Algorithm.NotTerminated(Population)
-                 MatingPool = TournamentSelection(2,Problem.N,FrontNo,-CrowdDis);                 
-               
-                 Offspring = MyDE(Population(MatingPool)); 
-                 Offspring = MyMutation(Offspring);
-                 
-                 [Population,FrontNo,CrowdDis] = EnvironmentalSelection([Population,Offspring],Problem.N);
+                MatingPool = TournamentSelection(2,Problem.N,FrontNo,-CrowdDis);
+                Offspring = MyLCX(Population(MatingPool), {2, [0.5 0.5]});
+                Offspring = MyMutation(Offspring);
+                [Population,FrontNo,CrowdDis] = EnvironmentalSelection([Population,Offspring],Problem.N);
             end
         end
     end

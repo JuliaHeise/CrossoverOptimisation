@@ -1,4 +1,4 @@
-classdef CMA
+classdef UXNSGAII < ALGORITHM
 % <multi> <real/binary/permutation> <constrained/none>
 % Nondominated sorting genetic algorithm II
 
@@ -24,13 +24,8 @@ classdef CMA
             %% Optimization
             while Algorithm.NotTerminated(Population)
                 MatingPool = TournamentSelection(2,Problem.N,FrontNo,-CrowdDis);
-                if(rand >= 0.25)
-                    Offspring  = OperatorGA(Population(MatingPool));
-                    % Uses SBX if not defined otherwise
-                else
-                    MatingPoolx = Population(MatingPool);
-                    Offspring  = OperatorDE(Population(MatingPool), MatingPoolx(randperm(length(MatingPoolx))), MatingPoolx(randperm(length(MatingPoolx))));                  
-                end
+                Offspring = MyUX(Population(MatingPool));
+                Offspring = MyMutation(Offspring);
                 [Population,FrontNo,CrowdDis] = EnvironmentalSelection([Population,Offspring],Problem.N);
             end
         end

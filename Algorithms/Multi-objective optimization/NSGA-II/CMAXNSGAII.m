@@ -1,4 +1,4 @@
-classdef DENSGAII < ALGORITHM
+classdef CMAXNSGAII < ALGORITHM
 % <multi> <real/binary/permutation> <constrained/none>
 % Nondominated sorting genetic algorithm II
 
@@ -23,12 +23,12 @@ classdef DENSGAII < ALGORITHM
 
             %% Optimization
             while Algorithm.NotTerminated(Population)
-                 MatingPool = TournamentSelection(2,Problem.N,FrontNo,-CrowdDis);                 
-               
-                 Offspring = MyDE(Population(MatingPool)); 
-                 Offspring = MyMutation(Offspring);
-                 
-                 [Population,FrontNo,CrowdDis] = EnvironmentalSelection([Population,Offspring],Problem.N);
+                MatingPool = TournamentSelection(2,Problem.N,FrontNo,-CrowdDis);
+             
+                Offspring = MyCMAX(Population(MatingPool)); 
+                Offspring = MyMutation(Offspring);
+                
+                [Population,FrontNo,CrowdDis] = EnvironmentalSelection([Population,Offspring],Problem.N);
             end
         end
     end
