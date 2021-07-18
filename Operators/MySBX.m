@@ -1,9 +1,9 @@
 function Offspring = MySBX(Parentpool, Parameter)
     %% Parameter setting
     if nargin > 1
-        [proC,disC,~,~] = deal(Parameter{:});
+        [proC,disC] = deal(Parameter{:});
     else
-        [proC,disC,~,~] = deal(1,20,1,20);
+        [proC,disC] = deal(1,20);
     end
     
     if isa(Parentpool(1),'SOLUTION')

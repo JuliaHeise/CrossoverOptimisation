@@ -12,7 +12,7 @@ function Offspring = MyCMAX(Parentpool, Parameter)
     end
     
     % Number of parents
-    mu = size(Parentpool,1);
+    N = size(Parentpool,1);
     
     % Center point 
     centerPoint = mean(Parentpool);
@@ -20,6 +20,6 @@ function Offspring = MyCMAX(Parentpool, Parameter)
     
     %% Covariance Matrix Adaption  
     Cov = cov(Parentpool);
-    Samples = mvnrnd(zeros(1,Problem.D), Cov, mu);
+    Samples = mvnrnd(zeros(1,Problem.D), Cov, N);
     Offspring = centerPoint + sigma .* Samples;
 end

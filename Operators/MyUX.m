@@ -16,7 +16,7 @@ function Offspring = MyUX(Parentpool, Parameter)
     Offspring = zeros(N,D);
     
     for  i=1:lambda
-        MatingPool = randperm(length(Parentpool));
+        MatingPool = randperm(size(Parentpool,1));
         RandomizedParents(:,:,i) = Parentpool(MatingPool, :);
     end
     
