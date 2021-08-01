@@ -19,7 +19,7 @@ classdef RLXSNSGAII < ALGORITHM
         function main(Algorithm,Problem)
             %% Generate random population
             Population = Problem.Initialization();
-            Operators = {@MyCMAX, @MyDE, @MyLCX, @MyLX, @MyRSBX, @MySBX, @MyUX};
+            Operators = {MyCMAX(), MyDE(), MyLCX(), MyLX(), MyRSBX(), MySBX(), MyUX()};
             [XSel, Operator] = XSelection(Population, Operators, @RLReward);
             [~,FrontNo,CrowdDis] = EnvironmentalSelection(Population,Problem.N);            
 
@@ -28,6 +28,7 @@ classdef RLXSNSGAII < ALGORITHM
                 MatingPool = TournamentSelection(2,Problem.N,FrontNo,-CrowdDis);
                 Offspring = Operator(Population(MatingPool));
                 Offspring = MyMutation(Offspring);
+                XSel = XSel.SetOldPopulation(Population);
                 [Population,FrontNo,CrowdDis] = EnvironmentalSelection([Population,Offspring],Problem.N);
                 [XSel, Operator] = XSel.SelectX(Population); 
             end

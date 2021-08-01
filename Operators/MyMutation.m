@@ -6,8 +6,11 @@ function Offspring = MyMutation(ToMutate, Parameter)
         [~,~,proM,disM] = deal(1,20,1,20);
     end
     
+    Tags = zeros(size(ToMutate,1));
+    
     if isa(ToMutate(1),'SOLUTION')
         calObj = true;
+        Tags = ToMutate.tags;
         ToMutate = ToMutate.decs;
     else
         calObj = false;
@@ -30,6 +33,6 @@ function Offspring = MyMutation(ToMutate, Parameter)
     Offspring(temp) = Offspring(temp)+(Upper(temp)-Lower(temp)).*(1-(2.*(1-mu(temp))+2.*(mu(temp)-0.5).*...
                       (1-(Upper(temp)-Offspring(temp))./(Upper(temp)-Lower(temp))).^(disM+1)).^(1/(disM+1)));             
     if calObj
-        Offspring = SOLUTION(Offspring);
+        Offspring = SOLUTION(Offspring, [], Tags);
     end
 end

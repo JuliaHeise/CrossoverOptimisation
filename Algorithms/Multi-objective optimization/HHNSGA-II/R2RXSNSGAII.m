@@ -19,17 +19,18 @@ classdef R2RXSNSGAII < ALGORITHM
         function main(Algorithm,Problem)
             %% Generate random population
             Population = Problem.Initialization();
-            Operators = {@MyCMAX, @MyDE, @MyLCX, @MyLX, @MyRSBX, @MySBX, @MyUX};
-            XSel = XSelection(Population, Operators, @R2Reward);
+            Operators = {MyCMAX(), MyDE(), MyLCX(), MyLX(), MyRSBX(), MySBX(), MyUX()};
+            [XSel, Operator] = XSelection(Population, Operators, @R2Reward);
             [~,FrontNo,CrowdDis] = EnvironmentalSelection(Population,Problem.N);
 
             %% Optimization
             while Algorithm.NotTerminated(Population)
-                [~, Operator] = XSel.SelectX(Population); 
                 MatingPool = TournamentSelection(2,Problem.N,FrontNo,-CrowdDis);
                 Offspring = Operator(Population(MatingPool));
                 Offspring = MyMutation(Offspring);
+                XSel = XSel.SetOldPopulation(Population);
                 [Population,FrontNo,CrowdDis] = EnvironmentalSelection([Population,Offspring],Problem.N);
+                [XSel, Operator] = XSel.SelectX(Population); 
             end
         end
     end

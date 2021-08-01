@@ -20,12 +20,15 @@ classdef LCXFULLNSGAII < ALGORITHM
             %% Generate random population
             Population = Problem.Initialization();
             [~,FrontNo,CrowdDis] = EnvironmentalSelection(Population,Problem.N);
+            Crossover = MyLCX();
 
             %% Optimization
             while Algorithm.NotTerminated(Population)
                 MatingPool = TournamentSelection(2,Problem.N,FrontNo,-CrowdDis);
-                Offspring = MyLCX(Population(MatingPool), Problem.N);
+             
+                Offspring = Crossover.Cross(Population(MatingPool), Problem.N); 
                 Offspring = MyMutation(Offspring);
+                
                 [Population,FrontNo,CrowdDis] = EnvironmentalSelection([Population,Offspring],Problem.N);
             end
         end

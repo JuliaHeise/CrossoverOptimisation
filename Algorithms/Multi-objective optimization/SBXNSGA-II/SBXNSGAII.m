@@ -20,12 +20,15 @@ classdef SBXNSGAII < ALGORITHM
             %% Generate random population
             Population = Problem.Initialization();
             [~,FrontNo,CrowdDis] = EnvironmentalSelection(Population,Problem.N);
+            Crossover = MySBX();
 
             %% Optimization
             while Algorithm.NotTerminated(Population)
                 MatingPool = TournamentSelection(2,Problem.N,FrontNo,-CrowdDis);
-                Offspring = MySBX(Population(MatingPool));
+             
+                Offspring = Crossover.Cross(Population(MatingPool)); 
                 Offspring = MyMutation(Offspring);
+                
                 [Population,FrontNo,CrowdDis] = EnvironmentalSelection([Population,Offspring],Problem.N);
             end
         end

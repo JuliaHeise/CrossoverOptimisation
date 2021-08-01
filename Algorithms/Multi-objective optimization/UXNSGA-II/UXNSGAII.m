@@ -20,12 +20,15 @@ classdef UXNSGAII < ALGORITHM
             %% Generate random population
             Population = Problem.Initialization();
             [~,FrontNo,CrowdDis] = EnvironmentalSelection(Population,Problem.N);
+            Crossover = MyUX();
 
             %% Optimization
             while Algorithm.NotTerminated(Population)
                 MatingPool = TournamentSelection(2,Problem.N,FrontNo,-CrowdDis);
-                Offspring = MyUX(Population(MatingPool));
+             
+                Offspring = Crossover.Cross(Population(MatingPool)); 
                 Offspring = MyMutation(Offspring);
+                
                 [Population,FrontNo,CrowdDis] = EnvironmentalSelection([Population,Offspring],Problem.N);
             end
         end

@@ -39,9 +39,10 @@ classdef SOLUTION < handle
         obj;        % Objective values of the solution
         con;        % Constraint violations of the solution
         add;        % Additional properties of the solution
+        tag;        % Tag a solution to identify groups e.g. when using multiple operators
     end
     methods
-        function obj = SOLUTION(PopDec,AddPro)
+        function obj = SOLUTION(PopDec,AddPro,AddTag)
         %SOLUTION - The constructor of SOLUTION.
         %
         %   P = SOLUTION(Dec) creates an array of SOLUTION objects with
@@ -68,10 +69,18 @@ classdef SOLUTION < handle
                     obj(i).dec = PopDec(i,:);
                     obj(i).obj = PopObj(i,:);
                     obj(i).con = PopCon(i,:);
+                    obj(i).tag = "DEFAULT";
                 end
                 if nargin > 1
+                    if(~isempty(AddPro))
+                        for i = 1 : length(obj)
+                            obj(i).add = AddPro(i,:);
+                        end
+                    end
+                end
+                if nargin > 2
                     for i = 1 : length(obj)
-                        obj(i).add = AddPro(i,:);
+                        obj(i).tag = AddTag(i);
                     end
                 end
                 Problem.FE = Problem.FE + length(obj);
@@ -115,6 +124,11 @@ classdef SOLUTION < handle
                 end
             end
             value = cat(1,obj.add);
+        end
+        function value = tags(obj)
+        %tags - Get the matrix of tags a population.
+        %        
+            value = cat(1,obj.tag);
         end
         function P = best(obj)
         %best - Get the best solutions in a population.

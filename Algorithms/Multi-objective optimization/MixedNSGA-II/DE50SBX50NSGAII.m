@@ -20,14 +20,16 @@ classdef DE50SBX50NSGAII < ALGORITHM
             %% Generate random population
             Population = Problem.Initialization();
             [~,FrontNo,CrowdDis] = EnvironmentalSelection(Population,Problem.N);
+            x1 = MyDE();
+            x2 = MySBX();
 
             %% Optimization
             while Algorithm.NotTerminated(Population)
                 MatingPool = TournamentSelection(2,Problem.N,FrontNo,-CrowdDis);
                 if(rand >= 0.5)
-                    Offspring  = MySBX(Population(MatingPool));
-                else            
-                    Offspring = MyDE(Population(MatingPool)); 
+                   Offspring  = x1.Cross(Population(MatingPool));
+                else             
+                    Offspring = x2.Cross(Population(MatingPool)); 
                 end
                 Offspring = MyMutation(Offspring);
                 [Population,FrontNo,CrowdDis] = EnvironmentalSelection([Population,Offspring],Problem.N);

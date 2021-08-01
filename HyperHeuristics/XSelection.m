@@ -12,20 +12,19 @@ classdef XSelection
         Num_Operators       
         Reward_Handle
         Runs
-        Operator_Handles
+        Operator_Objects
         Num_Selection
         Selection
         Exploration_Rewards
         Rewards
-
     end
 
     methods(Access = public)
-        function [obj, Operator] = XSelection(Old_Population, Operator_Handles, Reward_Handle)
+        function [obj, Operator] = XSelection(Old_Population, Operator_Objects, Reward_Handle)
             %% set from input
             obj.Old_Population = Old_Population;
-            obj.Operator_Handles = Operator_Handles;
-            obj.Num_Operators = size(Operator_Handles, 2);
+            obj.Operator_Objects = Operator_Objects;
+            obj.Num_Operators = size(Operator_Objects, 2);
             obj.Reward_Handle = Reward_Handle;           
             
             %% initials
@@ -34,7 +33,8 @@ classdef XSelection
             obj.Runs = 0;
             obj.Num_Selection = zeros(1, obj.Num_Operators);
             obj.Selection = 1;
-            Operator = obj.Operator_Handles{obj.Selection};
+            x = obj.Operator_Objects{obj.Selection};
+            Operator = @x.Cross;
         end
         
         function [obj, Operator] = SelectX(obj, New_Population)
@@ -62,17 +62,19 @@ classdef XSelection
             %% Update Rewards after Exploration and after every few runs
             if(obj.Runs == obj.Num_Operators * obj.MIN_EXPLORE_RUN_PER_OP...
                     || mod(obj.Runs, obj.REWARD_UPDATE_RATE) == 0)
-                obj.Rewards = obj.Exploration_Rewards.^2;
+                obj.Rewards = obj.Exploration_Rewards;
             end
                        
             % Use Selection to return the current Operator Handle
-            Operator = obj.Operator_Handles{obj.Selection};
-            
-            % Update internal state
-            obj.Old_Population = New_Population
+            x = obj.Operator_Objects{obj.Selection};
+            Operator = @x.Cross;
+        end
+        
+        function obj = SetOldPopulation(obj, New_Population)
+            obj.Old_Population = New_Population;
         end
     end
-    
+        
     methods(Access = private)      
         function obj = RouletteWheelSelection(obj)
             picker = rand(1);

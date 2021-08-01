@@ -19,17 +19,18 @@ classdef R2RXDNSGAII < ALGORITHM
         function main(Algorithm,Problem)
             %% Generate random population
             Population = Problem.Initialization();
-            Operators = {@MyCMAX, @MyDE, @MyLCX, @MyLX, @MyRSBX, @MySBX, @MyUX};
-            XDist = XDistribution(Population, size(Operators, 2), @R2Reward);
+            Operators = {MyCMAX(), MyDE(), MyLCX(), MyLX(), MyRSBX(), MySBX(), MyUX()};
+            XDist = XDistribution(Population, Operators, @R2Reward);
             [~,FrontNo,CrowdDis] = EnvironmentalSelection(Population,Problem.N);
 
             %% Optimization
             while Algorithm.NotTerminated(Population)
-                Distribution = XDist.CalcDist(Population);
                 MatingPool = TournamentSelection(2,Problem.N,FrontNo,-CrowdDis);
-                Offspring = MyXWithDist(Population(MatingPool), Operators, Distribution);
+                Offspring = XDist.ExecX(Population(MatingPool));
                 Offspring = MyMutation(Offspring);
+                XDist = XDist.SetOldPopulation(Population);
                 [Population,FrontNo,CrowdDis] = EnvironmentalSelection([Population,Offspring],Problem.N);
+                XDist = XDist.CalcDist(Population);
             end
         end
 

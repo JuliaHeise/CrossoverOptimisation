@@ -2,11 +2,12 @@ function New_Reward = RLReward(Old_Population, New_Population, Current_Reward)
     %% Parameter Settings
     old_objs  = Old_Population.objs;
     new_objs = New_Population.objs;
-    [N,~] = size(new_objs);
+    [N1,~] = size(new_objs);
+    [N2,~] = size(old_objs);
     
     %% Are new Solutions better than old?
     two_gen = [new_objs ;old_objs];
-    [FrontNo,~] = NDSort(two_gen, N*2);
+    [FrontNo,~] = NDSort(two_gen, N1+N2);
     sorted_solutions = two_gen(FrontNo==1,:);
     
     %% C-Metric: Count non-dominated solutions (convergence)
@@ -20,9 +21,9 @@ function New_Reward = RLReward(Old_Population, New_Population, Current_Reward)
    
     %% Get the bonus and the malus
     bonus = ...1/4 * cd_score_new + 3/4 * 
-        size(nd_new, 1)/N;
+        size(nd_new, 1)/N1;
     malus = ...1/4 * cd_score_old + 3/4 * 
-        size(nd_old,1)/N;
+        size(nd_old,1)/N2;
         
     %% Calculate new Reward
     New_Reward = Current_Reward + bonus - malus;

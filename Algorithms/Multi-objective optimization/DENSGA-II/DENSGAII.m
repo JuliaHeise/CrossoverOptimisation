@@ -20,15 +20,16 @@ classdef DENSGAII < ALGORITHM
             %% Generate random population
             Population = Problem.Initialization();
             [~,FrontNo,CrowdDis] = EnvironmentalSelection(Population,Problem.N);
+            Crossover = MyDE();
 
             %% Optimization
             while Algorithm.NotTerminated(Population)
-                 MatingPool = TournamentSelection(2,Problem.N,FrontNo,-CrowdDis);                 
-               
-                 Offspring = MyDE(Population(MatingPool)); 
-                 Offspring = MyMutation(Offspring);
-                 
-                 [Population,FrontNo,CrowdDis] = EnvironmentalSelection([Population,Offspring],Problem.N);
+                MatingPool = TournamentSelection(2,Problem.N,FrontNo,-CrowdDis);
+             
+                Offspring = Crossover.Cross(Population(MatingPool)); 
+                Offspring = MyMutation(Offspring);
+                
+                [Population,FrontNo,CrowdDis] = EnvironmentalSelection([Population,Offspring],Problem.N);
             end
         end
     end
