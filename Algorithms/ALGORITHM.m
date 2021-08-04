@@ -11,6 +11,7 @@ classdef ALGORITHM < handle & matlab.mixin.Heterogeneous
 %   pro             <read-only> problem solved in current execution
 %   result          <read-only>	populations saved in current execution
 %   metric          <read-only> metric values of current populations
+%   xOpProbs   <read-only> current probabilities of XOperators
 %
 % ALGORITHM methods:
 %   ALGORITHM       <protected> the constructor, which sets all the properties specified by user
@@ -35,6 +36,8 @@ classdef ALGORITHM < handle & matlab.mixin.Heterogeneous
         pro;                            % problem solved in current execution
         result;                         % populations saved in current execution
         metric;                         % metric values of current populations
+        xOpProbs;
+        
     end
     methods(Access = protected)
         function obj = ALGORITHM(varargin)
