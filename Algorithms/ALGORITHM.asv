@@ -58,14 +58,8 @@ classdef ALGORITHM < handle & matlab.mixin.Heterogeneous
                 obj.(varargin{i}) = varargin{i+1};
             end
         end
-        function SaveDist(obj, distribution, index)
-            if(index == 1)
-                obj.xOpProbs = distribution;
-            else
-                obj.xOpProbs = [obj.xOpProbs; distribution]; 
-            end
-        end
     end
+    me
     methods(Sealed)
         function Solve(obj,Problem)
         %Solve - Use the algorithm to solve a problem.
@@ -82,7 +76,7 @@ classdef ALGORITHM < handle & matlab.mixin.Heterogeneous
             try
                 obj.pro    = Problem;
                 obj.result = {};
-                obj.xOpProbs = [];
+                obj.xOpProbs = {};
                 obj.metric = struct('runtime',0);
                 obj.pro.FE = 0;
                 addpath(fileparts(which(class(obj))));

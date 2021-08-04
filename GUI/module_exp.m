@@ -242,7 +242,7 @@ classdef module_exp < handle
                 if ~obj.cb_filepath([],[],obj.app.editA(3).Value)
                     return;
                 end
-                obj.data = struct('ALG',ALG,'PRO',PRO,'folder',fileparts(obj.app.editA(3).Value),'result',{cell(length(PRO),length(ALG),obj.app.editA(1).Value)},'metric',{cell(length(PRO),length(ALG),obj.app.editA(1).Value)});
+                obj.data = struct('ALG',ALG,'PRO',PRO,'folder',fileparts(obj.app.editA(3).Value),'result',{cell(length(PRO),length(ALG),obj.app.editA(1).Value)},'metric',{cell(length(PRO),length(ALG),obj.app.editA(1).Value)},'xOpProbs',{cell(length(PRO),length(ALG),obj.app.editA(1).Value)});
                 % Initialize the table
                 rowName = arrayfun(@class,PRO,'UniformOutput',false);
                 for i = length(rowName) : -1 : 2
@@ -278,7 +278,7 @@ classdef module_exp < handle
                             try
                                 for r = runIndex
                                     ALG(a).Solve(PRO(p));
-                                    obj.ResultSave(p,a,r,ALG(a).result,ALG(a).metric);
+                                    obj.ResultSave(p,a,r,ALG(a).result,ALG(a).metric, ALG(a).xOpProbs);
                                     obj.ResultLoad(p,a,r);
                                     obj.TableUpdate([],[],p);
                                     if strcmp(obj.app.buttonC(2).Enable,'off')
@@ -307,9 +307,9 @@ classdef module_exp < handle
                                         cancel(Future);
                                         return;
                                     end
-                                    [r,result,metric] = fetchNext(Future,0.01);
+                                    [r,result,metric,xOpProbs] = fetchNext(Future,0.01);
                                     if ~isempty(r)
-                                        obj.ResultSave(p,a,runIndex(r),result,metric);
+                                        obj.ResultSave(p,a,runIndex(r),result,metric,xOpProbs);
                                         obj.ResultLoad(p,a,runIndex(r));
                                         obj.TableUpdate([],[],p);
                                     end
@@ -501,18 +501,19 @@ classdef module_exp < handle
         function ResultLoad(obj,p,a,r)
             try
                 filename = fullfile(obj.data.folder,class(obj.data.ALG(a)),sprintf('%s_%s_M%d_D%d_%d.mat',class(obj.data.ALG(a)),class(obj.data.PRO(p)),obj.data.PRO(p).M,obj.data.PRO(p).D,r));
-                load(filename,'-mat','result','metric');
+                load(filename,'-mat','result','metric','xOpProbs');
                 obj.data.result{p,a,r} = result;
                 obj.data.metric{p,a,r} = metric;
+                obj.data.xOpProbs{p,a,r} = xOpProbs;
             catch
             end
         end
         %% Save the result file
-        function ResultSave(obj,p,a,r,result,metric)
+        function ResultSave(obj,p,a,r,result,metric,xOpProbs)
             folder   = fullfile(obj.data.folder,class(obj.data.ALG(a)));
             [~,~]    = mkdir(folder);
             filename = fullfile(folder,sprintf('%s_%s_M%d_D%d_%d.mat',class(obj.data.ALG(a)),class(obj.data.PRO(p)),obj.data.PRO(p).M,obj.data.PRO(p).D,r));
-            save(filename,'result','metric');
+            save(filename,'result','metric','xOpProbs');
         end
         %% Get the metric value 
         function score = GetMetricValue(obj,p,a,metricName,showAll)

@@ -22,6 +22,8 @@ classdef R2RXDNSGAII < ALGORITHM
             Operators = {MyCMAX(), MyDE(), MyLCX(), MyLX(), MyRSBX(), MySBX(), MyUX()};
             XDist = XDistribution(Population, Operators, @R2Reward);
             [~,FrontNo,CrowdDis] = EnvironmentalSelection(Population,Problem.N);
+            run = 1;
+            Algorithm.SaveDist(XDist.Distribution, run);
 
             %% Optimization
             while Algorithm.NotTerminated(Population)
@@ -30,6 +32,8 @@ classdef R2RXDNSGAII < ALGORITHM
                 Offspring = MyMutation(Offspring);
                 XDist = XDist.SetOldPopulation(Population);
                 [Population,FrontNo,CrowdDis] = EnvironmentalSelection([Population,Offspring],Problem.N);
+                run = run + 1;
+                Algorithm.SaveDist(XDist.Distribution, run);
                 XDist = XDist.CalcDist(Population);
             end
         end
