@@ -16,7 +16,8 @@ function New_Reward = R2Reward(Old_Population, New_Population, Current_Reward)
     R2_new = CalcR2(new_objs, Lambda, size(new_objs, 1), size(new_objs, 2));
     R2_old = CalcR2(old_objs, Lambda, size(old_objs, 1), size(old_objs, 2));
         
-    New_Reward = Current_Reward + (R2_old-R2_new)/R2_new;
+    new = R2_new/(R2_old+R2_new);
+    New_Reward = Current_Reward + new;
 end
 
 function R2 = CalcR2(objs, Lambda, N, M)

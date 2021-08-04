@@ -22,6 +22,8 @@ classdef URXDNSGAII < ALGORITHM
             Operators = {MyCMAX(), MyDE(), MyLCX(), MyLX(), MyRSBX(), MySBX(), MyUX()};
             XDist = XDistribution(Population, Operators, @UniformReward);
             [~,FrontNo,CrowdDis] = EnvironmentalSelection(Population,Problem.N);
+            run = 1;
+            Algorithm.SaveDist(XDist.Distribution, run);
 
             %% Optimization
             while Algorithm.NotTerminated(Population)
@@ -31,6 +33,7 @@ classdef URXDNSGAII < ALGORITHM
                 XDist = XDist.SetOldPopulation(Population);
                 [Population,FrontNo,CrowdDis] = EnvironmentalSelection([Population,Offspring],Problem.N);
                 XDist = XDist.CalcDist(Population);
+                Algorithm.SaveDist(XDist.Distribution, run);
             end
         end
 

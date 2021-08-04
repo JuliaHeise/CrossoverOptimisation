@@ -39,7 +39,7 @@ classdef XSelection
         
         function [obj, Operator] = SelectX(obj, New_Population)
             obj.Runs = obj.Runs + 1;
-        %% use new Information to calculate Rewards
+            %% use new Information to calculate Rewards
             new_reward = obj.Reward_Handle(obj.Old_Population, ...
                 New_Population, obj.Exploration_Rewards(obj.Selection));
             

@@ -22,6 +22,8 @@ classdef URXSNSGAII < ALGORITHM
             Operators = {MyCMAX(), MyDE(), MyLCX(), MyLX(), MyRSBX(), MySBX(), MyUX()};
             XSel = XSelection(Population, Operators, @UniformReward);
             [~,FrontNo,CrowdDis] = EnvironmentalSelection(Population,Problem.N);
+            run = 1;
+            Algorithm.SaveDist(XSel.Rewards, run);
 
             %% Optimization
             while Algorithm.NotTerminated(Population)
@@ -30,7 +32,7 @@ classdef URXSNSGAII < ALGORITHM
                 Offspring = MyMutation(Offspring);
                 XSel = XSel.SetOldPopulation(Population);
                 [Population,FrontNo,CrowdDis] = EnvironmentalSelection([Population,Offspring],Problem.N);
-                [XSel, Operator] = XSel.SelectX(Population); 
+                Algorithm.SaveDist(XSel.Rewards, run); 
             end
         end
     end
