@@ -26,7 +26,7 @@ classdef MyLCX < XOPERATOR
                     randomWeights = false;
                 end
             else
-                lambda  = 2;
+                lambda  = 3;
                 weights = rand(1, lambda);
                 randomWeights = true;
             end

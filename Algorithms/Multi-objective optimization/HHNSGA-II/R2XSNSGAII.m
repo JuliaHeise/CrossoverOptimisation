@@ -1,4 +1,4 @@
-classdef R2RXSNSGAII < ALGORITHM
+classdef R2XSNSGAII < ALGORITHM
 % <multi> <real/binary/permutation> <constrained/none>
 % Nondominated sorting genetic algorithm II
 

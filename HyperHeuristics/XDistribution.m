@@ -30,7 +30,7 @@ classdef XDistribution
         
         function obj = CalcDist(obj, New_Population)
             obj.Runs = obj.Runs + 1;
-            % use new Information to calculate Reward Array
+            %% use new Information to calculate Reward Array
             types = New_Population.tags;
 
             for i=1:obj.Num_Operators
@@ -42,9 +42,8 @@ classdef XDistribution
                         obj.Reward_Handle(obj.Old_Population, ...
                            new_pop, obj.Rewards(i))]);
                 end
-            end
-            
-            % Update internal state
+            end            
+            %% Update internal state
             obj.Distribution = obj.Rewards./sum(obj.Rewards)
         end
         
