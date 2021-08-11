@@ -14,15 +14,18 @@ numberOfRuns = 31;
 TestSettings = {};
 
 % R2RXDNSGAII
+algorithm = 'R2RXDNSGAII';
 %TestSettings{end+1} = ...
  %   struct('algorithm', 'R2RXDNSGAII', 'dataset', 'RM1', 'M', 2, 'D', 30);
-
 TestSettings{end+1} = ...
-    struct('algorithm', 'R2RXDNSGAII', 'dataset', 'WFG3', 'M', 3, 'D', 12);
+    struct('algorithm', algorithm , 'dataset', 'WFG3', 'M', 3, 'D', 12);
 
 % RLXDNSGAII
+%algorithm = 'RLXDNSGAII';
 % SRXNSGAII
+%algorithm = 'SRXNSGAII';
 % URXNSGAII
+%algorithm = 'URXNSGAII';
 
 for i=1:length(TestSettings)
     % find files
@@ -32,10 +35,46 @@ for i=1:length(TestSettings)
         '_M',string(TestSettings{i}.M), '_D', ...
         string(TestSettings{i}.D), '_');
     result = {};
+    average = [];
     for run = 1: numberOfRuns
         res = load(append(prefix, filename, string(run), '.mat'));
-        result{run} = res.xOpProbs;        
+        result{run} = res.xOpProbs;
     end
+    
+    average = result{1};
+    fe_count = ones(size(average,1),1);
+    N = size(average, 2);
+    
+    for j = 2:size(result,2)
+        next = result{j};
+        size_avg = size(average,1);
+        size_nxt = size(next,1);
+        size_fe = size(fe_count, 1);
+        
+        % Zeilen summieren
+        if(size_avg == size_nxt)
+            average = average + next;
+        elseif(size_avg < size_nxt)
+            average = (average + next(1:size_avg, :));
+            average = [average; next(size_avg+1:end, :)];
+        else
+            average(1:size_nxt, :) = (average(1:size_nxt, :) + next);
+        end
+        
+        % count number of fe's
+        if(size_fe < size_nxt)
+            fe_count = [fe_count + ones(size_fe,1); ones(size_nxt - size_fe,1)];
+        else
+            fe_count(1:size_nxt) = fe_count(1:size_nxt) + ones(size_nxt, 1);
+        end
+    end
+    
+    % calculate averages
+    average = average ./ repmat(fe_count, [1,N]);
+    average = average ./ repmat(sum(average,2), [1,N]);
+    average = vecnorm(average, 2, 1);
+    
+    % maybe better switch to median?
     
     % Calulation and Plotting
     
