@@ -35,12 +35,13 @@ for i=1:length(TestSettings)
         '_M',string(TestSettings{i}.M), '_D', ...
         string(TestSettings{i}.D), '_');
     result = {};
-    average = [];
+
     for run = 1: numberOfRuns
         res = load(append(prefix, filename, string(run), '.mat'));
         result{run} = res.xOpProbs;
     end
     
+    %% calculate averages
     average = result{1};
     fe_count = ones(size(average,1),1);
     N = size(average, 2);
@@ -69,13 +70,26 @@ for i=1:length(TestSettings)
         end
     end
     
-    % calculate averages
+    
     average = average ./ repmat(fe_count, [1,N]);
     average = average ./ repmat(sum(average,2), [1,N]);
     average = vecnorm(average, 2, 1);
     
-    % maybe better switch to median?
+    % TODO Save Data and Plots
     
-    % Calulation and Plotting
+    %% Calculate Median
+    Len_tmp = cellfun(@(c) size(c,1), result, 'UniformOutput', false);
+    Len =  cat(1,Len_tmp{:});
     
-end
+    medians = zeros(min(Len), size(result{1},2)); 
+    for m=1:size(result{1},2)
+        for n=1:min(Len)
+            medians(n,m) = median(cell2mat(cellfun(@(c) c(n,m), result, 'UniformOutput', false)));
+        end
+    end
+    
+    %TODO Norm medias so that they add up to 1?
+    
+     % TODO Save Data and Plots
+    
+     endgit
