@@ -23,7 +23,7 @@ classdef XDistribution
             obj.Operators = Operators;
             obj.Num_Operators = size(Operators, 2);
             obj.Reward_Handle = Reward_Handle;
-            obj.Rewards = ones(1,obj.Num_Operators)./obj.Num_Operators;
+            obj.Rewards = zeros(1, obj.Num_Operators);
             obj.Distribution = obj.Rewards./sum(obj.Rewards);
             obj.Runs = 0;
         end
@@ -32,25 +32,23 @@ classdef XDistribution
             obj.Runs = obj.Runs + 1;
             %% use new Information to calculate Reward Array
             types = New_Population.tags;
-
+            value = zeros(1, obj.Num_Operators);
             for i=1:obj.Num_Operators
                 new_pop = New_Population(strcmp(types, obj.Operators{i}.TAG));
                 if(size(new_pop, 2) == 0)
-                    obj.Rewards(i) = obj.MIN_REWARD;
+                    value(i) = obj.MIN_REWARD;
                 else
-                    obj.Rewards(i) = max([obj.MIN_REWARD...
-                        obj.Reward_Handle(obj.Old_Population, ...
-                           new_pop, obj.Rewards(i))]);
+                    value(i) = max([obj.MIN_REWARD...
+                        obj.Reward_Handle(obj.Old_Population, new_pop)]);
                 end
             end            
             %% Update internal state
-            [~,ranking] = sort(obj.Rewards);
-            rankVal = zeros(1, obj.Num_Operators);
+            [~,ranking] = sort(value);            
             % Scoring Function
             for j=1:obj.Num_Operators
-                rankVal(ranking(j)) = j-1;
+                obj.Rewards(ranking(j)) = max([obj.Rewards(ranking(j)) + (j-floor(obj.Num_Operators/2))^3 0]);
             end
-            obj.Distribution = rankVal./sum(rankVal)
+            obj.Distribution = obj.Rewards./sum(obj.Rewards)
         end
         
         function obj = SetOldPopulation(obj, New_Population)

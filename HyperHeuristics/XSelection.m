@@ -43,7 +43,7 @@ classdef XSelection
             obj.Runs = obj.Runs + 1;
             %% use new Information to calculate Rewards
             new_reward = obj.Reward_Handle(obj.Old_Population, ...
-                New_Population, obj.Exploration_Rewards(obj.Selection));
+                New_Population);
             
             obj.Exploration_Rewards(obj.Selection) = ...
                 max([obj.MIN_REWARD new_reward]);
@@ -63,17 +63,15 @@ classdef XSelection
             %% Update Rewards after Exploration and after every few runs
             if(obj.Runs == obj.Num_Operators * obj.MIN_EXPLORE_RUN_PER_OP...
                     || mod(obj.Runs, obj.REWARD_UPDATE_RATE) == 0)
-                obj.Rewards = obj.Exploration_Rewards;
+                %% Update internal state
+                [~,ranking] = sort(obj.Exploration_Rewards);            
+                % Scoring Function
+                for j=1:obj.Num_Operators
+                    obj.Rewards(ranking(j)) = max([obj.Rewards(ranking(j)) + (j-floor(obj.Num_Operators/2))^3 0]);
+                end
+                obj.Probabilities = obj.Rewards./sum(obj.Rewards)
             end
             
-            %% Update internal state
-            [~,ranking] = sort(obj.Rewards);
-            rankVal = zeros(1, obj.Num_Operators);
-            % Scoring Function
-            for j=1:obj.Num_Operators
-                rankVal(ranking(j)) = j - 1;
-            end
-            obj.Probabilities = rankVal./sum(rankVal)
                        
             % Use Selection to return the current Operator Handle
             x = obj.Operator_Objects{obj.Selection};

@@ -1,4 +1,4 @@
-function New_Reward = RLReward(Old_Population, New_Population, Current_Reward)
+function New_Reward = RLReward(Old_Population, New_Population)
     %% Parameter Settings
     old_objs  = Old_Population.objs;
     new_objs = New_Population.objs;
@@ -24,5 +24,5 @@ function New_Reward = RLReward(Old_Population, New_Population, Current_Reward)
     malus = 1/4 * cd_score_old + 3/4 * size(nd_old,1)/N2;
         
     %% Calculate new Reward
-    New_Reward = Current_Reward + bonus - malus;
+    New_Reward = bonus - malus;
 end

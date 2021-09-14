@@ -33,6 +33,7 @@ classdef SRXSNSGAII < ALGORITHM
                 XSel = XSel.SetOldPopulation(Offspring);
                 [Population,FrontNo,CrowdDis] = EnvironmentalSelection([Population,Offspring],Problem.N);
                 [XSel, Operator] = XSel.SelectX(Population);
+                run = run + 1;
                 Algorithm.SaveDist(XSel.Rewards, run);
             end
         end

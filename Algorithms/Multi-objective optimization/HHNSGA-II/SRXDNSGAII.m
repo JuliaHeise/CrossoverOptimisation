@@ -33,6 +33,7 @@ classdef SRXDNSGAII < ALGORITHM
                 XDist = XDist.SetOldPopulation(Offspring);
                 [Population,FrontNo,CrowdDis] = EnvironmentalSelection([Population,Offspring],Problem.N);
                 XDist = XDist.CalcDist(Population);
+                run = run + 1;
                 Algorithm.SaveDist(XDist.Distribution, run);
             end
         end
