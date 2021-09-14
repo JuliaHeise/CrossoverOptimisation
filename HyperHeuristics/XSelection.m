@@ -17,6 +17,7 @@ classdef XSelection
         Selection
         Exploration_Rewards
         Rewards
+        Probabilities
     end
 
     methods(Access = public)
@@ -30,6 +31,7 @@ classdef XSelection
             %% initials
             obj.Rewards = ones(1,obj.Num_Operators) * obj.MIN_REWARD;
             obj.Exploration_Rewards = obj.Rewards;
+            obj.Probabilities = zeros(1,obj.Num_Operators);  
             obj.Runs = 0;
             obj.Num_Selection = zeros(1, obj.Num_Operators);
             obj.Selection = 1;
@@ -51,8 +53,7 @@ classdef XSelection
                 % select the next Operator
                 obj.Selection = mod(obj.Runs, obj.Num_Operators) + 1;
                 obj.Num_Selection(obj.Selection) ...
-                    = obj.Num_Selection(obj.Selection) + 1;
-                        
+                    = obj.Num_Selection(obj.Selection) + 1;                       
             else
                 %% Exploitation
                 % Use new Reward Array with Roulette Wheel 
@@ -64,6 +65,15 @@ classdef XSelection
                     || mod(obj.Runs, obj.REWARD_UPDATE_RATE) == 0)
                 obj.Rewards = obj.Exploration_Rewards;
             end
+            
+            %% Update internal state
+            [~,ranking] = sort(obj.Rewards);
+            rankVal = zeros(1, obj.Num_Operators);
+            % Scoring Function
+            for j=1:obj.Num_Operators
+                rankVal(ranking(j)) = j - 1;
+            end
+            obj.Probabilities = rankVal./sum(rankVal)
                        
             % Use Selection to return the current Operator Handle
             x = obj.Operator_Objects{obj.Selection};
@@ -78,10 +88,9 @@ classdef XSelection
     methods(Access = private)      
         function obj = RouletteWheelSelection(obj)
             picker = rand(1);
-            sumRewards = sum(obj.Rewards);
             tmp = 0;
             for i = 1:obj.Num_Operators
-                tmp = tmp + obj.Rewards(1,i)/sumRewards;
+                tmp = tmp + obj.Probabilities(1,i);
                 if(picker <= tmp)
                     obj.Selection = i;
                     obj.Num_Selection(obj.Selection) ...

@@ -44,7 +44,13 @@ classdef XDistribution
                 end
             end            
             %% Update internal state
-            obj.Distribution = obj.Rewards./sum(obj.Rewards)
+            [~,ranking] = sort(obj.Rewards);
+            rankVal = zeros(1, obj.Num_Operators);
+            % Scoring Function
+            for j=1:obj.Num_Operators
+                rankVal(ranking(j)) = j-1;
+            end
+            obj.Distribution = rankVal./sum(rankVal)
         end
         
         function obj = SetOldPopulation(obj, New_Population)
