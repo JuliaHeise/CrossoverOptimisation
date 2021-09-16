@@ -30,11 +30,11 @@ classdef SRXSNSGAII < ALGORITHM
                 MatingPool = TournamentSelection(2,Problem.N,FrontNo,-CrowdDis);
                 Offspring = Operator(Population(MatingPool));
                 Offspring = MyMutation(Offspring);
-                XSel = XSel.SetOldPopulation(Offspring);
+                XSel = XSel.SetOldPopulation([Population,Offspring]);
                 [Population,FrontNo,CrowdDis] = EnvironmentalSelection([Population,Offspring],Problem.N);
                 [XSel, Operator] = XSel.SelectX(Population);
+                Algorithm.SaveDist(XSel.Probabilities, run);
                 run = run + 1;
-                Algorithm.SaveDist(XSel.Rewards, run);
             end
         end
     end

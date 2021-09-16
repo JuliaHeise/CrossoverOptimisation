@@ -23,7 +23,7 @@ classdef RLXSNSGAII < ALGORITHM
             [XSel, Operator] = XSelection(Population, Operators, @RLReward);
             [~,FrontNo,CrowdDis] = EnvironmentalSelection(Population,Problem.N); 
             run = 1;
-            Algorithm.SaveDist(XSel.Rewards, run);
+            Algorithm.SaveDist(XSel.Probabilities, run);
 
             %% Optimization
             while Algorithm.NotTerminated(Population)
@@ -33,8 +33,8 @@ classdef RLXSNSGAII < ALGORITHM
                 XSel = XSel.SetOldPopulation(Population);
                 [Population,FrontNo,CrowdDis] = EnvironmentalSelection([Population,Offspring],Problem.N);
                 [XSel, Operator] = XSel.SelectX(Population); 
-                run = run + 1;
                 Algorithm.SaveDist(XSel.Rewards, run);
+                run = run + 1;
             end
         end
     end

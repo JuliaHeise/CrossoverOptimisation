@@ -46,9 +46,9 @@ classdef XDistribution
             [~,ranking] = sort(value);            
             % Scoring Function
             for j=1:obj.Num_Operators
-                obj.Rewards(ranking(j)) = max([obj.Rewards(ranking(j)) + (j-floor(obj.Num_Operators/2))^3 0]);
+                obj.Rewards(ranking(j)) = max([obj.Rewards(ranking(j)) + (j-floor(obj.Num_Operators/2))^3 obj.MIN_REWARD]);
             end
-            obj.Distribution = obj.Rewards./sum(obj.Rewards)
+            obj.Distribution = obj.Rewards./sum(obj.Rewards);
         end
         
         function obj = SetOldPopulation(obj, New_Population)
@@ -64,6 +64,8 @@ classdef XDistribution
                 numParents = max([x.MIN_PARENTS floor(obj.Distribution(i)*N)]);
                 if(i == 1)
                     Offspring = xOp(Parents(last:last+numParents));
+                    last = last+numParents;
+                    continue;
                 end                
                 if(last+numParents > N)
                     RestParents = [Parents(last:end)...

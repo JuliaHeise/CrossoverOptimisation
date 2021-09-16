@@ -67,9 +67,9 @@ classdef XSelection
                 [~,ranking] = sort(obj.Exploration_Rewards);            
                 % Scoring Function
                 for j=1:obj.Num_Operators
-                    obj.Rewards(ranking(j)) = max([obj.Rewards(ranking(j)) + (j-floor(obj.Num_Operators/2))^3 0]);
+                    obj.Rewards(ranking(j)) = max([obj.Rewards(ranking(j)) + (j-floor(obj.Num_Operators/2))^3 obj.MIN_REWARD]);
                 end
-                obj.Probabilities = obj.Rewards./sum(obj.Rewards)
+                obj.Probabilities = obj.Rewards./sum(obj.Rewards);
             end
             
                        

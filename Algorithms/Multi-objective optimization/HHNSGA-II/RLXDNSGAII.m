@@ -32,9 +32,9 @@ classdef RLXDNSGAII < ALGORITHM
                 Offspring = MyMutation(Offspring);
                 XDist = XDist.SetOldPopulation(Population);
                 [Population,FrontNo,CrowdDis] = EnvironmentalSelection([Population,Offspring],Problem.N);
-                run = run + 1;
                 XDist = XDist.CalcDist(Population);
                 Algorithm.SaveDist(XDist.Distribution, run);
+                run = run + 1;
             end
         end
 

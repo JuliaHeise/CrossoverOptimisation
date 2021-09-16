@@ -32,8 +32,8 @@ classdef URXSNSGAII < ALGORITHM
                 Offspring = MyMutation(Offspring);
                 XSel = XSel.SetOldPopulation(Population);
                 [Population,FrontNo,CrowdDis] = EnvironmentalSelection([Population,Offspring],Problem.N);
+                Algorithm.SaveDist(XSel.Probabilities, run); 
                 run = run + 1;
-                Algorithm.SaveDist(XSel.Rewards, run); 
             end
         end
     end
