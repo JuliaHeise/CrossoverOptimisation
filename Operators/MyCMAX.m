@@ -11,6 +11,9 @@ classdef MyCMAX < XOPERATOR
             Problem = PROBLEM.Current();
             if isa(Parentpool(1),'SOLUTION')
                 Parentpool = Parentpool.decs;
+                restructure = true;
+            else
+                restructure = false;
             end
 
             if nargin > 2
@@ -20,17 +23,20 @@ classdef MyCMAX < XOPERATOR
             end
 
             % Number of parents
-            N = size(Parentpool,1);
+            [N, D] = size(Parentpool);
+            
 
             % Center point 
             centerPoint = mean(Parentpool);
 
-
             %% Covariance Matrix Adaption  
             Cov = cov(Parentpool);
-            Samples = mvnrnd(zeros(1,Problem.D), Cov, N);
+            Samples = mvnrnd(zeros(1,D), Cov, N);
             Offspring = centerPoint + sigma .* Samples;
-            Offspring = SOLUTION(Offspring,[], repelem(obj.TAG, N, 1));
+            
+             if(restructure)
+                Offspring = SOLUTION(Offspring,[], repelem(obj.TAG, N, 1));
+             end
         end
     end
 end

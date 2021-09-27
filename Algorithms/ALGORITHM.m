@@ -11,7 +11,8 @@ classdef ALGORITHM < handle & matlab.mixin.Heterogeneous
 %   pro             <read-only> problem solved in current execution
 %   result          <read-only>	populations saved in current execution
 %   metric          <read-only> metric values of current populations
-%   xOpProbs   <read-only> current probabilities of XOperators
+%   xOpProbs        <read-only> current probabilities of XOperators
+%   runNo           <read-only> number of run
 %
 % ALGORITHM methods:
 %   ALGORITHM       <protected> the constructor, which sets all the properties specified by user
@@ -35,7 +36,8 @@ classdef ALGORITHM < handle & matlab.mixin.Heterogeneous
         outputFcn = @ALGORITHM.Output;	% function called after each generation
         pro;                            % problem solved in current execution
         result;                         % populations saved in current execution
-        metric;                         % metric values of current populations             
+        metric;                         % metric values of current populations  
+        runNo;
     end
     
     properties(SetAccess = protected)
@@ -54,7 +56,7 @@ classdef ALGORITHM < handle & matlab.mixin.Heterogeneous
         %        Algorithm = MOEAD('parameter',4,'save',1)
 
             isStr = find(cellfun(@ischar,varargin(1:end-1))&~cellfun(@isempty,varargin(2:end)));
-            for i = isStr(ismember(varargin(isStr),{'parameter','save','outputFcn'}))
+            for i = isStr(ismember(varargin(isStr),{'parameter','save','outputFcn', 'runNo'}))
                 obj.(varargin{i}) = varargin{i+1};
             end
         end
@@ -148,7 +150,7 @@ classdef ALGORITHM < handle & matlab.mixin.Heterogeneous
     methods(Static, Sealed)
         function Output(Algorithm,Problem)
         % The default output function of ALGORITHM.
-            clc; fprintf('%s on %d-objective %d-variable %s (%6.2f%%), %.2fs passed...\n',class(Algorithm),Problem.M,Problem.D,class(Problem),Problem.FE/Problem.maxFE*100,Algorithm.metric.runtime);
+            % clc; fprintf('%s on %d-objective %d-variable %s (%6.2f%%), %.2fs passed...\n',class(Algorithm),Problem.M,Problem.D,class(Problem),Problem.FE/Problem.maxFE*100,Algorithm.metric.runtime);
             if Problem.FE >= Problem.maxFE
                 if Algorithm.save == 0
                     if Problem.M > 1
@@ -179,10 +181,11 @@ classdef ALGORITHM < handle & matlab.mixin.Heterogeneous
                     folder = fullfile('Data',class(Algorithm));
                     [~,~]  = mkdir(folder);
                     file   = fullfile(folder,sprintf('%s_%s_M%d_D%d_',class(Algorithm),class(Problem),Problem.M,Problem.D));
-                    runNo  = 1;
-                    while exist([file,num2str(runNo),'.mat'],'file') == 2
-                        runNo = runNo + 1;
-                    end
+%                     runNo  = 1;
+%                     while exist([file,num2str(runNo),'.mat'],'file') == 2
+%                         runNo = runNo + 1;
+%                     end
+                    runNo = Algorithm.runNo;
                     result = Algorithm.result;
                     metric = Algorithm.metric;
                     xOpProbs = Algorithm.xOpProbs;

@@ -19,6 +19,9 @@ classdef MyRSBX
 
             if isa(Parentpool(1),'SOLUTION')
                 Parentpool = Parentpool.decs;
+                restructure = true;
+            else
+                restructure = false;
             end
 
             %% Resolve Rotation
@@ -51,7 +54,9 @@ classdef MyRSBX
                 Offspring(i,:) = Offspring(i,:)/V + m;
             end
 
-            Offspring = SOLUTION(Offspring,[], repelem(obj.TAG, N*2, 1));
+            if(restructure)
+                Offspring = SOLUTION(Offspring,[], repelem(obj.TAG, N*2, 1));
+            end
         end
     end
 end

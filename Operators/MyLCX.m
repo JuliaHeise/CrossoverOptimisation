@@ -10,6 +10,9 @@ classdef MyLCX < XOPERATOR
             %% Parameter Setting
             if isa(Parentpool(1),'SOLUTION')
                 Parentpool = Parentpool.decs;
+                restructure = true;
+            else
+                restructure = false;
             end
 
             %% Weights of linear combinations from parameter or random
@@ -68,8 +71,10 @@ classdef MyLCX < XOPERATOR
                 parents = Parentpool(selection(p+1:N),:);
                 Offspring(k, :) =  weights * parents;
             end
-
-            Offspring = SOLUTION(Offspring,[], repelem(obj.TAG, N, 1));
+            
+            if(restructure)
+                Offspring = SOLUTION(Offspring,[], repelem(obj.TAG, N, 1));
+            end
         end
     end
 end

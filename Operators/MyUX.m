@@ -16,8 +16,11 @@ classdef MyUX < XOPERATOR
 
             if isa(Parentpool(1),'SOLUTION')
                 Parentpool = Parentpool.decs;
+                restructure = true;
+            else
+                restructure = false;
             end
-
+            
             %% Prepare loop
             [N,D]   = size(Parentpool);
             RandomizedParents =  zeros(N,D,lambda);
@@ -35,7 +38,9 @@ classdef MyUX < XOPERATOR
                     Offspring(j,k) = RandomizedParents(j,k,p(j,k));
                 end
             end
-            Offspring = SOLUTION(Offspring,[], repelem(obj.TAG, N, 1));
+            if(restructure)
+                Offspring = SOLUTION(Offspring,[], repelem(obj.TAG, N, 1));
+            end
         end
     end
 end

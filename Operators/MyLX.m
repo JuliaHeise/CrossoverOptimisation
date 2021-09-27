@@ -16,6 +16,9 @@ classdef MyLX < XOPERATOR
 
             if isa(Parentpool(1),'SOLUTION')
                 Parentpool = Parentpool.decs;
+                restructure = true;
+            else
+                restructure = false;
             end
 
             Parent1 = Parentpool(1:floor(end/2),:);
@@ -30,7 +33,9 @@ classdef MyLX < XOPERATOR
             Offspring = [Parent1 + beta(1:floor(end/2))' .* abs(Parent1-Parent2)
                 Parent2 + beta(floor(end/2)+1:floor(end/2)*2)' .* abs(Parent1-Parent2)];
 
-            Offspring = SOLUTION(Offspring,[], repelem(obj.TAG, N, 1));
+            if(restructure)
+                Offspring = SOLUTION(Offspring,[], repelem(obj.TAG, N, 1));
+            end
         end
     end
 end
