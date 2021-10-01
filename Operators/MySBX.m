@@ -20,7 +20,7 @@ classdef MySBX < XOPERATOR
             else
                 restructure = false;
             end
-
+            
             Parent1 = Parentpool(1:floor(end/2),:);
             Parent2 = Parentpool(floor(end/2)+1:floor(end/2)*2,:);
             [N,D]   = size(Parent1);
@@ -38,7 +38,7 @@ classdef MySBX < XOPERATOR
             Offspring = [(Parent1+Parent2)/2+beta.*(Parent1-Parent2)/2
                          (Parent1+Parent2)/2-beta.*(Parent1-Parent2)/2];
              if(restructure)
-                Offspring = SOLUTION(Offspring,[], repelem(obj.TAG, N*2, 1));
+                Offspring = SOLUTION(Offspring, [], repelem(obj.TAG, N*2, 1));
              end
         end
     end

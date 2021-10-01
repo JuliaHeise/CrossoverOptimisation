@@ -20,7 +20,7 @@ classdef MyLX < XOPERATOR
             else
                 restructure = false;
             end
-
+            
             Parent1 = Parentpool(1:floor(end/2),:);
             Parent2 = Parentpool(floor(end/2)+1:floor(end/2)*2,:);
             N = size(Parentpool, 1);
@@ -30,8 +30,8 @@ classdef MyLX < XOPERATOR
             beta(u<=0.5) = a - b*reallog(u(u<=0.5));
             beta(u>0.5) = a + b*reallog(u(u>0.5));
 
-            Offspring = [Parent1 + beta(1:floor(end/2))' .* abs(Parent1-Parent2)
-                Parent2 + beta(floor(end/2)+1:floor(end/2)*2)' .* abs(Parent1-Parent2)];
+            Offspring = [Parent1 + beta(1:floor(end/2))' .* (Parent1-Parent2) % abs(Parent1-Parent2) 
+                Parent2 + beta(floor(end/2)+1:floor(end/2)*2)' .* (Parent1-Parent2)]; %abs(Parent1-Parent2) 
 
             if(restructure)
                 Offspring = SOLUTION(Offspring,[], repelem(obj.TAG, N, 1));
