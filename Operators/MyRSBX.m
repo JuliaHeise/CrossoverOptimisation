@@ -49,10 +49,11 @@ classdef MyRSBX
                          (Parent1+Parent2)/2-beta.*(Parent1-Parent2)/2];
 
 
-
-            for i=1:N
-                Offspring(i,:) = Offspring(i,:)/V + m;
-            end
+            %funktioniert das auch? 
+            Offspring = Offspring/V + m;
+%             for i=1:N
+%                 Offspring(i,:) = Offspring(i,:)/V + m;
+%             end
 
             if(restructure)
                 Offspring = SOLUTION(Offspring,[], repelem(obj.TAG, N*2, 1));
