@@ -6,12 +6,9 @@ classdef MyCMAX < XOPERATOR
              obj.MIN_PARENTS = 2;
          end
 
-         function Offspring = Cross(obj, Parentpool, Parameter)
-             [Offspring, ~, ~] = obj.Cross_(Parentpool, Parameter);
-         end
-         
-         function [Offspring, m, C] = Cross_(obj, Parentpool, Parameter)
+        function [Offspring, m, C] = _Cross(obj, Parentpool, Parameter)
             %% Parameter Setting
+            Problem = PROBLEM.Current();
             if isa(Parentpool(1),'SOLUTION')
                 Parentpool = Parentpool.decs;
                 restructure = true;
@@ -20,14 +17,14 @@ classdef MyCMAX < XOPERATOR
             end
 
             if nargin > 2
-                [sigma, N] = deal(Parameter{:});
-                D =  size(Parentpool,2);
-                
+                sigma = deal(Parameter{:});
             else
-                % Number of parents
-                [N, D] = size(Parentpool);
                 sigma = 1;
-            end            
+            end
+
+            % Number of parents
+            [N, D] = size(Parentpool);
+            
 
             % Center point 
             m = mean(Parentpool);
