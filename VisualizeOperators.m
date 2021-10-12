@@ -4,6 +4,7 @@ close all; clc;
 Population = [0.3 0.4; 0.6 0.2; 0.5 0.7];
 
 Operators = {MyLCX()};
+
 for operator = Operators
     Pop = Population;
     f = figure('Name', operator{1}.TAG);
@@ -16,8 +17,9 @@ for operator = Operators
     end
     scatter(Population(:,1), Population(:,2), 'filled', 'b');
     hold off
-    
+
 %     exportgraphics(f, operator{1}.TAG + '.png','Resolution',300)
+
 end
 
 Population = [0.3 0.4; 0.6 0.2; 0.5 0.7];
@@ -60,6 +62,7 @@ Population = [0.3 0.4; 0.6 0.2; 0.5 0.7];
 % hold off
 % 
 % exportgraphics(f, Operator.TAG + '.png','Resolution',300)
+
 
 
 
