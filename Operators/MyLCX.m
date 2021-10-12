@@ -40,11 +40,12 @@ classdef MyLCX < XOPERATOR
             
             %% randomizing area
             u = rand(N,D);
-            a = 0;
-            b = 0.05;
+            b = 0.025;
             beta = zeros(N,D);
-            beta(u<=0.5) = a + b*reallog(2*u(u<=0.5));
-            beta(u>0.5) = a - b*reallog(2*(1-u(u>0.5)));
+            f = 1/2;
+            beta(u<=f) = b*(reallog(2 * u(u<=f)));
+            beta(u>f) = - b*(reallog(2 * (1-u(u>f))));
+
 
             %% loop configuration
             selection = randperm(N);
