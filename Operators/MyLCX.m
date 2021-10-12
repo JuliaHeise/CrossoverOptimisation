@@ -37,6 +37,14 @@ classdef MyLCX < XOPERATOR
             %% result array
             [N,D] = size(Parentpool);
             Offspring = zeros(N,D);
+            
+            %% randomizing area
+            u = rand(N,D);
+            a = 0;
+            b = 0.05;
+            beta = zeros(N,D);
+            beta(u<=0.5) = a + b*reallog(2*u(u<=0.5));
+            beta(u>0.5) = a - b*reallog(2*(1-u(u>0.5)));
 
             %% loop configuration
             selection = randperm(N);
@@ -55,7 +63,7 @@ classdef MyLCX < XOPERATOR
                     end
                     parents = Parentpool(selection((i-1)*lambda+1:i*lambda),:);
                     offspringIndex = (i-1)*lambda+j;
-                    Offspring(offspringIndex, :) =  weights * parents;
+                    Offspring(offspringIndex, :) =  (weights+beta(:,i)') * parents;
                 end
             end
 
@@ -69,7 +77,7 @@ classdef MyLCX < XOPERATOR
                     weights = weights(:, 1:m);
                 end
                 parents = Parentpool(selection(p+1:N),:);
-                Offspring(k, :) =  weights * parents;
+                Offspring(k, :) =  (weights+beta(:,k)') * parents;
             end
             
             if(restructure)
