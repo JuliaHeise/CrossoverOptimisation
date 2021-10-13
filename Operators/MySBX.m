@@ -38,7 +38,7 @@ classdef MySBX < XOPERATOR
             Offspring = [(Parent1+Parent2)/2+beta.*(Parent1-Parent2)/2
                          (Parent1+Parent2)/2-beta.*(Parent1-Parent2)/2];
              if(restructure)
-                Offspring = SOLUTION(Offspring, [], repelem(obj.TAG, N*2, 1));
+                Offspring = SOLUTION(Offspring,[], repelem(obj.TAG, length(Offspring), 1));   
              end
         end
     end

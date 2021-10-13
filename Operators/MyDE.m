@@ -16,17 +16,21 @@ classdef MyDE < XOPERATOR
 
             MatingPooly = randperm(length(Parentpool));
             MatingPoolz = randperm(length(MatingPooly));
+            
+            if isa(Parentpool(1),'SOLUTION')
+                Parent1 = Parentpool;
+                Parent2 = Parentpool(MatingPooly);
+                Parent3 = Parentpool(MatingPoolz);
 
-            Parent1 = Parentpool;
-            Parent2 = Parentpool(MatingPooly,:);
-            Parent3 = Parentpool(MatingPoolz,:);
-
-            if isa(Parent1(1),'SOLUTION')
                 Parent1 = Parent1.decs;
                 Parent2 = Parent2.decs;
                 Parent3 = Parent3.decs;
                 restructure = true;
             else
+                Parent1 = Parentpool;
+                Parent2 = Parentpool(MatingPooly,:);
+                Parent3 = Parentpool(MatingPoolz,:);
+
                 restructure = false;
             end
 
@@ -38,7 +42,7 @@ classdef MyDE < XOPERATOR
             Offspring(Site) = Offspring(Site) + F*(Parent2(Site)-Parent3(Site));   
 
             if(restructure)
-                Offspring = SOLUTION(Offspring,[], repelem(obj.TAG, N, 1));
+                 Offspring = SOLUTION(Offspring,[], repelem(obj.TAG, length(Offspring), 1));
             end
         end
     end

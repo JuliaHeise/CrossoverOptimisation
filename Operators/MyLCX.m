@@ -39,12 +39,8 @@ classdef MyLCX < XOPERATOR
             Offspring = zeros(N,D);
             
             %% randomizing area
-            u = rand(N,D);
-            b = 0.025;
-            beta = zeros(N,D);
-            f = 1/2;
-            beta(u<=f) = b*(reallog(2 * u(u<=f)));
-            beta(u>f) = - b*(reallog(2 * (1-u(u>f))));
+            b = 0.00025;
+            f = 0.5;
 
 
             %% loop configuration
@@ -59,30 +55,37 @@ classdef MyLCX < XOPERATOR
                 for j = 1:lambda
                     if(randomWeights == true)
                         weights = rand(1, lambda);
+                        beta = zeros(1,lambda);
+                        beta(weights<=f) = b*(reallog(2 * weights(weights<=f)));
+                        beta(weights>f) = - b*(reallog(2 * (1-weights(weights>f))));
                         n = 1./sum(weights, 2);
-                        weights = weights .* n;
+                        weights = weights .* n + beta;      
                     end
                     parents = Parentpool(selection((i-1)*lambda+1:i*lambda),:);
                     offspringIndex = (i-1)*lambda+j;
-                    Offspring(offspringIndex, :) =  (weights+beta(:,i)') * parents;
+                    Offspring(offspringIndex, :) =  weights * parents;
                 end
             end
 
-            for k  = p+1:N
-                %% Last Combination
-                if(randomWeights == true)
-                    weights = rand(1, m);
-                    n = 1./sum(weights, 2);
-                    weights = weights .* n;
-                else
-                    weights = weights(:, 1:m);
-                end
-                parents = Parentpool(selection(p+1:N),:);
-                Offspring(k, :) =  (weights+beta(:,k)') * parents;
+
+            %% Last Combination
+            if(randomWeights == true)
+                weights = rand(1, lambda);
+                beta = zeros(1,lambda);
+                beta(weights<=f) = b*(reallog(2 * weights(weights<=f)));
+                beta(weights>f) = - b*(reallog(2 * (1-weights(weights>f))));
+                n = 1./sum(weights, 2);
+                weights = weights .* n + beta;      
+            else
+                weights = weights(:, 1:m);
             end
+            parents = [Parentpool(selection(p+1:N),:); Parentpool(selection(1:lambda-m),:)] ;
+            
+            Offspring(end, :) =  weights * parents;
+
             
             if(restructure)
-                Offspring = SOLUTION(Offspring,[], repelem(obj.TAG, N, 1));
+                Offspring = SOLUTION(Offspring,[], repelem(obj.TAG, length(Offspring), 1));
             end
         end
     end

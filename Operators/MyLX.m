@@ -3,7 +3,7 @@ classdef MyLX < XOPERATOR
     methods(Access = public)
         function obj = MyLX()
             obj.TAG = "LX";
-            obj.MIN_PARENTS = 3;
+            obj.MIN_PARENTS = 2;
         end
         
         function Offspring = Cross(obj, Parentpool, Parameter)
@@ -24,8 +24,8 @@ classdef MyLX < XOPERATOR
             N = size(Parentpool, 1);
             if(mod(N,2) == 0)
                 M = N/2;
-                Parent1 = Parentpool(1:M/2,:);
-                Parent2 = Parentpool(M/2+1:end,:);
+                Parent1 = Parentpool(1:M,:);
+                Parent2 = Parentpool(M+1:end,:);
             else
                 M = ceil(N/2);
                 Parent1 = [Parentpool(1:M-1,:); Parentpool(randi(N,1,1),:)];
@@ -43,7 +43,7 @@ classdef MyLX < XOPERATOR
                 Parent2 + beta' .* (Parent1-Parent2)];
 
             if(restructure)
-                Offspring = SOLUTION(Offspring,[], repelem(obj.TAG, N, 1));
+                Offspring = SOLUTION(Offspring,[], repelem(obj.TAG, length(Offspring), 1));
             end
         end
     end

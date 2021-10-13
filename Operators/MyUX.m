@@ -39,7 +39,7 @@ classdef MyUX < XOPERATOR
                 end
             end
             if(restructure)
-                Offspring = SOLUTION(Offspring,[], repelem(obj.TAG, N, 1));
+                Offspring = SOLUTION(Offspring,[], repelem(obj.TAG, length(Offspring), 1));
             end
         end
     end

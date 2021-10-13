@@ -7,7 +7,11 @@ classdef MyCMAX < XOPERATOR
          end
 
          function Offspring = Cross(obj, Parentpool, Parameter)
-             [Offspring, ~, ~] = obj.Cross_(Parentpool, Parameter);
+             if(nargin > 2)
+                [Offspring, ~, ~] = obj.Cross_(Parentpool, Parameter);
+             else
+                 [Offspring, ~, ~] = obj.Cross_(Parentpool);
+             end
          end
          
          function [Offspring, m, C] = Cross_(obj, Parentpool, Parameter)
@@ -38,7 +42,7 @@ classdef MyCMAX < XOPERATOR
             Offspring = m + sigma .* Samples;
             
              if(restructure)
-                Offspring = SOLUTION(Offspring,[], repelem(obj.TAG, N, 1));
+                 Offspring = SOLUTION(Offspring,[], repelem(obj.TAG, length(Offspring), 1));
              end
         end
     end

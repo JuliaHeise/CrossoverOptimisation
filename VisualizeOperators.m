@@ -18,7 +18,7 @@ for operator = Operators
     scatter(Population(:,1), Population(:,2), 'filled', 'b');
     hold off
 
-%     exportgraphics(f, operator{1}.TAG + '.png','Resolution',300)
+    exportgraphics(f, operator{1}.TAG + '.png','Resolution',300)
 
 end
 
