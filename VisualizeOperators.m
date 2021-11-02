@@ -30,12 +30,12 @@ for operator = Operators
     for i=1:500
         Pop = Pop(randperm(length(Pop)),:);
         x = operator{1}.Cross(Pop);
-        scatter(x(:,1), x(:,2), 3, 'r', 'filled');
+        scatter(x(:,1), x(:,2), 10, 'r', 'filled');
     end
-    scatter(Population(:,1), Population(:,2), 'filled', 'b');
+    scatter(Pop(:,1), Pop(:,2), 'filled', 'b');
     hold off
 
-    exportgraphics(f, operator{1}.TAG + '.png','Resolution',300)
+   % exportgraphics(f, operator{1}.TAG + '.png','Resolution',300)
 
 end
 

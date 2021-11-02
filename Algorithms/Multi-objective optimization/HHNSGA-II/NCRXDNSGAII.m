@@ -1,4 +1,4 @@
-classdef RLXDNSGAII < ALGORITHM
+classdef NCRXDNSGAII < ALGORITHM
 % <multi> <real/binary/permutation> <constrained/none>
 % Nondominated sorting genetic algorithm II
 
@@ -20,7 +20,7 @@ classdef RLXDNSGAII < ALGORITHM
             %% Generate random population
             Population = Problem.Initialization();
             Operators = {MyCMAX(), MyDE(), MyLCX(), MyLX(), MyRSBX(), MySBX(), MyUX()};
-            XDist = XDistribution(Population, Operators, @RLReward);
+            XDist = XDistribution(Population, Operators, @NCReward);
             [~,FrontNo,CrowdDis] = EnvironmentalSelection(Population,Problem.N);
             run = 1;
             Algorithm.SaveDist(XDist.Distribution, run);

@@ -33,13 +33,10 @@ classdef MyDE < XOPERATOR
 
                 restructure = false;
             end
-
-            [N,D]   = size(Parent1);
-
+            
             %% Differental evolution
-            Site = rand(N,D) < CR;
             Offspring       = Parent1;
-            Offspring(Site) = Offspring(Site) + F*(Parent2(Site)-Parent3(Site));   
+            Offspring = Offspring + F*(Parent2-Parent3);   
 
             if(restructure)
                  Offspring = SOLUTION(Offspring,[], repelem(obj.TAG, length(Offspring), 1));

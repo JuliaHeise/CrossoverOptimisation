@@ -1,4 +1,4 @@
-classdef RLXSNSGAII < ALGORITHM
+classdef NCRXSNSGAII < ALGORITHM
 % <multi> <real/binary/permutation> <constrained/none>
 % Nondominated sorting genetic algorithm II
 
@@ -20,7 +20,7 @@ classdef RLXSNSGAII < ALGORITHM
             %% Generate random population
             Population = Problem.Initialization();
             Operators = {MyCMAX(), MyDE(), MyLCX(), MyLX(), MyRSBX(), MySBX(), MyUX()};
-            [XSel, Operator] = XSelection(Population, Operators, @RLReward);
+            [XSel, Operator] = XSelection(Population, Operators, @NCReward);
             [~,FrontNo,CrowdDis] = EnvironmentalSelection(Population,Problem.N); 
             run = 1;
             Algorithm.SaveDist(XSel.Probabilities, run);
