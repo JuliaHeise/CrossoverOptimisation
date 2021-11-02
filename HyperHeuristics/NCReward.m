@@ -1,4 +1,4 @@
-function New_Reward = RLReward(Old_Population, New_Population)
+function New_Reward = NCReward(Old_Population, New_Population)
     %% Parameter Settings
     old_objs  = Old_Population.objs;
     new_objs = New_Population.objs;
@@ -20,8 +20,8 @@ function New_Reward = RLReward(Old_Population, New_Population)
     cd_score_old = median(CrowdingDistance(old_objs));
    
     %% Get the bonus and the malus
-    bonus = 1/4 * cd_score_new + 3/4 * size(nd_new, 1)/N1;
-    malus = 1/4 * cd_score_old + 3/4 * size(nd_old,1)/N2;
+    bonus = 1/4 * cd_score_new/(cd_score_new+cd_score_old) + 3/4 * size(nd_new, 1)/N1;
+    malus = 1/4 * cd_score_old/(cd_score_new+cd_score_old) + 3/4 * size(nd_old,1)/N2;
         
     %% Calculate new Reward
     New_Reward = bonus - malus;

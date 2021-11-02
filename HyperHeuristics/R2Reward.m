@@ -11,17 +11,18 @@ function New_Reward = R2Reward(Old_Population, New_Population)
     [N,D] = size(old_objs);
     M = ceil(N*10);
     
+    utopian = min([old_objs; new_objs]);
+    
     %% R2 of both Populations
     Lambda = RandFixedSum(M,D,1,0,1);   
-    R2_new = CalcR2(new_objs, Lambda, size(new_objs, 1), size(new_objs, 2));
-    R2_old = CalcR2(old_objs, Lambda, size(old_objs, 1), size(old_objs, 2));
+    R2_new = CalcR2(new_objs, Lambda, size(new_objs, 1), size(new_objs, 2), utopian);
+    R2_old = CalcR2(old_objs, Lambda, size(old_objs, 1), size(old_objs, 2), utopian);
         
     New_Reward = (R2_old - R2_new)/R2_new;
 end
 
-function R2 = CalcR2(objs, Lambda, N, M)
+function R2 = CalcR2(objs, Lambda, N, M, utopian)
 
-    utopian = min(objs);
     A = repelem(utopian, N, 1);
     
     D = abs(A-objs);

@@ -7,13 +7,6 @@ classdef MyUX < XOPERATOR
         end
         
         function Offspring = Cross(obj, Parentpool, Parameter)
-            %% Parameter setting
-            if nargin > 2
-                lambda = Parameter;
-            else
-                lambda = 2;
-            end
-
             if isa(Parentpool(1),'SOLUTION')
                 Parentpool = Parentpool.decs;
                 restructure = true;
@@ -21,23 +14,31 @@ classdef MyUX < XOPERATOR
                 restructure = false;
             end
             
-            %% Prepare loop
-            [N,D]   = size(Parentpool);
-            RandomizedParents =  zeros(N,D,lambda);
-            Offspring = zeros(N,D);
-
-            for  i=1:lambda
-                MatingPool = randperm(size(Parentpool,1));
-                RandomizedParents(:,:,i) = Parentpool(MatingPool, :);
-            end
+            %% result array
+            [N,D] = size(Parentpool);
+            portion = floor(N/2);
+            Parents = cell(2,1);
+            idx = 1;
+            for i = 1:2
+               Parents{i} = Parentpool(idx:idx+portion-1, :); 
+               idx = idx+portion;
+            end            
+            
+            Offspring = zeros(portion*2,D);
 
             %% Offspring creation by random selection of parent per value
-            p = randi([1,lambda],[N,D]);
-            for j=1:N
-                for k=1:D
-                    Offspring(j,k) = RandomizedParents(j,k,p(j,k));
-                end
+            for i = 1:2:portion*2 
+                mu = rand([portion,D]);
+                o1 = zeros(1,D);
+                o2 = zeros(1,D);
+                o1(mu<=0.5) = Parents{1}(mu<=0.5);
+                o1(mu>0.5) = Parents{2}(mu>0.5);
+                o2(mu<=0.5) = Parents{2}(mu<=0.5);
+                o2(mu>0.5) = Parents{1}(mu>0.5);
+                Offspring(i,:) = o1;
+                Offspring(i+1,:) = o2;
             end
+            
             if(restructure)
                 Offspring = SOLUTION(Offspring,[], repelem(obj.TAG, length(Offspring), 1));
             end

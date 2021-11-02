@@ -3,7 +3,7 @@ close all; clc;
 %% init
 Population = [0.3 0.4; 0.6 0.2; 0.5 0.7];
 
-Operators = {MyLCX()};
+Operators = {MyUX()};
 
 for operator = Operators
     Pop = Population;
@@ -13,33 +13,14 @@ for operator = Operators
     for i=1:500
         Pop = Pop(randperm(length(Pop)),:);
         x = operator{1}.Cross(Pop);
-        scatter(x(:,1), x(:,2), 3, 'r', 'filled');
+        scatter(x(:,1), x(:,2), 10, 'r', 'filled');
     end
-    scatter(Population(:,1), Population(:,2), 'filled', 'b');
+    scatter(Pop(:,1), Pop(:,2), 'filled', 'b');
     hold off
 
-    exportgraphics(f, operator{1}.TAG + '.png','Resolution',300)
+   % exportgraphics(f, operator{1}.TAG + '.png','Resolution',300)
 
 end
-
-Population = [0.3 0.4; 0.6 0.2; 0.5 0.7];
-
-% Operators = {MyDE(), MyUX()};
-% for operator = Operators
-%     Pop = Population;
-%     f = figure('Name', operator{1}.TAG);
-%     axis([0 1 0 1]);
-%     hold on
-%     for i=1:10000
-%         Pop = Pop(randperm(length(Pop)),:);
-%         x = operator{1}.Cross(Pop);
-%         scatter(x(:,1), x(:,2), 8, 'r', 'filled');
-%     end
-%     scatter(Population(:,1), Population(:,2), 'filled', 'b');
-%     hold off
-%     
-%     exportgraphics(f, operator{1}.TAG + '.png','Resolution',300)
-% end
 
 % Operator = MyCMAX();
 % Population = [0.3 0.4; 0.6 0.2; 0.5 0.7];

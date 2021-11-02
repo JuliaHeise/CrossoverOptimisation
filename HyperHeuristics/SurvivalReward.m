@@ -1,7 +1,7 @@
 function New_Reward = SurvivalReward(Offsprings, New_Population)
     old_tags = Offsprings.tags;
     if(size(New_Population, 2) == 0)
-         New_Reward = Current_Reward -1;
+         New_Reward = - 1;
          return;
     end
     new_tag = New_Population(1).tag;
