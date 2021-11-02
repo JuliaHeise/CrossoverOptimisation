@@ -4,23 +4,31 @@ close all; clc;
 Population = [0.3 0.4; 0.6 0.2; 0.5 0.7];
 
 Operators = {MyUX(), MyDE(), MySBX(), MyRSBX(), MyLX(), MyLCX()};
+% Operators = {MySBX(), MyRSBX()};
+
 
 for operator = Operators
     Pop = Population;
     f = figure('Name', operator{1}.TAG + '_centric');
     axis([0 1 0 1]);
     hold on
+    scatter(Population(:,1), Population(:,2), 40, [0.1 0.1 0.1], 'd', 'filled');
 
     Pop = Pop(randperm(length(Pop)),:);
     x = operator{1}.Cross(Pop);
-    scatter(x(:,1), x(:,2), 20, 'r', 'd');
+    scatter(x(:,1), x(:,2), 20, [0.5 0.5 0.7] , 'filled');
+    
+    Pop = Pop(randperm(length(Pop)),:);
+    x = operator{1}.Cross(Pop);
+    scatter(x(:,1), x(:,2), 20, [0.3 0.3 0.5],'x' );
 
-    scatter(Population(:,1), Population(:,2), 'filled', 'b');
     hold off
 
-    exportgraphics(f, operator{1}.TAG + '.png','Resolution',300)
+   % exportgraphics(f, operator{1}.TAG + '.png','Resolution',300)
 
 end
+
+Operators = {MySBX(), MyRSBX(), MyLX(), MyLCX()};
 
 for operator = Operators
     Pop = Population;
@@ -30,9 +38,28 @@ for operator = Operators
     for i=1:500
         Pop = Pop(randperm(length(Pop)),:);
         x = operator{1}.Cross(Pop);
-        scatter(x(:,1), x(:,2), 10, 'r', 'filled');
+        scatter(x(:,1), x(:,2), 3, 'r', 'filled');
     end
-    scatter(Pop(:,1), Pop(:,2), 'filled', 'b');
+    scatter(Pop(:,1), Pop(:,2), 'd', 'filled', 'b');
+    hold off
+
+   % exportgraphics(f, operator{1}.TAG + '.png','Resolution',300)
+
+end
+
+Operators = {MyUX(), MyDE()};
+
+for operator = Operators
+    Pop = Population;
+    f = figure('Name', operator{1}.TAG);
+    axis([0 1 0 1]);
+    hold on
+    for i=1:500
+        Pop = Pop(randperm(length(Pop)),:);
+        x = operator{1}.Cross(Pop);
+        scatter(x(:,1), x(:,2), 20, 'r', 'filled');
+    end
+    scatter(Pop(:,1), Pop(:,2), 'd', 'filled', 'b');
     hold off
 
    % exportgraphics(f, operator{1}.TAG + '.png','Resolution',300)

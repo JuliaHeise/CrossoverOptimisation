@@ -28,8 +28,8 @@ classdef MyLX < XOPERATOR
                 Parent2 = Parentpool(M+1:end,:);
             else
                 M = ceil(N/2);
-                Parent1 = [Parentpool(1:M-1,:); Parentpool(randi(N,1,1),:)];
-                Parent2 = Parentpool(M:end,:);                
+                Parent1 = Parentpool(1:M-1,:);
+                Parent2 = Parentpool(M:end-1,:);                
             end
             
 
@@ -40,7 +40,7 @@ classdef MyLX < XOPERATOR
             beta(u>f) = a - b*(reallog(2 * (1-u(u>f))));
 
             Offspring = [Parent1 + beta' .* (Parent1-Parent2)
-                Parent2 + beta' .* (Parent1-Parent2)];
+                Parent2 - beta' .* (Parent1-Parent2)];
 
             if(restructure)
                 Offspring = SOLUTION(Offspring,[], repelem(obj.TAG, length(Offspring), 1));
