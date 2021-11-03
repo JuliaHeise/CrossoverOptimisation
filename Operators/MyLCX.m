@@ -83,7 +83,7 @@ classdef MyLCX < XOPERATOR
                 for k = 1:rest
                     Offspring(offspringIndex+k-1, :) = ...
                         Offspring(offspringIndex+k-1, :) ...
-                        + weights(1,j+k) * RestParents(i,:);   
+                        + weights(1,j+k) * RestParents(j,:);   
                 end                   
             end
             

@@ -1,26 +1,29 @@
 close all; clc;
 %% Visualize Operator results
+darkGrey =  [0.1 0.1 0.1];
+grey = [0.5 0.5 0.5];
+blueGrey = [0.7 0.7 0.8];
+lightGrey = [0.2 0.2 0.2];
 %% init
 Population = [0.3 0.4; 0.6 0.2; 0.5 0.7];
 
-Operators = {MyUX(), MyDE(), MySBX(), MyRSBX(), MyLX(), MyLCX()};
-% Operators = {MySBX(), MyRSBX()};
-
-
+%Operators = {MyUX(), MyDE(), MySBX(), MyRSBX(), MyLX(), MyLCX()};
+Operators = {MySBX()};
 for operator = Operators
     Pop = Population;
     f = figure('Name', operator{1}.TAG + '_centric');
     axis([0 1 0 1]);
     hold on
-    scatter(Population(:,1), Population(:,2), 40, [0.1 0.1 0.1], 'd', 'filled');
+    scatter(Population(:,1), Population(:,2), 40, lightGrey, 'd', ...
+        'filled', 'MarkerEdgeColor', darkGrey, 'LineWidth',1.5);
 
     Pop = Pop(randperm(length(Pop)),:);
     x = operator{1}.Cross(Pop);
-    scatter(x(:,1), x(:,2), 20, [0.5 0.5 0.7] , 'filled');
+    scatter(x(:,1), x(:,2), 20, blueGrey , 'filled');
     
     Pop = Pop(randperm(length(Pop)),:);
     x = operator{1}.Cross(Pop);
-    scatter(x(:,1), x(:,2), 20, [0.3 0.3 0.5],'x' );
+    scatter(x(:,1), x(:,2), 20, grey, '^', 'filled' );
 
     hold off
 
@@ -29,7 +32,6 @@ for operator = Operators
 end
 
 Operators = {MySBX(), MyRSBX(), MyLX(), MyLCX()};
-
 for operator = Operators
     Pop = Population;
     f = figure('Name', operator{1}.TAG);
@@ -38,9 +40,10 @@ for operator = Operators
     for i=1:500
         Pop = Pop(randperm(length(Pop)),:);
         x = operator{1}.Cross(Pop);
-        scatter(x(:,1), x(:,2), 3, 'r', 'filled');
+        scatter(x(:,1), x(:,2), 5, grey , 'filled');
     end
-    scatter(Pop(:,1), Pop(:,2), 'd', 'filled', 'b');
+    scatter(Population(:,1), Population(:,2), 40, lightGrey, 'd', ...
+        'filled', 'MarkerEdgeColor', darkGrey, 'LineWidth',1.5);
     hold off
 
    % exportgraphics(f, operator{1}.TAG + '.png','Resolution',300)
@@ -57,38 +60,38 @@ for operator = Operators
     for i=1:500
         Pop = Pop(randperm(length(Pop)),:);
         x = operator{1}.Cross(Pop);
-        scatter(x(:,1), x(:,2), 20, 'r', 'filled');
+        scatter(x(:,1), x(:,2), 20, grey , 'filled');
     end
-    scatter(Pop(:,1), Pop(:,2), 'd', 'filled', 'b');
+    scatter(Population(:,1), Population(:,2), 60, lightGrey, 'd', ...
+        'filled', 'MarkerEdgeColor', darkGrey);
     hold off
 
    % exportgraphics(f, operator{1}.TAG + '.png','Resolution',300)
 
 end
 
+Operator = MyCMAX();
 Population = [0.3 0.4; 0.6 0.2; 0.5 0.7];
 
-% Operator = MyCMAX();
-% Population = [0.3 0.4; 0.6 0.2; 0.5 0.7];
-% 
-% c = linspace(1,10,3);
-% Pop = Population;
-% f = figure('Name', Operator.TAG);
-% axis([0 1 0 1]);
-% hold on
-% 
-% [x, m, C] = Operator.Cross_(Population, {1, 500});
-% [y, ~, ~] = Operator.Cross_(Population, {0.25, 500});
+c = linspace(1,10,3);
+Pop = Population;
+f = figure('Name', Operator.TAG);
+axis([0 1 0 1]);
+hold on
+
+[x, m, C] = Operator.Cross_(Population, {1, 500});
+[y, ~, ~] = Operator.Cross_(Population, {0.25, 500});
 
 
-% Plot ellipses, then change their color and other properties
-% h = plotcov(C, m); 
-% scatter(x(:,1), x(:,2), 3, 'r', 'filled');
-% scatter(y(:,1), y(:,2), 3, 's', 'filled');
-% scatter(Population(:,1), Population(:,2), 'filled', 'b');
-% hold off
-% 
-% exportgraphics(f, Operator.TAG + '.png','Resolution',300)
+%Plot ellipses, then change their color and other properties
+h = plotcov(C, m); 
+scatter(x(:,1), x(:,2), 5, blueGrey , 'filled');
+scatter(y(:,1), y(:,2), 5, grey, '^', 'filled' );
+scatter(Population(:,1), Population(:,2), 60, lightGrey, 'd', ...
+    'filled', 'MarkerEdgeColor', darkGrey);
+hold off
+
+%exportgraphics(f, Operator.TAG + '.png','Resolution',300)
 
 
 
