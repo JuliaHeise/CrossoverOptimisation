@@ -41,9 +41,11 @@ classdef MyLCX < XOPERATOR
             for i = 1:lambda
                Parents{i} = Parentpool(idx:idx+portion-1, :); 
                idx = idx+portion;
-            end            
+            end
+            RestParents = Parentpool(idx:end,:);
+            rest = size(RestParents, 1);
             
-            Offspring = zeros(portion*lambda,D);
+            Offspring = zeros(N,D);
             
             %% randomizing area
             b = 0.025;
@@ -54,8 +56,8 @@ classdef MyLCX < XOPERATOR
                 if(randomWeights == true)
                     weights = rand(1, lambda);
                     beta = zeros(1,lambda);
-                         beta(weights<=f) = b*(reallog(2 * weights(weights<=f)));
-                         beta(weights>f) = - b*(reallog(2 * (1-weights(weights>f))));
+                    beta(weights<=f) = b*(reallog(2 * weights(weights<=f)));
+                    beta(weights>f) = - b*(reallog(2 * (1-weights(weights>f))));
                     n = 1./sum(weights, 2);
                     weights = repmat(weights .* n + beta,1, 2);      
                 end
@@ -64,11 +66,28 @@ classdef MyLCX < XOPERATOR
                         Offspring(offspringIndex+k-1, :) = ...
                             Offspring(offspringIndex+k-1, :) ...
                             + weights(1,j+k) * Parents{j}(i,:);   
-                    end
-                    
+                    end                   
                 end
                 offspringIndex = offspringIndex+k;
             end
+            
+            if(randomWeights == true)
+                weights = rand(1, rest);
+                beta = zeros(1,rest);
+                beta(weights<=f) = b*(reallog(2 * weights(weights<=f)));
+                beta(weights>f) = - b*(reallog(2 * (1-weights(weights>f))));
+                n = 1./sum(weights, 2);
+                weights = repmat(weights .* n + beta,1, 2);      
+            end
+            for j = 1:rest                    
+                for k = 1:rest
+                    Offspring(offspringIndex+k-1, :) = ...
+                        Offspring(offspringIndex+k-1, :) ...
+                        + weights(1,j+k) * RestParents(i,:);   
+                end                   
+            end
+            
+            
             
             if(restructure)
                 Offspring = SOLUTION(Offspring,[], repelem(obj.TAG, length(Offspring), 1));
