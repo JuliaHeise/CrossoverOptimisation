@@ -12,6 +12,7 @@ classdef ALGORITHM < handle & matlab.mixin.Heterogeneous
 %   result          <read-only>	populations saved in current execution
 %   metric          <read-only> metric values of current populations
 %   xOpProbs        <read-only> current probabilities of XOperators
+%   tagDist         <read-only> current number of offsprings per operator
 %   runNo           <read-only> number of run
 %
 % ALGORITHM methods:
@@ -41,7 +42,8 @@ classdef ALGORITHM < handle & matlab.mixin.Heterogeneous
     end
     
     properties(SetAccess = protected)
-        xOpProbs;   
+        xOpProbs; 
+        tagDist;
     end
     methods(Access = protected)
         function obj = ALGORITHM(varargin)
@@ -65,6 +67,13 @@ classdef ALGORITHM < handle & matlab.mixin.Heterogeneous
                 obj.xOpProbs = distribution;
             else
                 obj.xOpProbs = [obj.xOpProbs; distribution]; 
+            end
+        end
+        function SaveTags(obj, tags, index)
+            if(index == 1)
+                obj.tagDist = tags';
+            else
+                obj.tagDist = [obj.tagDist; tags']; 
             end
         end
     end
@@ -189,7 +198,8 @@ classdef ALGORITHM < handle & matlab.mixin.Heterogeneous
                     result = Algorithm.result;
                     metric = Algorithm.metric;
                     xOpProbs = Algorithm.xOpProbs;
-                    save([file,num2str(runNo),'.mat'],'result','metric','xOpProbs');
+                    tagDist = Algorithm.tagDist;
+                    save([file,num2str(runNo),'.mat'],'result','metric','xOpProbs','tagDist');
                 end
             end
         end
