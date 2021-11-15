@@ -18,28 +18,22 @@ classdef MyUX < XOPERATOR
             [N,D] = size(Parentpool);
             portion = floor(N/2);
             Parents = cell(2,1);
-            idx = 1;
-            for i = 1:2
-               Parents{i} = Parentpool(idx:idx+portion-1, :); 
-               idx = idx+portion;
-            end            
+            Parents{1} = Parentpool(1:portion, :); 
+            Parents{2} = Parentpool(portion+1:(portion)*2, :);            
             
-            Offspring = zeros(portion*2,D);
 
             %% Offspring creation by random selection of parent per value
-           % for i = 1:2:portion*2 
-                mu = rand([portion,D]);
-                o1 = zeros(portion,D);
-                o2 = zeros(portion,D);
-                o1(mu<=0.5) = Parents{1}(mu<=0.5);
-                o1(mu>0.5) = Parents{2}(mu>0.5);
-                o2(mu<=0.5) = Parents{2}(mu<=0.5);
-                o2(mu>0.5) = Parents{1}(mu>0.5);
-                Offspring = [o1;o2];
-         %   end
+            mu = rand([portion,D]);
+            o1 = zeros(portion,D);
+            o2 = zeros(portion,D);
+            o1(mu<=0.5) = Parents{1}(mu<=0.5);
+            o1(mu>0.5) = Parents{2}(mu>0.5);
+            o2(mu<=0.5) = Parents{2}(mu<=0.5);
+            o2(mu>0.5) = Parents{1}(mu>0.5);
+            Offspring = [o1;o2];
             
             if(restructure)
-                Offspring = SOLUTION(Offspring,[], repelem(obj.TAG, length(Offspring), 1));
+                Offspring = SOLUTION(Offspring,[], repelem(obj.TAG, N, 1));
             end
         end
     end

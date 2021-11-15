@@ -7,8 +7,8 @@ lightGrey = [0.2 0.2 0.2];
 %% init
 Population = [0.3 0.4; 0.6 0.2; 0.5 0.7];
 
-%Operators = {MyUX(), MyDE(), MySBX(), MyRSBX(), MyLX(), MyLCX()};
-Operators = {MySBX()};
+Operators = {MyDE(), MyLCX()};
+%Operators = {MyLX()};
 for operator = Operators
     Pop = Population;
     f = figure('Name', operator{1}.TAG + '_centric');
@@ -31,7 +31,35 @@ for operator = Operators
 
 end
 
-Operators = {MySBX(), MyRSBX(), MyLX(), MyLCX()};
+
+%% init
+Population = [0.3 0.4; 0.6 0.2];
+
+Operators = {MyUX(),MySBX(), MyRSBX(), MyLX()};
+%Operators = {MyLX()};
+for operator = Operators
+    Pop = Population;
+    f = figure('Name', operator{1}.TAG + '_centric');
+    axis([0 1 0 1]);
+    hold on
+    scatter(Population(:,1), Population(:,2), 40, lightGrey, 'd', ...
+        'filled', 'MarkerEdgeColor', darkGrey, 'LineWidth',1.5);
+
+    Pop = Pop(randperm(length(Pop)),:);
+    x = operator{1}.Cross(Pop);
+    scatter(x(:,1), x(:,2), 20, blueGrey , 'filled');
+    
+    Pop = Pop(randperm(length(Pop)),:);
+    x = operator{1}.Cross(Pop);
+    scatter(x(:,1), x(:,2), 20, grey, '^', 'filled' );
+
+    hold off
+
+   % exportgraphics(f, operator{1}.TAG + '.png','Resolution',300)
+
+end
+
+Operators = {};
 for operator = Operators
     Pop = Population;
     f = figure('Name', operator{1}.TAG);

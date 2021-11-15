@@ -22,17 +22,18 @@ classdef MyLX < XOPERATOR
             end
             
             N = size(Parentpool, 1);
+            
             if(mod(N,2) == 0)
                 M = N/2;
-                Parent1 = Parentpool(1:M,:);
-                Parent2 = Parentpool(M+1:end,:);
             else
-                M = ceil(N/2);
-                Parent1 = Parentpool(1:M-1,:);
-                Parent2 = Parentpool(M:end-1,:);                
+                M = floor(N/2);         
             end
             
-
+            Parent1 = Parentpool(1:M,:);
+            Parent2 = Parentpool(M+1:M*2,:);
+            
+            Rest = Parentpool(M*2+1:end,:);
+            
             %% Offspring Generation
             u = rand(M,1);
             f = 1/2;
@@ -41,6 +42,26 @@ classdef MyLX < XOPERATOR
 
             Offspring = [Parent1 + beta' .* (Parent1-Parent2)
                 Parent2 - beta' .* (Parent1-Parent2)];
+            
+             %% Offspring Generation
+            u = rand(1,1);
+            m = rand(1,1);
+            x = randi (N-1,1,1);
+            if(u <=f)
+                beta_rest = a + b*(reallog(2 * u));
+            else
+                beta_rest = a - b*(reallog(2 * (1-u)));
+            end
+            
+            if(m <=f)
+                 Offspring = [Offspring 
+                     Rest + beta_rest' .* (Rest-Parentpool(x,:))];
+
+            else
+                Offspring = [Offspring
+                    Rest - beta' .* (Rest-Parentpool(x,:))];
+            end
+            
 
             if(restructure)
                 Offspring = SOLUTION(Offspring,[], repelem(obj.TAG, length(Offspring), 1));
