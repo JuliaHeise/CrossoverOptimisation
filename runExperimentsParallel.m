@@ -1,4 +1,4 @@
-
+delete(gcp('nocreate'))
 disp("Start of script")
 
 n = feature('numcores')
@@ -17,7 +17,7 @@ packagesInQueue = 0;
 
 for i = 1:numPackages
     pack = packageList(i);
-    f(packagesInQueue+1) = parfeval(thePool,@executeWorkpackage, 1, pack);
+    f(packagesInQueue+1) = parfeval(thePool, @executeWorkpackage, 1, pack);
     packagesInQueue = packagesInQueue + 1;
 end
 
@@ -31,9 +31,9 @@ toc(tStart)
 disp("Ende")
 
 function packageList = createWorkpackages()
-    numberOfRuns = 3;
+    numberOfRuns = 2;
     packageList = [];
-    for alg = ["SBX", "RSBX", "DE", "UX", "LCX3", "LX", "CMAX", "R2XD", "R2XS", "RLXD", "RLXS", "SRXD", "SRXS", "URXD", "URXS"]
+    for alg = ["SBX", "RSBX", "DE", "UX", "LCX3", "LX", "CMAX", "R2XD", "R2XS", "NCRXD", "NCRXS", "SRXD", "SRXS", "URXD", "URXS"]
         for pro = ["RM1", "RM2", "RM3", "RM6", "DTLZ2", "DTLZ4", "DTLZ5", "DTLZ7", "DTLZ8", "DTLZ9", "WFG1", "WFG2", "WFG3", "WFG4", "WFG5", "WFG6", "WFG7", "WFG8", "WFG9"]
             for r = 1:numberOfRuns
                 packageList = [packageList; struct('alg', alg + "NSGAII", 'pro', pro, 'runNo', r)];

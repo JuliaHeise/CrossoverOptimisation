@@ -30,6 +30,7 @@ classdef URXSNSGAII < ALGORITHM
                 MatingPool = TournamentSelection(2,Problem.N,FrontNo,-CrowdDis);
                 Offspring = Operator(Population(MatingPool));
                 Offspring = MyMutation(Offspring);
+                Algorithm.SaveTags(Offspring.tags, run);
                 XSel = XSel.SetOldPopulation(Population);
                 [Population,FrontNo,CrowdDis] = EnvironmentalSelection([Population,Offspring],Problem.N);
                 [XSel, Operator] = XSel.SelectX(Population);

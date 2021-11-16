@@ -59,7 +59,7 @@ classdef MyLX < XOPERATOR
 
             else
                 Offspring = [Offspring
-                    Rest - beta' .* (Rest-Parentpool(x,:))];
+                    Rest - beta_rest' .* (Rest-Parentpool(x,:))];
             end
             
 

@@ -30,6 +30,7 @@ classdef SRXDNSGAII < ALGORITHM
                 MatingPool = TournamentSelection(2,Problem.N,FrontNo,-CrowdDis);
                 Offspring = XDist.ExecX(Population(MatingPool));
                 Offspring = MyMutation(Offspring);
+                Algorithm.SaveTags(Offspring.tags, run);
                 XDist = XDist.SetOldPopulation([Population,Offspring]);
                 [Population,FrontNo,CrowdDis] = EnvironmentalSelection([Population,Offspring],Problem.N);
                 XDist = XDist.CalcDist(Population);

@@ -32,6 +32,23 @@ classdef MyUX < XOPERATOR
             o2(mu>0.5) = Parents{1}(mu>0.5);
             Offspring = [o1;o2];
             
+            if(size(Offspring, 1) == N-1)
+                P1 = Parentpool(end,:);
+                P2 = Parentpool(randi(N-1, 1),:);
+                o = zeros(1,D);
+                u = rand([1,D]);
+                t = rand([1,1]);
+                if(t <= 0.5)
+                    o(u<=0.5) = P1(u<=0.5);
+                    o(u>0.5) = P2(u>0.5);
+                else
+                    o(u<=0.5) = P2(u<=0.5);
+                    o(u>0.5) = P1(u>0.5);
+                end
+                Offspring = [Offspring; o];
+            end
+           
+            
             if(restructure)
                 Offspring = SOLUTION(Offspring,[], repelem(obj.TAG, N, 1));
             end
