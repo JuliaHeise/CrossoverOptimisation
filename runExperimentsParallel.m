@@ -67,7 +67,7 @@ function returnValue = executeWorkpackage(package)
     run = package.runNo;
 
     p = pro();
-    a = alg('runNo',run, 'save', 5);
+    a = alg('runNo',run, 'save', 20);
     a.Solve(p);
 
     returnValue = strcat("Successfully ran ", package.alg, " on problem ", package.pro, " with runNo ", num2str(run));
