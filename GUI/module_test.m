@@ -94,7 +94,7 @@ classdef module_test < handle
             
             % Initialization
             obj.cb_filter([],[],2);
-            obj.app.listA(1).Value = 'SBXNSGAII';
+            obj.app.listA(1).Value = 'NSGAII';
             obj.app.listA(2).Value = 'DTLZ2';
             obj.cb_updateList([],[],1);
             obj.cb_updateList([],[],-1);
