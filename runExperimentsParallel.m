@@ -33,7 +33,7 @@ disp("Ende")
 function packageList = createWorkpackages()
     numberOfRuns = 2;
     packageList = [];
-    for alg = ["SBX", "RSBX", "DE", "UX", "LCX3", "LX", "CMAX", "R2XD", "R2XS", "NCRXD", "NCRXS", "SRXD", "SRXS", "URXD", "URXS"]
+    for alg = ["", "RSBX", "DE", "UX", "LCX3", "LX", "CMAX", "R2XD", "R2XS", "NCRXD", "NCRXS", "SRXD", "SRXS", "URXD", "URXS"]
         for pro = ["RM1", "RM2", "RM3", "RM6", "DTLZ2", "DTLZ4", "DTLZ5", "DTLZ7", "DTLZ8", "DTLZ9", "WFG1", "WFG2", "WFG3", "WFG4", "WFG5", "WFG6", "WFG7", "WFG8", "WFG9"]
             for r = 1:numberOfRuns
                 packageList = [packageList; struct('alg', alg + "NSGAII", 'pro', pro, 'runNo', r)];

@@ -37,8 +37,9 @@ classdef MyCMAX < XOPERATOR
             m = mean(Parentpool);
 
             %% Covariance Matrix Adaption  
-            C = cov(Parentpool);
+            C = cov(Parentpool);            
             Samples = mvnrnd(zeros(1,D), C, N);
+
             Offspring = m + sigma .* Samples;
             
              if(restructure)
