@@ -27,8 +27,8 @@ classdef MySBX < XOPERATOR
             
             Parent1 = Parentpool(1:portion,:);
             Parent2 = Parentpool(portion+1:portion*2,:);
-            o = randi(1,[1 portion*2]);
-            Rest = [Parentpool(portion*2:end,:); Parentpool(o,:)];
+            o = randi(portion*2, rest, 1);
+            Rest = [Parentpool(portion*2+1:end,:); Parentpool(o,:)];
 
             %% Genetic operators for real encoding
             % Simulated binary crossover

@@ -1,9 +1,9 @@
 function Offspring = MyMutation(ToMutate, Parameter)
     %% Parameter setting
     if nargin > 1
-        [~,~,proM,disM] = deal(Parameter{:});
+        [proM,disM] = deal(Parameter{:});
     else
-        [~,~,proM,disM] = deal(1,20,1,20);
+        [proM,disM] = deal(1,20);
     end
     
     Tags = zeros(size(ToMutate,1));
@@ -22,22 +22,19 @@ function Offspring = MyMutation(ToMutate, Parameter)
         low = zeros(1,D);
         up = ones(1,D);
     end
-    
-
-    
+       
     %% Polynomial mutation
     Lower = repmat(low,N,1);
     Upper = repmat(up,N,1);
     Site  = rand(N,D) < proM/D;
-    mu    = rand(N,D) <= 0.5;
-    temp  = Site & mu;
-    
+    mu    = rand(N,D);
+    temp  = Site & mu<=0.5;
     Offspring       = min(max(ToMutate,Lower),Upper);
     Offspring(temp) = Offspring(temp)+(Upper(temp)-Lower(temp)).*((2.*mu(temp)+(1-2.*mu(temp)).*...
                       (1-(Offspring(temp)-Lower(temp))./(Upper(temp)-Lower(temp))).^(disM+1)).^(1/(disM+1))-1);
-    temp = Site & ~mu;
+    temp = Site & mu>0.5; 
     Offspring(temp) = Offspring(temp)+(Upper(temp)-Lower(temp)).*(1-(2.*(1-mu(temp))+2.*(mu(temp)-0.5).*...
-                      (1-(Upper(temp)-Offspring(temp))./(Upper(temp)-Lower(temp))).^(disM+1)).^(1/(disM+1)));             
+                      (1-(Upper(temp)-Offspring(temp))./(Upper(temp)-Lower(temp))).^(disM+1)).^(1/(disM+1)));
     if calObj
         Offspring = SOLUTION(Offspring, [], Tags);
     end
