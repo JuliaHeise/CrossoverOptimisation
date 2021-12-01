@@ -42,7 +42,13 @@ classdef SOLUTION < handle
         tag;        % Tag a solution to identify groups e.g. when using multiple operators
     end
     methods
-        function obj = SOLUTION(PopDec,AddPro,AddTag)
+        function obj = SOLUTION(PopDec,AddPro,AddTag,DontEval)
+            arguments
+                PopDec = [];
+                AddPro = [];
+                AddTag = [];
+                DontEval = false;
+            end
         %SOLUTION - The constructor of SOLUTION.
         %
         %   P = SOLUTION(Dec) creates an array of SOLUTION objects with
@@ -63,18 +69,23 @@ classdef SOLUTION < handle
                 obj(1,size(PopDec,1)) = SOLUTION;
                 Problem = PROBLEM.Current();
                 PopDec  = Problem.CalDec(PopDec);
-                PopObj  = Problem.CalObj(PopDec);
-                PopCon  = Problem.CalCon(PopDec);
-                for i = 1 : length(obj)
-                    obj(i).dec = PopDec(i,:);
-                    obj(i).obj = PopObj(i,:);
-                    obj(i).con = PopCon(i,:);
-                    obj(i).tag = "DEFAULT";
+                if(~DontEval)
+                    PopObj  = Problem.CalObj(PopDec);
+                    PopCon  = Problem.CalCon(PopDec);
+                    for i = 1 : length(obj)
+                        obj(i).dec = PopDec(i,:);
+                        obj(i).obj = PopObj(i,:);
+                        obj(i).con = PopCon(i,:);
+                        obj(i).tag = "DEFAULT";
+                    end
+                    Problem.FE = Problem.FE + length(obj);
                 end
                 if nargin > 1
                     if(~isempty(AddPro))
                         for i = 1 : length(obj)
+                            obj(i).dec = PopDec(i,:);
                             obj(i).add = AddPro(i,:);
+                            obj(i).tag = "DEFAULT";
                         end
                     end
                 end
@@ -83,7 +94,6 @@ classdef SOLUTION < handle
                         obj(i).tag = AddTag(i);
                     end
                 end
-                Problem.FE = Problem.FE + length(obj);
             end
         end
         function value = decs(obj)

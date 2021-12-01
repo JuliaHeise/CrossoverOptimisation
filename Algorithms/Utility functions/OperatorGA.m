@@ -51,15 +51,24 @@ function Offspring = OperatorGA(Parent,Parameter)
     if isa(Parent(1),'SOLUTION')
         calObj = true;
         Parent = Parent.decs;
+        Parent1 = Parent(1:floor(end/2),:);
+        Parent2 = Parent(floor(end/2)+1:floor(end/2)*2,:);
+        [N,D]   = size(Parent1);
+        Problem = PROBLEM.Current();
+        encoding = Problem.encoding;
+        low = Problem.lower;
+        up = Problem.upper;
     else
         calObj = false;
+        Parent1 = Parent(1:floor(end/2),:);
+        Parent2 = Parent(floor(end/2)+1:floor(end/2)*2,:);
+        [N,D]   = size(Parent1);
+        encoding = '';
+        low = zeros(1,D);
+        up = ones(1,D);
     end
-    Parent1 = Parent(1:floor(end/2),:);
-    Parent2 = Parent(floor(end/2)+1:floor(end/2)*2,:);
-    [N,D]   = size(Parent1);
-    Problem = PROBLEM.Current();
-    
-    switch Problem.encoding
+ 
+    switch encoding
         case 'binary'
             %% Genetic operators for binary encoding
             % Uniform crossover
@@ -105,8 +114,8 @@ function Offspring = OperatorGA(Parent,Parameter)
             Offspring = [(Parent1+Parent2)/2+beta.*(Parent1-Parent2)/2
                          (Parent1+Parent2)/2-beta.*(Parent1-Parent2)/2];
             % Polynomial mutation
-            Lower = repmat(Problem.lower,2*N,1);
-            Upper = repmat(Problem.upper,2*N,1);
+            Lower = repmat(low,2*N,1);
+            Upper = repmat(up,2*N,1);
             Site  = rand(2*N,D) < proM/D;
             mu    = rand(2*N,D);
             temp  = Site & mu<=0.5;

@@ -46,20 +46,13 @@ classdef MyLCX < XOPERATOR
             rest = size(RestParents, 1);
             
             Offspring = zeros(N,D);
-            
-            %% randomizing area
-            b = 0.025;
-            f = 0.5;
-            
+                     
             offspringIndex = 1;
             for i = 1:portion
                 if(randomWeights == true)
                     weights = rand(1, lambda);
-                    beta = zeros(1,lambda);
-                    beta(weights<=f) = b*(reallog(2 * weights(weights<=f)));
-                    beta(weights>f) = - b*(reallog(2 * (1-weights(weights>f))));
                     n = 1./sum(weights, 2);
-                    weights = repmat(weights .* n + beta,1, 2);      
+                    weights = repmat(weights .* n,1, 2);      
                 end
                 for j = 1:lambda                    
                     for k = 1:lambda
@@ -73,11 +66,8 @@ classdef MyLCX < XOPERATOR
             
             if(randomWeights == true)
                 weights = rand(1, rest);
-                beta = zeros(1,rest);
-                beta(weights<=f) = b*(reallog(2 * weights(weights<=f)));
-                beta(weights>f) = - b*(reallog(2 * (1-weights(weights>f))));
                 n = 1./sum(weights, 2);
-                weights = repmat(weights .* n + beta,1, 2);      
+                weights = repmat(weights .* n,1, 2);      
             end
             for j = 1:rest                    
                 for k = 1:rest

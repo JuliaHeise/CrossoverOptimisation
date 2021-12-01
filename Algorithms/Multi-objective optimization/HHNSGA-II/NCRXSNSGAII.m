@@ -28,14 +28,14 @@ classdef NCRXSNSGAII < ALGORITHM
             %% Optimization
             while Algorithm.NotTerminated(Population)
                 MatingPool = TournamentSelection(2,Problem.N,FrontNo,-CrowdDis);
-                Offspring = Operator(Population(MatingPool));
+                Offspring = Operator(Population(MatingPool).decs);
                 Offspring = MyMutation(Offspring);
                 Algorithm.SaveTags(Offspring.tags, run);
                 XSel = XSel.SetOldPopulation(Population);
                 [Population,FrontNo,CrowdDis] = EnvironmentalSelection([Population,Offspring],Problem.N);
-                [XSel, Operator] = XSel.SelectX(Population); 
-                Algorithm.SaveDist(XSel.Rewards, run);
+                [XSel, Operator] = XSel.SelectX(Population);
                 run = run + 1;
+                Algorithm.SaveDist(XSel.Probabilities, run);
             end
         end
     end

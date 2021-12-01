@@ -18,10 +18,22 @@ function New_Reward = NCReward(Old_Population, New_Population)
     % Maybe chose annother measurement as the median of CD might not be meaningful enough 
     cd_score_new = median(CrowdingDistance(new_objs));
     cd_score_old = median(CrowdingDistance(old_objs));
+    
+    if(cd_score_new == inf)
+        cd_bonus = 1;
+    else
+        cd_bonus = cd_score_new/(cd_score_new+cd_score_old);
+    end
+    
+    if(cd_score_old == inf)
+        cd_malus = 1;
+    else
+        cd_malus = cd_score_old/(cd_score_new+cd_score_old);
+    end
    
     %% Get the bonus and the malus
-    bonus = 1/4 * cd_score_new/(cd_score_new+cd_score_old) + 3/4 * size(nd_new, 1)/N1;
-    malus = 1/4 * cd_score_old/(cd_score_new+cd_score_old) + 3/4 * size(nd_old,1)/N2;
+    bonus = 1/4 * cd_bonus + 3/4 * size(nd_new, 1)/N1;
+    malus = 1/4 * cd_malus + 3/4 * size(nd_old,1)/N2;
         
     %% Calculate new Reward
     New_Reward = bonus - malus;

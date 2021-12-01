@@ -132,11 +132,23 @@ classdef ALGORITHM < handle & matlab.mixin.Heterogeneous
         %       end
         
             obj.metric.runtime = obj.metric.runtime + toc;
-            if obj.save <= 0; num = 10; else; num = obj.save; end
-            index = max(1,min(min(num,size(obj.result,1)+1),ceil(num*obj.pro.FE/obj.pro.maxFE)));
+            if obj.save <= 0
+                num = 10; 
+            else
+                num = obj.save; 
+            end
+            index = max(1, min( ...
+                    min(num, size(obj.result,1)+1), ...
+                    ceil(num*obj.pro.FE/obj.pro.maxFE)));
+            
             obj.result(index,:) = {obj.pro.FE,Population};
+    %        obj.metric.HV(index, 1) = HV(obj.result{end}, obj.pro.optimum);
+      %      obj.metric.IGD(index, 1) = IGD(obj.result{end}, obj.pro.optimum);
+
             drawnow(); 
+            
             obj.outputFcn(obj,obj.pro);
+            
             nofinish = obj.pro.FE < obj.pro.maxFE;
             assert(nofinish,'PlatEMO:Termination',''); tic;
         end

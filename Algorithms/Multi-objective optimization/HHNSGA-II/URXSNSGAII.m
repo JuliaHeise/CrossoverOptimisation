@@ -23,7 +23,7 @@ classdef URXSNSGAII < ALGORITHM
             [XSel, Operator]  = XSelection(Population, Operators, @UniformReward);
             [~,FrontNo,CrowdDis] = EnvironmentalSelection(Population,Problem.N);
             run = 1;
-            Algorithm.SaveDist(XSel.Rewards, run);
+            Algorithm.SaveDist(XSel.Probabilities, run);
 
             %% Optimization
             while Algorithm.NotTerminated(Population)
@@ -34,8 +34,8 @@ classdef URXSNSGAII < ALGORITHM
                 XSel = XSel.SetOldPopulation(Population);
                 [Population,FrontNo,CrowdDis] = EnvironmentalSelection([Population,Offspring],Problem.N);
                 [XSel, Operator] = XSel.SelectX(Population);
-                Algorithm.SaveDist(XSel.Probabilities, run); 
                 run = run + 1;
+                Algorithm.SaveDist(XSel.Probabilities, run);
             end
         end
     end

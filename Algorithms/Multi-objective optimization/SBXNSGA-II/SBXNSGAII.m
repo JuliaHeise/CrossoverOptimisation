@@ -1,4 +1,4 @@
-classdef R2XDNSGAII < ALGORITHM
+classdef SBXNSGAII < ALGORITHM
 % <multi> <real/binary/permutation> <constrained/none>
 % Nondominated sorting genetic algorithm II
 
@@ -19,25 +19,20 @@ classdef R2XDNSGAII < ALGORITHM
         function main(Algorithm,Problem)
             %% Generate random population
             Population = Problem.Initialization();
-            Operators = {MyCMAX(), MyDE(), MyLCX(), MyLX(), MyRSBX(), MySBX(), MyUX()};
-            XDist = XDistribution(Population, Operators, @R2Reward);
             [~,FrontNo,CrowdDis] = EnvironmentalSelection(Population,Problem.N);
-            run = 1;
-            Algorithm.SaveDist(XDist.Distribution, run);
+            Crossover = MySBX();
 
             %% Optimization
             while Algorithm.NotTerminated(Population)
                 MatingPool = TournamentSelection(2,Problem.N,FrontNo,-CrowdDis);
-                Offspring = XDist.ExecX(Population(MatingPool));
+             
+                Offspring = Crossover.Cross(Population(MatingPool)); 
                 Offspring = MyMutation(Offspring);
-                Algorithm.SaveTags(Offspring.tags, run);
-                XDist = XDist.SetOldPopulation(Population);
+                %%TODO DOPPELTE FEs!!! Solutionbildung an anderer
+                %%STELLE!!!!
+                
                 [Population,FrontNo,CrowdDis] = EnvironmentalSelection([Population,Offspring],Problem.N);
-                XDist = XDist.CalcDist(Population);
-                run = run + 1;
-                Algorithm.SaveDist(XDist.Distribution, run);
             end
         end
-
     end
 end

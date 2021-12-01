@@ -6,9 +6,9 @@ blueGrey = [0.7 0.7 0.8];
 lightGrey = [0.2 0.2 0.2];
 %% init
 Population = [0.3 0.4; 0.6 0.2; 0.5 0.7];
+Operators = {MyDE(), MyLCX(), MyUX(),MySBX(), MyRSBX(), MyLX()};
 
-Operators = {MyDE(), MyLCX()};
-%Operators = {MyLX()};
+%% Centric
 for operator = Operators
     Pop = Population;
     f = figure('Name', operator{1}.TAG + '_centric');
@@ -27,39 +27,11 @@ for operator = Operators
 
     hold off
 
-   % exportgraphics(f, operator{1}.TAG + '.png','Resolution',300)
+    exportgraphics(f, 'Images/Operators/' + operator{1}.TAG  + '_centric'+ '.png','Resolution',300);
 
 end
 
-
-%% init
-Population = [0.3 0.4; 0.6 0.2];
-
-Operators = {MyUX(),MySBX(), MyRSBX(), MyLX()};
-%Operators = {MyLX()};
-for operator = Operators
-    Pop = Population;
-    f = figure('Name', operator{1}.TAG + '_centric');
-    axis([0 1 0 1]);
-    hold on
-    scatter(Population(:,1), Population(:,2), 40, lightGrey, 'd', ...
-        'filled', 'MarkerEdgeColor', darkGrey, 'LineWidth',1.5);
-
-    Pop = Pop(randperm(length(Pop)),:);
-    x = operator{1}.Cross(Pop);
-    scatter(x(:,1), x(:,2), 20, blueGrey , 'filled');
-    
-    Pop = Pop(randperm(length(Pop)),:);
-    x = operator{1}.Cross(Pop);
-    scatter(x(:,1), x(:,2), 20, grey, '^', 'filled' );
-
-    hold off
-
-   % exportgraphics(f, operator{1}.TAG + '.png','Resolution',300)
-
-end
-
-Operators = {};
+%% 500 times
 for operator = Operators
     Pop = Population;
     f = figure('Name', operator{1}.TAG);
@@ -74,11 +46,23 @@ for operator = Operators
         'filled', 'MarkerEdgeColor', darkGrey, 'LineWidth',1.5);
     hold off
 
-   % exportgraphics(f, operator{1}.TAG + '.png','Resolution',300)
+    exportgraphics(f,'Images/Operators/' +  operator{1}.TAG + '.png','Resolution',300);
 
 end
 
-Operators = {MyUX(), MyDE()};
+%% with mutation
+Pop = Population;
+f = figure('Name', 'Original');
+axis([0 1 0 1]);
+hold on
+for i=1:500
+    Pop = Pop(randperm(length(Pop)),:);
+    x = OperatorGA(Pop);
+    scatter(x(:,1), x(:,2), 5, grey , 'filled');
+end
+scatter(Population(:,1), Population(:,2), 40, lightGrey, 'd', ...
+    'filled', 'MarkerEdgeColor', darkGrey, 'LineWidth',1.5);
+hold off
 
 for operator = Operators
     Pop = Population;
@@ -88,16 +72,18 @@ for operator = Operators
     for i=1:500
         Pop = Pop(randperm(length(Pop)),:);
         x = operator{1}.Cross(Pop);
-        scatter(x(:,1), x(:,2), 20, grey , 'filled');
+        x = MyMutation(x);
+        scatter(x(:,1), x(:,2), 5, grey , 'filled');
     end
-    scatter(Population(:,1), Population(:,2), 60, lightGrey, 'd', ...
-        'filled', 'MarkerEdgeColor', darkGrey);
+    scatter(Population(:,1), Population(:,2), 40, lightGrey, 'd', ...
+        'filled', 'MarkerEdgeColor', darkGrey, 'LineWidth',1.5);
     hold off
 
-   % exportgraphics(f, operator{1}.TAG + '.png','Resolution',300)
+    exportgraphics(f,'Images/Operators/' +  operator{1}.TAG + '_mutated.png','Resolution',300);
 
 end
 
+%% CMAX
 Operator = MyCMAX();
 Population = [0.3 0.4; 0.6 0.2; 0.5 0.7];
 
@@ -119,7 +105,7 @@ scatter(Population(:,1), Population(:,2), 60, lightGrey, 'd', ...
     'filled', 'MarkerEdgeColor', darkGrey);
 hold off
 
-%exportgraphics(f, Operator.TAG + '.png','Resolution',300)
+exportgraphics(f, 'Images/Operators/' +Operator.TAG + '.png','Resolution',300);
 
 
 
