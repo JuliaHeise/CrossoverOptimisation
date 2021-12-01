@@ -64,7 +64,7 @@ classdef MyLX < XOPERATOR
             
 
             if(restructure)
-                Offspring = SOLUTION(Offspring,[], repelem(obj.TAG, length(Offspring), 1));
+                Offspring = SOLUTION(Offspring,[], repelem(obj.TAG, length(Offspring), 1), true);
             end
         end
     end

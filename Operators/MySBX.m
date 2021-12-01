@@ -63,7 +63,7 @@ classdef MySBX < XOPERATOR
                 end
              end
              if(restructure)
-                Offspring = SOLUTION(Offspring,[], repelem(obj.TAG, N, 1));   
+                Offspring = SOLUTION(Offspring,[], repelem(obj.TAG, N, 1), true);   
              end
         end
     end

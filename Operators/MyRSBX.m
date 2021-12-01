@@ -77,7 +77,7 @@ classdef MyRSBX
             Offspring = Offspring/V + m;
 
             if(restructure)
-                Offspring = SOLUTION(Offspring,[], repelem(obj.TAG, N, 1));
+                Offspring = SOLUTION(Offspring,[], repelem(obj.TAG, N, 1), true);
             end
         end
     end

@@ -39,7 +39,7 @@ classdef MyDE < XOPERATOR
             Offspring = Offspring + F*(Parent2-Parent3);   
 
             if(restructure)
-                 Offspring = SOLUTION(Offspring,[], repelem(obj.TAG, length(Offspring), 1));
+                 Offspring = SOLUTION(Offspring,[], repelem(obj.TAG, length(Offspring), 1), true);
             end
         end
     end

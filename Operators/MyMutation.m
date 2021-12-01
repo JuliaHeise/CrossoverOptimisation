@@ -11,15 +11,14 @@ function Offspring = MyMutation(Offspring, Parameter)
     if isa(Offspring(1),'SOLUTION')
         calObj = true;
         Tags = Offspring.tags;
-        population = Offspring.decs;
+        Offspring = Offspring.decs;
         Problem = PROBLEM.Current();
         low = Problem.lower;
         up = Problem.upper;
-        [N,D] = size(population);
+        [N,D] = size(Offspring);
     else
         calObj = false;
-        population = Offspring;
-        [N,D] = size(population);
+        [N,D] = size(Offspring);
         low = zeros(1,D);
         up = ones(1,D);
     end
@@ -30,7 +29,7 @@ function Offspring = MyMutation(Offspring, Parameter)
     Site  = rand(N,D) < proM/D;
     mu    = rand(N,D);
     temp  = Site & mu<=0.5;
-    Offspring       = min(max(ToMutate,Lower),Upper);
+    Offspring       = min(max(Offspring,Lower),Upper);
     Offspring(temp) = Offspring(temp)+(Upper(temp)-Lower(temp)).*((2.*mu(temp)+(1-2.*mu(temp)).*...
                       (1-(Offspring(temp)-Lower(temp))./(Upper(temp)-Lower(temp))).^(disM+1)).^(1/(disM+1))-1);
     temp = Site & mu>0.5; 
