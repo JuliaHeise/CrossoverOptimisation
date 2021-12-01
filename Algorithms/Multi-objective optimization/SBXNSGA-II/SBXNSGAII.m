@@ -28,8 +28,6 @@ classdef SBXNSGAII < ALGORITHM
              
                 Offspring = Crossover.Cross(Population(MatingPool)); 
                 Offspring = MyMutation(Offspring);
-                %%TODO DOPPELTE FEs!!! Solutionbildung an anderer
-                %%STELLE!!!!
                 
                 [Population,FrontNo,CrowdDis] = EnvironmentalSelection([Population,Offspring],Problem.N);
             end

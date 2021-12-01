@@ -30,16 +30,13 @@ function Offspring = MyMutation(Offspring, Parameter)
     Site  = rand(N,D) < proM/D;
     mu    = rand(N,D);
     temp  = Site & mu<=0.5;
-               population       = min(max(population,Lower),Upper);
-            population(temp) = population(temp)+(Upper(temp)-Lower(temp)).*((2.*mu(temp)+(1-2.*mu(temp)).*...
-                              (1-(population(temp)-Lower(temp))./(Upper(temp)-Lower(temp))).^(disM+1)).^(1/(disM+1))-1);
-            temp = Site & mu>0.5; 
-            population(temp) = population(temp)+(Upper(temp)-Lower(temp)).*(1-(2.*(1-mu(temp))+2.*(mu(temp)-0.5).*...
-                              (1-(Upper(temp)-population(temp))./(Upper(temp)-Lower(temp))).^(disM+1)).^(1/(disM+1)));
-
-    if(calObj)
-        Offspring.decs = population;
-    else
-        Offspring = population;
+    Offspring       = min(max(ToMutate,Lower),Upper);
+    Offspring(temp) = Offspring(temp)+(Upper(temp)-Lower(temp)).*((2.*mu(temp)+(1-2.*mu(temp)).*...
+                      (1-(Offspring(temp)-Lower(temp))./(Upper(temp)-Lower(temp))).^(disM+1)).^(1/(disM+1))-1);
+    temp = Site & mu>0.5; 
+    Offspring(temp) = Offspring(temp)+(Upper(temp)-Lower(temp)).*(1-(2.*(1-mu(temp))+2.*(mu(temp)-0.5).*...
+                      (1-(Upper(temp)-Offspring(temp))./(Upper(temp)-Lower(temp))).^(disM+1)).^(1/(disM+1)));
+    if calObj
+        Offspring = SOLUTION(Offspring, [], Tags);
     end
 end

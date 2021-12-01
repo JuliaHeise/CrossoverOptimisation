@@ -142,8 +142,8 @@ classdef ALGORITHM < handle & matlab.mixin.Heterogeneous
                     ceil(num*obj.pro.FE/obj.pro.maxFE)));
             
             obj.result(index,:) = {obj.pro.FE,Population};
-    %        obj.metric.HV(index, 1) = HV(obj.result{end}, obj.pro.optimum);
-      %      obj.metric.IGD(index, 1) = IGD(obj.result{end}, obj.pro.optimum);
+            obj.metric.HV(index, 1) = HV(obj.result{end}, obj.pro.optimum);
+            obj.metric.IGD(index, 1) = IGD(obj.result{end}, obj.pro.optimum);
 
             drawnow(); 
             

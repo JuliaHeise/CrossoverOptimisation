@@ -64,6 +64,7 @@ scatter(Population(:,1), Population(:,2), 40, lightGrey, 'd', ...
     'filled', 'MarkerEdgeColor', darkGrey, 'LineWidth',1.5);
 hold off
 
+
 for operator = Operators
     Pop = Population;
     f = figure('Name', operator{1}.TAG);
