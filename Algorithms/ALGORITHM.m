@@ -212,7 +212,7 @@ classdef ALGORITHM < handle & matlab.mixin.Heterogeneous
                     metric = Algorithm.metric;
                     xOpProbs = Algorithm.xOpProbs;
                     tagDist = Algorithm.tagDist;
-                    save([file,num2str(runNo),'.mat'],'result','metric','xOpProbs','tagDist');
+                    save([file,num2str(runNo),'.mat'],'-v7','result','metric','xOpProbs','tagDist');
                 end
             end
         end
