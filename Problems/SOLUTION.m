@@ -72,20 +72,21 @@ classdef SOLUTION < handle
                 if(~DontEval)
                     PopObj  = Problem.CalObj(PopDec);
                     PopCon  = Problem.CalCon(PopDec);
-                    for i = 1 : length(obj)
-                        obj(i).dec = PopDec(i,:);
+                    Problem.FE = Problem.FE + length(obj);
+                end
+                for i = 1 : length(obj)
+                    obj(i).dec = PopDec(i,:);
+                    obj(i).tag = "DEFAULT";
+                    if(~DontEval)
                         obj(i).obj = PopObj(i,:);
                         obj(i).con = PopCon(i,:);
-                        obj(i).tag = "DEFAULT";
                     end
-                    Problem.FE = Problem.FE + length(obj);
                 end
                 if nargin > 1
                     if(~isempty(AddPro))
                         for i = 1 : length(obj)
-                            obj(i).dec = PopDec(i,:);
                             obj(i).add = AddPro(i,:);
-                            obj(i).tag = "DEFAULT";
+
                         end
                     end
                 end
