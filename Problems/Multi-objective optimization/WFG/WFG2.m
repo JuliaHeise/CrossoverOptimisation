@@ -24,6 +24,12 @@ classdef WFG2 < PROBLEM
         function Setting(obj)
             if isempty(obj.M); obj.M = 3; end
             if isempty(obj.D); obj.D = obj.M + 9; end
+            
+                        
+            if ~isempty(obj.MMulti); obj.M = obj.M*obj.MMulti; end
+            if ~isempty(obj.DMulti); obj.D = obj.D*obj.DMulti; end
+            
+            
             obj.K = obj.ParameterSet(obj.M-1);
             obj.D        = ceil((obj.D-obj.K)/2)*2 + obj.K;
             obj.lower    = zeros(1,obj.D);

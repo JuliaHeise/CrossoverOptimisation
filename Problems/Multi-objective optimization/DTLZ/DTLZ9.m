@@ -20,6 +20,10 @@ classdef DTLZ9 < PROBLEM
         function Setting(obj)
             if isempty(obj.M); obj.M = 2; end
             if isempty(obj.D); obj.D = 10*obj.M; end
+                        
+            if ~isempty(obj.MMulti); obj.M = obj.M*obj.MMulti; end
+            if ~isempty(obj.DMulti); obj.D = obj.D*obj.DMulti; end
+            
             obj.D        = ceil(obj.D/obj.M)*obj.M;
             obj.lower    = zeros(1,obj.D);
             obj.upper    = ones(1,obj.D);

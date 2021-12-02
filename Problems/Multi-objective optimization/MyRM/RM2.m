@@ -20,6 +20,9 @@ classdef RM2 < PROBLEM
         function Setting(obj)
             obj.M = 2;
             if isempty(obj.D); obj.D = 30; end
+                        
+            if ~isempty(obj.DMulti); obj.D = obj.D*obj.DMulti; end
+            
             obj.lower    = zeros(1,obj.D);
             obj.upper    = ones(1,obj.D);
             obj.encoding = 'real';

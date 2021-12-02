@@ -46,7 +46,9 @@ classdef PROBLEM < handle & matlab.mixin.Heterogeneous
     end
     properties(SetAccess = protected)
         M;                             	% Number of objectives
+        MMulti;                         % if M Scalable, muliplicate M with MMulti
         D;                             	% Number of decision variables
+        DMulti;                         % Multiplicate default D with DMulti
         maxFE    = 10000;              	% Maximum number of function evaluations
         encoding = 'real';            	% Encoding scheme of decision variables
         lower    = 0;                 	% Lower bound of decision variables
@@ -77,7 +79,7 @@ classdef PROBLEM < handle & matlab.mixin.Heterogeneous
         %       Problem = DTLZ2('M',5,'D',10)
 
             isStr = find(cellfun(@ischar,varargin(1:end-1))&~cellfun(@isempty,varargin(2:end)));
-            for i = isStr(ismember(varargin(isStr),{'N','M','D','maxFE','parameter'}))
+            for i = isStr(ismember(varargin(isStr),{'N','M', 'MMulti','D','DMulti','maxFE','parameter'}))
                 obj.(varargin{i}) = varargin{i+1};
             end
             obj.Setting();

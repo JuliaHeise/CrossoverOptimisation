@@ -38,6 +38,7 @@ classdef ALGORITHM < handle & matlab.mixin.Heterogeneous
         pro;                            % problem solved in current execution
         result;                         % populations saved in current execution
         metric;                         % metric values of current populations  
+        savePath;
         runNo;
     end
     
@@ -58,7 +59,7 @@ classdef ALGORITHM < handle & matlab.mixin.Heterogeneous
         %        Algorithm = MOEAD('parameter',4,'save',1)
 
             isStr = find(cellfun(@ischar,varargin(1:end-1))&~cellfun(@isempty,varargin(2:end)));
-            for i = isStr(ismember(varargin(isStr),{'parameter','save','outputFcn', 'runNo'}))
+            for i = isStr(ismember(varargin(isStr),{'parameter','save','outputFcn', 'runNo', 'savePath'}))
                 obj.(varargin{i}) = varargin{i+1};
             end
         end
@@ -147,7 +148,7 @@ classdef ALGORITHM < handle & matlab.mixin.Heterogeneous
 
             drawnow(); 
             
-            obj.outputFcn(obj,obj.pro);
+            obj.outputFcn(obj,obj.pro, obj.savePath);
             
             nofinish = obj.pro.FE < obj.pro.maxFE;
             assert(nofinish,'PlatEMO:Termination',''); tic;
@@ -169,7 +170,7 @@ classdef ALGORITHM < handle & matlab.mixin.Heterogeneous
         end
     end
     methods(Static, Sealed)
-        function Output(Algorithm,Problem)
+        function Output(Algorithm,Problem,savePath)
         % The default output function of ALGORITHM.
             % clc; fprintf('%s on %d-objective %d-variable %s (%6.2f%%), %.2fs passed...\n',class(Algorithm),Problem.M,Problem.D,class(Problem),Problem.FE/Problem.maxFE*100,Algorithm.metric.runtime);
             if Problem.FE >= Problem.maxFE
@@ -199,7 +200,7 @@ classdef ALGORITHM < handle & matlab.mixin.Heterogeneous
                         top.Children(2).Callback{1}(top.Children(2),[],Algorithm);
                     end
                 elseif Algorithm.save > 0
-                    folder = fullfile('Data',class(Algorithm));
+                    folder = fullfile('Data',savePath,class(Algorithm));
                     [~,~]  = mkdir(folder);
                     file   = fullfile(folder,sprintf('%s_%s_M%d_D%d_',class(Algorithm),class(Problem),Problem.M,Problem.D));
 %                     runNo  = 1;

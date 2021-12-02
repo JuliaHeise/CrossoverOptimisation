@@ -19,7 +19,11 @@ classdef DTLZ2 < PROBLEM
         %% Default settings of the problem
         function Setting(obj)
             if isempty(obj.M); obj.M = 3; end
-            if isempty(obj.D); obj.D = obj.M+9; end
+            if isempty(obj.D); obj.D = obj.M+9; end     
+            
+            if ~isempty(obj.MMulti); obj.M = obj.M*obj.MMulti; end
+            if ~isempty(obj.DMulti); obj.D = obj.D*obj.DMulti; end
+            
             obj.lower    = zeros(1,obj.D);
             obj.upper    = ones(1,obj.D);
             obj.encoding = 'real';

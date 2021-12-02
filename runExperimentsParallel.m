@@ -31,12 +31,36 @@ toc(tStart)
 disp("Ende")
 
 function packageList = createWorkpackages()
-    numberOfRuns = 2;
+    numberOfRuns = 31;
     packageList = [];
     for alg = ["", "SBX", "RSBX", "DE", "UX", "LCX3", "LX", "CMAX", "R2XD", "R2XS", "NCRXD", "NCRXS", "SRXD", "SRXS", "URXD", "URXS"]
         for pro = ["RM1", "RM2", "RM3", "RM6", "DTLZ2", "DTLZ4", "DTLZ5", "DTLZ7", "DTLZ8", "DTLZ9", "WFG1", "WFG2", "WFG3", "WFG4", "WFG5", "WFG6", "WFG7", "WFG8", "WFG9"]
             for r = 1:numberOfRuns
-                packageList = [packageList; struct('alg', alg + "NSGAII", 'pro', pro, 'runNo', r)];
+                packageList = [packageList; struct('alg', alg + "NSGAII", 'pro', pro, 'runNo', r, 'MMulti', 1, 'DMulti', 1, 'MaxFE', 10000, 'savePath', 'std'))];
+            end
+        end
+    end
+    
+    for alg = ["", "SBX", "RSBX", "DE", "UX", "LCX3", "LX", "CMAX", "R2XD", "R2XS", "NCRXD", "NCRXS", "SRXD", "SRXS", "URXD", "URXS"]
+        for pro = ["RM1", "RM2", "RM3", "RM6", "DTLZ2", "DTLZ4", "DTLZ5", "DTLZ7", "DTLZ8", "DTLZ9", "WFG1", "WFG2", "WFG3", "WFG4", "WFG5", "WFG6", "WFG7", "WFG8", "WFG9"]
+            for r = 1:numberOfRuns
+                packageList = [packageList; struct('alg', alg + "NSGAII", 'pro', pro, 'runNo', r, 'MMulti', 1, 'DMulti', 1, 'MaxFE', 3000, 'savePath', 'short'))];
+            end
+        end
+    end
+    
+    for alg = ["", "SBX", "RSBX", "DE", "UX", "LCX3", "LX", "CMAX", "R2XD", "R2XS", "NCRXD", "NCRXS", "SRXD", "SRXS", "URXD", "URXS"]
+        for pro = ["RM1", "RM2", "RM3", "RM6", "DTLZ2", "DTLZ4", "DTLZ5", "DTLZ7", "DTLZ8", "DTLZ9", "WFG1", "WFG2", "WFG3", "WFG4", "WFG5", "WFG6", "WFG7", "WFG8", "WFG9"]
+            for r = 1:numberOfRuns
+                packageList = [packageList; struct('alg', alg + "NSGAII", 'pro', pro, 'runNo', r, 'MMulti', 1, 'DMulti', 2, 'MaxFE', 10000, 'savePath', 'harder'))];
+            end
+        end
+    end
+    
+    for alg = ["", "SBX", "RSBX", "DE", "UX", "LCX3", "LX", "CMAX", "R2XD", "R2XS", "NCRXD", "NCRXS", "SRXD", "SRXS", "URXD", "URXS"]
+        for pro = ["RM1", "RM2", "RM3", "RM6", "DTLZ2", "DTLZ4", "DTLZ5", "DTLZ7", "DTLZ8", "DTLZ9", "WFG1", "WFG2", "WFG3", "WFG4", "WFG5", "WFG6", "WFG7", "WFG8", "WFG9"]
+            for r = 1:numberOfRuns
+                packageList = [packageList; struct('alg', alg + "NSGAII", 'pro', pro, 'runNo', r, 'MMulti', 2, 'DMulti', 2, 'MaxFE', 10000, 'savePath', 'hardest')];
             end
         end
     end
@@ -65,9 +89,10 @@ function returnValue = executeWorkpackage(package)
     alg = str2func(package.alg);
     pro = str2func(package.pro);
     run = package.runNo;
+    savePath = package.savePath;
 
-    p = pro();
-    a = alg('runNo',run, 'save', 20);
+    p = pro('DMulti', package.DMulti, 'MMulti', package.MMulti, 'maxFE', package.MaxFE);
+    a = alg('runNo',run, 'savePath', savePath, 'save', 20);
     a.Solve(p);
 
     returnValue = strcat("Successfully ran ", package.alg, " on problem ", package.pro, " with runNo ", num2str(run));
