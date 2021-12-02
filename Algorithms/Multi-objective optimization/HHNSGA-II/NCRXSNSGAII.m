@@ -28,7 +28,7 @@ classdef NCRXSNSGAII < ALGORITHM
             %% Optimization
             while Algorithm.NotTerminated(Population)
                 MatingPool = TournamentSelection(2,Problem.N,FrontNo,-CrowdDis);
-                Offspring = Operator(Population(MatingPool).decs);
+                Offspring = Operator(Population(MatingPool));
                 Offspring = MyMutation(Offspring);
                 Algorithm.SaveTags(Offspring.tags, run);
                 XSel = XSel.SetOldPopulation(Population);
