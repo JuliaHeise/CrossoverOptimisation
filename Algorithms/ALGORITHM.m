@@ -42,9 +42,9 @@ classdef ALGORITHM < handle & matlab.mixin.Heterogeneous
         runNo;
     end
     
-    properties(SetAccess = protected)
-        xOpProbs; 
-        tagDist;
+    properties(SetAccess = public)
+        xOpProbs = {}; 
+        tagDist = {};
     end
     methods(Access = protected)
         function obj = ALGORITHM(varargin)
@@ -148,7 +148,7 @@ classdef ALGORITHM < handle & matlab.mixin.Heterogeneous
 
             drawnow(); 
             
-            obj.outputFcn(obj,obj.pro, obj.savePath);
+            obj.outputFcn(obj, obj.pro, obj.savePath);
             
             nofinish = obj.pro.FE < obj.pro.maxFE;
             assert(nofinish,'PlatEMO:Termination',''); tic;

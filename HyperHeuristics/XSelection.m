@@ -47,18 +47,6 @@ classdef XSelection
             
             obj.Exploration_Rewards(obj.Selection) = ...
                 max([obj.MIN_REWARD new_reward]);
-
-            if(obj.Runs <= obj.Num_Operators * obj.MIN_EXPLORE_RUN_PER_OP)
-                %% Exploration
-                % select the next Operator
-                obj.Selection = mod(obj.Runs, obj.Num_Operators) + 1;
-                obj.Num_Selection(obj.Selection) ...
-                    = obj.Num_Selection(obj.Selection) + 1;                       
-            else
-                %% Exploitation
-                % Use new Reward Array with Roulette Wheel 
-                obj = RouletteWheelSelection(obj);
-            end
             
             %% Update Rewards after Exploration and after every few runs
             if(obj.Runs == obj.Num_Operators * obj.MIN_EXPLORE_RUN_PER_OP...
@@ -75,7 +63,19 @@ classdef XSelection
                 else
                     obj.Probabilities = obj.Rewards./sum(obj.Rewards);
                 end
-            end          
+            end        
+            
+            if(obj.Runs <= obj.Num_Operators * obj.MIN_EXPLORE_RUN_PER_OP)
+                %% Exploration
+                % select the next Operator
+                obj.Selection = mod(obj.Runs, obj.Num_Operators) + 1;
+                obj.Num_Selection(obj.Selection) ...
+                    = obj.Num_Selection(obj.Selection) + 1;                       
+            else
+                %% Exploitation
+                % Use new Reward Array with Roulette Wheel 
+                obj = RouletteWheelSelection(obj);
+            end
                        
             % Use Selection to return the current Operator Handle
             x = obj.Operator_Objects{obj.Selection};

@@ -19,7 +19,7 @@ classdef RM3 < PROBLEM
         %% Default settings of the problem
         function Setting(obj)
             obj.M = 2;
-            if isempty(obj.D); obj.D = 30; end
+            if isempty(obj.D); obj.D = 10; end
                                    
             if ~isempty(obj.DMulti); obj.D = obj.D*obj.DMulti; end
             
@@ -29,22 +29,20 @@ classdef RM3 < PROBLEM
         end
         %% Calculate objective values
         function PopObj = CalObj(obj,PopDec)
-            PopObj(:,1) = PopDec(:,1);
-             g = 1 + 9*sum((PopDec(:,3:end)-PopDec(:,2)).^2,2)/(size(PopDec,1)-1);
-            h = 1 - (PopObj(:,1)./g).^0.5 - PopObj(:,1)./g.*sin(10*pi*PopObj(:,1));
+            PopObj(:,1) = 1 - exp(-4*PopDec(:,1)).*sin(6*pi*PopDec(:,1)).^6;
+            g = 1 + 9*(sum((PopDec(:,2:end)-PopDec(:,1)).^2,2)/9).^0.25;
+            h = 1 - (PopObj(:,1)./g).^2;
             PopObj(:,2) = g.*h;
         end
         %% Generate points on the Pareto front
         function R = GetOptimum(obj,N)
-            R(:,1) = linspace(0,1,N)';
-            R(:,2) = 1 - R(:,1).^0.5 - R(:,1).*sin(10*pi*R(:,1));
-            R      = R(NDSort(R,1)==1,:);
+            minf1  = 0.280775;
+            R(:,1) = linspace(minf1,1,N)';
+            R(:,2) = 1 - R(:,1).^2;
         end
         %% Generate the image of Pareto front
         function R = GetPF(obj)
-            R(:,1) = linspace(0,1,100)';
-            R(:,2) = 1 - R(:,1).^0.5 - R(:,1).*sin(10*pi*R(:,1));
-            R(NDSort(R,1)>1,:) = nan;
+            R = obj.GetOptimum(100);
         end
     end
 end

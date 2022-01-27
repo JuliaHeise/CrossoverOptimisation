@@ -237,7 +237,7 @@ classdef module_test < handle
             obj.cb_dropdown1();
         end
         %% Output function
-        function outputFcn(obj,Algorithm,Problem)
+        function outputFcn(obj,Algorithm,Problem,savePath)
             obj.app.slider.Value = Problem.FE/max(Problem.FE,Problem.maxFE);
             obj.cb_slider();
             assert(strcmp(obj.app.buttonC(2).Enable,'on'),'PlatEMO:Termination','');

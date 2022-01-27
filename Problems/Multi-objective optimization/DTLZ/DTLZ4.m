@@ -19,8 +19,8 @@ classdef DTLZ4 < PROBLEM
         %% Default settings of the problem
         function Setting(obj)
             if isempty(obj.M); obj.M = 3; end
-            if isempty(obj.D); obj.D = obj.M+9; end
-                        
+            if isempty(obj.D); obj.D = obj.M+9; end     
+            
             if ~isempty(obj.MMulti); obj.M = obj.M*obj.MMulti; end
             if ~isempty(obj.DMulti); obj.D = obj.D*obj.DMulti; end
             

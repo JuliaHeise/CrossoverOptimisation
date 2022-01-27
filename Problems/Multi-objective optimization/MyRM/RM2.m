@@ -30,7 +30,7 @@ classdef RM2 < PROBLEM
         %% Calculate objective values
         function PopObj = CalObj(obj,PopDec)
             PopObj(:,1) = PopDec(:,1);
-             g = 1 + 9*sum((PopDec(:,3:end)-PopDec(:,2)).^2,2)/(size(PopDec,1)-1);
+             g = 1 + 9*sum((PopDec(:,2:end)-PopDec(:,1)).^2,2)/(obj.D-1);
             h = 1 - (PopObj(:,1)./g).^2;
             PopObj(:,2) = g.*h;
         end

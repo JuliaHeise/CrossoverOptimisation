@@ -1,9 +1,21 @@
 classdef MyLCX < XOPERATOR
         
+    properties (SetAccess = private)
+        Parents        
+    end
+    
     methods(Access = public)
-        function obj = MyLCX()
-            obj.TAG = "LCX";
-            obj.MIN_PARENTS = 3;
+        function obj = MyLCX(varargin)
+            isStr = find(cellfun(@ischar,varargin(1:end-1))&~cellfun(@isempty,varargin(2:end)));
+            for i = isStr(ismember(varargin(isStr),{'Parents'}))
+                obj.(varargin{i}) = varargin{i+1};
+            end
+            if(isempty(obj.Parents))
+                obj.MIN_PARENTS = 3;
+            else
+                obj.MIN_PARENTS = obj.Parents;
+            end
+            obj.TAG = "LCX" + string(obj.MIN_PARENTS);
         end
         
         function Offspring = Cross(obj, Parentpool, Parameter)
@@ -36,10 +48,10 @@ classdef MyLCX < XOPERATOR
             %% result array
             [N,D] = size(Parentpool);
             portion = floor(N/lambda);
-            Parents = cell(lambda,1);
+            P = cell(lambda,1);
             idx = 1;
             for i = 1:lambda
-               Parents{i} = Parentpool(idx:idx+portion-1, :); 
+               P{i} = Parentpool(idx:idx+portion-1, :); 
                idx = idx+portion;
             end
             RestParents = Parentpool(idx:end,:);
@@ -58,7 +70,7 @@ classdef MyLCX < XOPERATOR
                     for k = 1:lambda
                         Offspring(offspringIndex+k-1, :) = ...
                             Offspring(offspringIndex+k-1, :) ...
-                            + weights(1,j+k) * Parents{j}(i,:);   
+                            + weights(1,j+k) * P{j}(i,:);   
                     end                   
                 end
                 offspringIndex = offspringIndex+k;

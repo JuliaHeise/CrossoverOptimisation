@@ -6,7 +6,7 @@ classdef MyUX < XOPERATOR
             obj.MIN_PARENTS = 2;
         end
         
-        function Offspring = Cross(obj, Parentpool, Parameter)
+        function Offspring = Cross(obj, Parentpool)
             if isa(Parentpool(1),'SOLUTION')
                 Parentpool = Parentpool.decs;
                 restructure = true;
