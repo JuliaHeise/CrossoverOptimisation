@@ -1,4 +1,4 @@
-classdef MINR0_NCRXDNSGAII < ALGORITHM
+classdef LOS_SRXDNSGAII < ALGORITHM
 % <multi> <real/binary/permutation> <constrained/none>
 % Nondominated sorting genetic algorithm II
 
@@ -21,7 +21,7 @@ classdef MINR0_NCRXDNSGAII < ALGORITHM
             %% Generate random population
             Population = Problem.Initialization();
             Operators = {MyCMAX(), MyDE(), MyLCX(), MyLX(), MyRSBX(), MySBX(), MyUX()};
-            XDist = XDistributionTuned(Population, Operators, @NCReward, 'Let_Op_Die', true);
+            XDist = XDistributionTuned(Population, Operators, @SurvivalReward, 'Let_Op_Die', true);
             [~,FrontNo,CrowdDis] = EnvironmentalSelection(Population,Problem.N);
             run = 1;
             Algorithm.SaveDist(XDist.Distribution, run);

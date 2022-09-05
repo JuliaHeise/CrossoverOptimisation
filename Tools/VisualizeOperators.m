@@ -1,4 +1,14 @@
 close all; clc;
+
+global_fontsize = 25;
+global_subfontsize = 13;
+global_markersize = 80;
+global_midisize = 60;
+global_minisize = 8;
+global_primeLine = 2;
+global_seconLine = 1;
+global_imagesize = [0 0 0.3 0.5];
+
 %% Visualize Operator results
 darkGrey =  [0.1 0.1 0.1];
 grey = [0.5 0.5 0.5];
@@ -11,48 +21,60 @@ Operators = {MyDE(), MyLCX(), MyUX(),MySBX(), MyRSBX(), MyLX()};
 %% Centric
 for operator = Operators
     Pop = Population;
-    f = figure('Name', operator{1}.TAG + '_centric');
+    f = figure('units','normalized','outerposition', global_imagesize, 'Visible', 'off'); 
+    set(gca,'FontSize', global_fontsize) 
+    ylabel('x2','fontsize', global_fontsize);
+    xlabel('x1','fontsize', global_fontsize);          
+                    
     axis([0 1 0 1]);
     hold on
-    scatter(Population(:,1), Population(:,2), 40, lightGrey, 'd', ...
-        'filled', 'MarkerEdgeColor', darkGrey, 'LineWidth',1.5);
+    scatter(Population(:,1), Population(:,2), global_markersize, lightGrey, 'd', ...
+        'filled', 'MarkerEdgeColor', darkGrey, 'LineWidth', global_primeLine);
 
     Pop = Pop(randperm(length(Pop)),:);
     x = operator{1}.Cross(Pop);
-    scatter(x(:,1), x(:,2), 20, blueGrey , 'filled');
+    scatter(x(:,1), x(:,2), global_midisize, blueGrey , 'filled');
     
     Pop = Pop(randperm(length(Pop)),:);
     x = operator{1}.Cross(Pop);
-    scatter(x(:,1), x(:,2), 20, grey, '^', 'filled' );
+    scatter(x(:,1), x(:,2), global_midisize, grey, '^', 'filled' );
 
     hold off
 
-    exportgraphics(f, 'Images/Operators/' + operator{1}.TAG  + '_centric'+ '.png','Resolution',300);
+    exportgraphics(f, 'Images/Operators/' + operator{1}.TAG  + '_centric'+ '.pdf', 'ContentType', 'vector');
 
 end
 
 %% 500 times
 for operator = Operators
     Pop = Population;
-    f = figure('Name', operator{1}.TAG);
+    f = figure('units','normalized','outerposition',global_imagesize, 'Visible', 'off'); 
+    set(gca,'FontSize', global_fontsize) 
+    ylabel('x2','fontsize', global_fontsize);
+    xlabel('x1','fontsize', global_fontsize);          
+                    
     axis([0 1 0 1]);
     hold on
     for i=1:500
         Pop = Pop(randperm(length(Pop)),:);
         x = operator{1}.Cross(Pop);
-        scatter(x(:,1), x(:,2), 5, grey , 'filled');
+        scatter(x(:,1), x(:,2), global_minisize, grey , 'filled');
     end
-    scatter(Population(:,1), Population(:,2), 40, lightGrey, 'd', ...
+    scatter(Population(:,1), Population(:,2), global_markersize, lightGrey, 'd', ...
         'filled', 'MarkerEdgeColor', darkGrey, 'LineWidth',1.5);
     hold off
 
-    exportgraphics(f,'Images/Operators/' +  operator{1}.TAG + '.png','Resolution',300);
+    exportgraphics(f,'Images/Operators/' +  operator{1}.TAG+ '.pdf', 'ContentType', 'vector');
 
 end
 
 %% with mutation
 Pop = Population;
-f = figure('Name', 'Original');
+f = figure('units','normalized','outerposition',global_imagesize, 'Visible', 'off'); 
+set(gca,'FontSize', global_fontsize) 
+ylabel('x2','fontsize', global_fontsize);
+xlabel('x1','fontsize', global_fontsize);  
+    
 axis([0 1 0 1]);
 hold on
 for i=1:500
@@ -60,27 +82,31 @@ for i=1:500
     x = OperatorGA(Pop);
     scatter(x(:,1), x(:,2), 5, grey , 'filled');
 end
-scatter(Population(:,1), Population(:,2), 40, lightGrey, 'd', ...
-    'filled', 'MarkerEdgeColor', darkGrey, 'LineWidth',1.5);
+scatter(Population(:,1), Population(:,2), global_markersize, lightGrey, 'd', ...
+    'filled', 'MarkerEdgeColor', darkGrey, 'LineWidth', global_primeLine);
 hold off
 
 
 for operator = Operators
     Pop = Population;
     f = figure('Name', operator{1}.TAG);
+    set(gca,'FontSize', global_fontsize) 
+    ylabel('x2','fontsize', global_fontsize);
+    xlabel('x1','fontsize', global_fontsize);  
+    
     axis([0 1 0 1]);
     hold on
     for i=1:500
         Pop = Pop(randperm(length(Pop)),:);
         x = operator{1}.Cross(Pop);
         x = MyMutation(x);
-        scatter(x(:,1), x(:,2), 5, grey , 'filled');
+        scatter(x(:,1), x(:,2), global_minisize, grey , 'filled');
     end
-    scatter(Population(:,1), Population(:,2), 40, lightGrey, 'd', ...
+    scatter(Population(:,1), Population(:,2), global_markersize, lightGrey, 'd', ...
         'filled', 'MarkerEdgeColor', darkGrey, 'LineWidth',1.5);
     hold off
 
-    exportgraphics(f,'Images/Operators/' +  operator{1}.TAG + '_mutated.png','Resolution',300);
+    exportgraphics(f,'Images/Operators/' +  operator{1}.TAG + '_mutated.pdf', 'ContentType', 'vector');
 
 end
 
@@ -90,23 +116,27 @@ Population = [0.3 0.4; 0.6 0.2; 0.5 0.7];
 
 c = linspace(1,10,3);
 Pop = Population;
-f = figure('Name', Operator.TAG);
+f = figure(); 
+set(gca,'FontSize', global_fontsize/2) 
+ylabel('x2','fontsize', global_fontsize/2);
+xlabel('x1','fontsize', global_fontsize/2);  
+    
 axis([0 1 0 1]);
 hold on
 
 [x, m, C] = Operator.Cross_(Population, {1, 500});
-[y, ~, ~] = Operator.Cross_(Population, {0.25, 500});
+%[y, ~, ~] = Operator.Cross_(Population, {0.25, 500});
 
 
 %Plot ellipses, then change their color and other properties
 h = plotcov(C, m); 
-scatter(x(:,1), x(:,2), 5, blueGrey , 'filled');
-scatter(y(:,1), y(:,2), 5, grey, '^', 'filled' );
-scatter(Population(:,1), Population(:,2), 60, lightGrey, 'd', ...
+scatter(x(:,1), x(:,2), global_minisize, grey , 'filled');
+%scatter(y(:,1), y(:,2), global_minisize, grey, '^', 'filled' );
+scatter(Population(:,1), Population(:,2), global_markersize, lightGrey, 'd', ...
     'filled', 'MarkerEdgeColor', darkGrey);
 hold off
 
-exportgraphics(f, 'Images/Operators/' +Operator.TAG + '.png','Resolution',300);
+exportgraphics(f, 'Images/Operators/' +Operator.TAG + '.pdf', 'ContentType', 'vector');
 
 
 
