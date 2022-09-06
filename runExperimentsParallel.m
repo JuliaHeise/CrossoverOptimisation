@@ -33,29 +33,10 @@ disp("Ende")
 function packageList = createWorkpackages()
     numberOfRuns = 31;
     packageList = [];
- %   for alg = ["", "SBX", "RSBX", "DE", "UX", "LCX3", "LX", "CMAX", "R2XD", "R2XS", "NCRXD", "NCRXS", "SRXD", "SRXS", "URXD", "URXS"]
-%     for alg = ["R2XS", "NCRXS", "SRXS", "URXS"]
-%         for pro = ["RM1", "RM2", "RM3", "RM4", "DTLZ1", "DTLZ2", "DTLZ3", "DTLZ4", "DTLZ5","DTLZ6", "DTLZ7", "DTLZ8", "DTLZ9", "WFG1", "WFG2", "WFG3", "WFG4", "WFG5", "WFG6", "WFG7", "WFG8", "WFG9"]
-%             for r = 1:numberOfRuns
-%                 packageList = [packageList; struct('alg', alg + "NSGAII", 'pro', pro, 'runNo', r, 'MMulti', 1, 'DMulti', 1, 'MaxFE', 10000, 'savePath', 'std')];
-%             end
-%         end
-%     end
-%     
-%  %   for alg = ["", "SBX", "RSBX", "DE", "UX", "LCX3", "LX", "CMAX", "R2XD", "R2XS", "NCRXD", "NCRXS", "SRXD", "SRXS", "URXD", "URXS"]
-%     for alg = ["R2XS", "NCRXS", "SRXS", "URXS"]
-%         for pro = ["RM1", "RM2", "RM3", "RM4", "DTLZ1", "DTLZ2", "DTLZ3", "DTLZ4", "DTLZ5","DTLZ6", "DTLZ7", "DTLZ8", "DTLZ9", "WFG1", "WFG2", "WFG3", "WFG4", "WFG5", "WFG6", "WFG7", "WFG8", "WFG9"]
-%             for r = 1:numberOfRuns
-%                 packageList = [packageList; struct('alg', alg + "NSGAII", 'pro', pro, 'runNo', r, 'MMulti', 1, 'DMulti', 4, 'MaxFE', 10000, 'savePath', 'harder')];
-%             end
-%         end
-%     end
-    
- %   for alg = ["", "SBX", "RSBX", "DE", "UX", "LCX3", "LX", "CMAX", "R2XD", "R2XS", "NCRXD", "NCRXS", "SRXD", "SRXS", "URXD", "URXS"]
-    for alg = [ "R2XD", "R2XS", "NCRXD", "NCRXS", "SRXD", "SRXS", "URXD", "URXS"]
+    for alg = [ "SRXD", "SRXS", "UX", "CaterpillarHHX"]
         for pro = ["RM1", "RM2", "RM3", "RM4", "DTLZ1", "DTLZ2", "DTLZ3", "DTLZ4", "DTLZ5","DTLZ6", "DTLZ7", "DTLZ8", "DTLZ9", "WFG1", "WFG2", "WFG3", "WFG4", "WFG5", "WFG6", "WFG7", "WFG8", "WFG9"]
             for r = 1:numberOfRuns
-                packageList = [packageList; struct('alg', alg + "NSGAII", 'pro', pro, 'runNo', r, 'MMulti', 1, 'DMulti', 6, 'MaxFE', 10000, 'savePath', 'hardest')];
+                packageList = [packageList; struct('alg', alg + "NSGAII", 'pro', pro, 'runNo', r, 'MMulti', 1, 'DMulti', 1, 'MaxFE', 10000, 'savePath', 'NewComparison')];
             end
         end
     end

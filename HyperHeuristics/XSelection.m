@@ -85,6 +85,11 @@ classdef XSelection
         function obj = SetOldPopulation(obj, New_Population)
             obj.Old_Population = New_Population;
         end
+
+        function obj = SetRewards(obj, Rewards)
+            obj.Rewards = Rewards;
+        end
+        
     end
         
     methods(Access = private)      

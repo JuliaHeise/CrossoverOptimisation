@@ -339,7 +339,7 @@ classdef module_exp < handle
             obj.app.buttonC(2).Enable   = 'off';
         end
         %% Output function
-        function outputFcn(obj,Algorithm,Problem)
+        function outputFcn(obj,Algorithm,Problem,savePath)
             assert(strcmp(obj.app.buttonC(2).Enable,'on'),'PlatEMO:Termination','');
             if strcmp(obj.app.buttonC(1).Text,'Continue')
                 waitfor(obj.app.buttonC(1),'Text');
