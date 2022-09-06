@@ -14,7 +14,7 @@ classdef MyDE < XOPERATOR
             if(isempty(obj.F))
                 obj.F = 0.5;
             end
-            obj.TAG = "DE" + string(obj.F);
+            obj.TAG = "DE";% + string(obj.F);
         end
         
         function Offspring = Cross(obj, Parentpool)

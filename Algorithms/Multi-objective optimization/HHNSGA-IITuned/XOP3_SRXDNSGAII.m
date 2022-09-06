@@ -1,4 +1,4 @@
-classdef LOGISTIC_NCRXDNSGAII < ALGORITHM
+classdef XOP3_SRXDNSGAII < ALGORITHM
 % <multi> <real/binary/permutation> <constrained/none>
 % Nondominated sorting genetic algorithm II
 
@@ -20,8 +20,8 @@ classdef LOGISTIC_NCRXDNSGAII < ALGORITHM
         function main(Algorithm,Problem)
             %% Generate random population
             Population = Problem.Initialization();
-            Operators = {MyCMAX(), MyDE(), MyLCX(), MyLX(), MyRSBX(), MySBX(), MyUX()};
-            XDist = XDistributionTuned(Population, Operators, @NCReward, 'Score_Handle', @Scoring.Logistic);
+            Operators = {MyCMAX(), MyRSBX(), MyUX()};
+            XDist = XDistributionTuned(Population, Operators, @SurvivalReward);
             [~,FrontNo,CrowdDis] = EnvironmentalSelection(Population,Problem.N);
             run = 1;
             Algorithm.SaveDist(XDist.Distribution, run);

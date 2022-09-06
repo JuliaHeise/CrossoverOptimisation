@@ -16,7 +16,7 @@ classdef MyLX < XOPERATOR
             if(isempty(obj.B))
                 obj.B = 0.2;
             end
-            obj.TAG = "LX" + string(obj.B);
+            obj.TAG = "LX";% + string(obj.B);
         end
         
         function Offspring = Cross(obj, Parentpool)

@@ -14,7 +14,7 @@ classdef MyCMAX < XOPERATOR
             if(isempty(obj.Sigma))
                obj.Sigma = 1;
             end
-            obj.TAG = "CMAX" + string(obj.Sigma);
+            obj.TAG = "CMAX";% + string(obj.Sigma);
          end
 
          function Offspring = Cross(obj, Parentpool, Parameter)

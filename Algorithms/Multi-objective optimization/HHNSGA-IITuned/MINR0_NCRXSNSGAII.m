@@ -20,7 +20,7 @@ classdef MINR0_NCRXSNSGAII < ALGORITHM
             %% Generate random population
             Population = Problem.Initialization();
             Operators = {MyCMAX(), MyDE(), MyLCX(), MyLX(), MyRSBX(), MySBX(), MyUX()};
-            [XSel, Operator] = XSelectionTuned(Population, Operators, @NCReward, 'Min_Reward', 0);
+            [XSel, Operator] = XSelectionTuned(Population, Operators, @NCReward, 'Min_Prob', 0);
             [~,FrontNo,CrowdDis] = EnvironmentalSelection(Population,Problem.N); 
             run = 1;
             Algorithm.SaveDist(XSel.Probabilities, run);
