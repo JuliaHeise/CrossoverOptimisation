@@ -1,4 +1,4 @@
-classdef AlternatingHHXNSGAII < ALGORITHM
+classdef Alternating4HHXNSGAII < ALGORITHM
 % <multi> <real/binary/permutation> <constrained/none>
 % Nondominated sorting genetic algorithm II
 
@@ -28,9 +28,9 @@ classdef AlternatingHHXNSGAII < ALGORITHM
 
             firstTransition = true;
 
-            p1 = 0.5;
-            p2 = 0.5;
-            iterations = 5;
+            p1 = 0.8;
+            p2 = 0.2;
+            iterations = 4;
 
             partitions = Problem.maxFE/iterations;
             pFE2 = partitions * p1;

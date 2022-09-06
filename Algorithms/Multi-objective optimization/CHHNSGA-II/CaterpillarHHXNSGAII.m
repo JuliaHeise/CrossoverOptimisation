@@ -38,6 +38,7 @@ classdef CaterpillarHHXNSGAII < ALGORITHM
 
                 % First evolution: Distribution, use all Operators
                 if(Problem.FE < p1*Problem.maxFE)
+                    %disp("Dist")
                     Offspring = XDist.ExecX(Population(MatingPool));
                     Offspring = MyMutation(Offspring);
                     Algorithm.SaveTags(Offspring.tags, run);
@@ -53,17 +54,18 @@ classdef CaterpillarHHXNSGAII < ALGORITHM
                 % distribution. 2nd Evolution: Selection
                 if (firstTransition)
                     firstTransition = false;
-                    disp("Current Rewards")
-                    disp(XDist.Rewards)
-                    XSel.SetRewards(XDist.Rewards);
+                    %disp("Current Rewards")
+                    %disp(XDist.Rewards)
+                    XSel = XSel.SetRewards(XDist.Rewards);
                     [~, idx] = max(XSel.Rewards);
                     op = Operators{idx};
                     Operator = @op.Cross;
-                    disp("Current Best Operator")
-                    disp(op.TAG)
-                    disp("Transistion to Second form")
+                    %disp("Current Best Operator")
+                    %disp(op.TAG)
+                    %disp("Transistion to Second form")
                 end
-                if and(Problem.FE >= p1*Problem.maxFE, Problem.FE < p2*Problem.maxFE)  
+                if and(Problem.FE >= p1*Problem.maxFE, Problem.FE < (1-p2)*Problem.maxFE)  
+                    %disp("Sel")
                     Offspring = Operator(Population(MatingPool));
                     Offspring = MyMutation(Offspring);
                     Algorithm.SaveTags(Offspring.tags, run);
@@ -81,14 +83,15 @@ classdef CaterpillarHHXNSGAII < ALGORITHM
                     [~, idx] = max(XSel.Rewards);
                     op = Operators{idx};
                     finalXOP = @op.Cross;
-                    disp("Current Rewards")
-                    disp(XSel.Rewards)
-                    disp("Final XOP")
-                    disp(op.TAG)
-                    disp("Transition to final Form")
+                    %disp("Current Rewards")
+                    %disp(XSel.Rewards)
+                    %disp("Final XOP")
+                    %disp(op.TAG)
+                    %disp("Transition to final Form")
                     probabilities = zeros(size(Operators));
                     probabilities(idx) = 1;
                 end
+                %disp(op.TAG)
                 Offspring = finalXOP(Population(MatingPool));
                 Offspring = MyMutation(Offspring);
                 Algorithm.SaveTags(Offspring.tags, run);

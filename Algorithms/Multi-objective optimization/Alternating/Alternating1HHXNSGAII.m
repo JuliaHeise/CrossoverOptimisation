@@ -1,4 +1,4 @@
-classdef AlternatingHHXNSGAII < ALGORITHM
+classdef Alternating1HHXNSGAII < ALGORITHM
 % <multi> <real/binary/permutation> <constrained/none>
 % Nondominated sorting genetic algorithm II
 
@@ -40,7 +40,7 @@ classdef AlternatingHHXNSGAII < ALGORITHM
             %% Optimization
             while Algorithm.NotTerminated(Population)
                 MatingPool = TournamentSelection(2,Problem.N,FrontNo,-CrowdDis);
-
+                
                 if(Problem.FE < i * partitions + pFE1)
                     Offspring = XDist.ExecX(Population(MatingPool));
                     Offspring = MyMutation(Offspring);

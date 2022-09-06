@@ -1,4 +1,4 @@
-classdef AlternatingHHXNSGAII < ALGORITHM
+classdef Caterpillar4HHXNSGAII < ALGORITHM
 % <multi> <real/binary/permutation> <constrained/none>
 % Nondominated sorting genetic algorithm II
 
@@ -15,7 +15,7 @@ classdef AlternatingHHXNSGAII < ALGORITHM
 % Computational Intelligence Magazine, 2017, 12(4): 73-87".
 %--------------------------------------------------------------------------
 
- methods
+    methods
         function main(Algorithm,Problem)
             %% Generate random population
             Population = Problem.Initialization();
@@ -27,76 +27,77 @@ classdef AlternatingHHXNSGAII < ALGORITHM
             Algorithm.SaveDist(XDist.Distribution, run);
 
             firstTransition = true;
+            secondTransition = true;
 
             p1 = 0.5;
-            p2 = 0.5;
-            iterations = 5;
+            p2 = 0.1;
 
-            partitions = Problem.maxFE/iterations;
-            pFE2 = partitions * p1;
-            pFE1 = partitions * p2;
-
-            i = 0;
             %% Optimization
             while Algorithm.NotTerminated(Population)
                 MatingPool = TournamentSelection(2,Problem.N,FrontNo,-CrowdDis);
 
-                if(Problem.FE < i * partitions + pFE1)
+                                % First evolution: Distribution, use all Operators
+                if(Problem.FE < p1*Problem.maxFE)
+                    %disp("Dist")
                     Offspring = XDist.ExecX(Population(MatingPool));
                     Offspring = MyMutation(Offspring);
-
                     Algorithm.SaveTags(Offspring.tags, run);
                     XDist = XDist.SetOldPopulation([Population,Offspring]);
-
                     [Population,FrontNo,CrowdDis] = EnvironmentalSelection([Population,Offspring],Problem.N);
-
                     XDist = XDist.CalcDist(Population);
                     run = run + 1;
-
                     Algorithm.SaveDist(XDist.Distribution, run);
                     continue;
                 end
 
+                % After a while, all Operators are evaluated through
+                % distribution. 2nd Evolution: Selection
                 if (firstTransition)
                     firstTransition = false;
+                    %disp("Current Rewards")
+                    %disp(XDist.Rewards)
                     XSel = XSel.SetRewards(XDist.Rewards);
                     [~, idx] = max(XSel.Rewards);
                     op = Operators{idx};
                     Operator = @op.Cross;
+                    %disp("Current Best Operator")
+                    %disp(op.TAG)
+                    %disp("Transistion to Second form")
                 end
-
-                if and(Problem.FE >= i * partitions + pFE1, Problem.FE < (i+1) * partitions)  
+                if and(Problem.FE >= p1*Problem.maxFE, Problem.FE < (1-p2)*Problem.maxFE)  
+                    %disp("Sel")
                     Offspring = Operator(Population(MatingPool));
                     Offspring = MyMutation(Offspring);
-
                     Algorithm.SaveTags(Offspring.tags, run);
                     XSel = XSel.SetOldPopulation(Population);
-
                     [Population,FrontNo,CrowdDis] = EnvironmentalSelection([Population,Offspring],Problem.N);
                     [XSel, Operator] = XSel.SelectX(Population);
-
                     run = run + 1;
-
                     Algorithm.SaveDist(XSel.Probabilities, run);
                     continue;
-                end 
+                end
 
-                Offspring = Operator(Population(MatingPool));
+                % Last evolution: Exploit the best operator so far
+                if (secondTransition)
+                    secondTransition = false;
+                    [~, idx] = max(XSel.Rewards);
+                    op = Operators{idx};
+                    finalXOP = @op.Cross;
+                    %disp("Current Rewards")
+                    %disp(XSel.Rewards)
+                    %disp("Final XOP")
+                    %disp(op.TAG)
+                    %disp("Transition to final Form")
+                    probabilities = zeros(size(Operators));
+                    probabilities(idx) = 1;
+                end
+                %disp(op.TAG)
+                Offspring = finalXOP(Population(MatingPool));
                 Offspring = MyMutation(Offspring);
-
                 Algorithm.SaveTags(Offspring.tags, run);
-                XSel = XSel.SetOldPopulation(Population);
-
                 [Population,FrontNo,CrowdDis] = EnvironmentalSelection([Population,Offspring],Problem.N);
-                [XSel, Operator] = XSel.SelectX(Population);
-
-                run = run + 1;
-
-                XDist = XDist.SetRewards(zeros(size(XDist.Rewards)));
-                Algorithm.SaveDist(XDist.Distribution, run);
+                Algorithm.SaveDist(probabilities, run);
                 
-                i = i + 1;
-                firstTransition = true;
             end
         end
 

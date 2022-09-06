@@ -33,10 +33,12 @@ disp("Ende")
 function packageList = createWorkpackages()
     numberOfRuns = 31;
     packageList = [];
-    for alg = [ "SRXD", "SRXS", "UX", "CaterpillarHHX"]
+    for alg = [ "SRXD", "SRXS", "Caterpillar1HHX", "Caterpillar2HHX", "Caterpillar3HHX", "Caterpillar4HHX", ...
+            "Caterpillar5HHX", "Caterpillar6HHX", "Alternating1HHXNSGAII", "Alternating2HHXNSGAII", ...
+            "Alternating3HHXNSGAII", "Alternating4HHXNSGAII", "Alternating5HHXNSGAII",  "UX"]
         for pro = ["RM1", "RM2", "RM3", "RM4", "DTLZ1", "DTLZ2", "DTLZ3", "DTLZ4", "DTLZ5","DTLZ6", "DTLZ7", "DTLZ8", "DTLZ9", "WFG1", "WFG2", "WFG3", "WFG4", "WFG5", "WFG6", "WFG7", "WFG8", "WFG9"]
             for r = 1:numberOfRuns
-                packageList = [packageList; struct('alg', alg + "NSGAII", 'pro', pro, 'runNo', r, 'MMulti', 1, 'DMulti', 1, 'MaxFE', 10000, 'savePath', 'NewComparison')];
+                packageList = [packageList; struct('alg', alg + "NSGAII", 'pro', pro, 'runNo', r, 'MMulti', 1, 'DMulti', 1, 'MaxFE', 10000, 'savePath', 'AlternativeAlgs')];
             end
         end
     end
