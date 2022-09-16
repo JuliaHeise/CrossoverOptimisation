@@ -3,7 +3,7 @@ function GetIGDPlots(global_fontsize, global_subfontsize, global_markersize, glo
     close all; clc;
 
     %% Setup Version + Prob + Algo combinations
-    prefix = 'F:\MasterCode\MedianRuns\';
+    prefix = 'Evaluation\MedianRuns\';
     suffix1 = 'MEDIAN_';
     suffix2 = '_IGD_';
     darkGrey =  [0.1 0.1 0.1];
@@ -17,7 +17,7 @@ function GetIGDPlots(global_fontsize, global_subfontsize, global_markersize, glo
 
     TestSetting = TestSettings();
     
-    HHNames = ["HHX-S", "HHX-D"];
+    HHNames = ["HHX-A", "HHX-E", "HHX-S", "HHX-D"];
 
     probNumber = 0;
 
@@ -239,7 +239,7 @@ function GetIGDPlots(global_fontsize, global_subfontsize, global_markersize, glo
                 plo = get(gca,'Position');
                 set(gca,'Position',[plo(1) plo(2)+0.1 plo(3)-0.2 plo(4)-0.2]);
 
-                exportgraphics(f3, 'Paper/Images/Plots/' + name(2) + '_' ... 
+                exportgraphics(f3, 'Evaluation/Plots/' + name(2) + '_' ... 
                 + name(3) + '_' + name(4) + '_Summary.pdf', 'ContentType', 'vector');
 
                 probNumber = probNumber + 1; 

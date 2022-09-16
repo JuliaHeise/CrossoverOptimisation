@@ -17,85 +17,128 @@ classdef Caterpillar3HHXNSGAII < ALGORITHM
 
     methods
         function main(Algorithm,Problem)
-            %% Generate random population
+            %% Initialize Optimization Modules
+            % Start with random Population
             Population = Problem.Initialization();
+
+            % Init operator pool
             Operators = {MyCMAX(), MyDE(), MyLCX(), MyLX(), MyRSBX(), MySBX(), MyUX()};
+            
+            % Init both selection mechanics
             XDist = XDistribution(Population, Operators, @SurvivalReward);
             XSel = XSelection(Population, Operators, @SurvivalReward);
+
+            % First population evaluation
             [~,FrontNo,CrowdDis] = EnvironmentalSelection(Population,Problem.N);
+
+            % Save for statistics
             run = 1;
             Algorithm.SaveDist(XDist.Distribution, run);
 
             firstTransition = true;
             secondTransition = true;
 
-            p1 = 0.1;
-            p2 = 0.1;
+            % Set Caterpillar Parameter
+            p1 = 0.8;
+            p2 = 0.0;
 
             %% Optimization
             while Algorithm.NotTerminated(Population)
                 MatingPool = TournamentSelection(2,Problem.N,FrontNo,-CrowdDis);
 
-                                % First evolution: Distribution, use all Operators
+                %% First Step "Caterpillar": 
+                % Distribution of generation to all operators
                 if(Problem.FE < p1*Problem.maxFE)
-                    %disp("Dist")
+                    % Execute evolutionary Operator
                     Offspring = XDist.ExecX(Population(MatingPool));
                     Offspring = MyMutation(Offspring);
+
+                    % Save for statistics
                     Algorithm.SaveTags(Offspring.tags, run);
+
+                    % Update Archive of Distribution
                     XDist = XDist.SetOldPopulation([Population,Offspring]);
+
+                    %Finish this generation
                     [Population,FrontNo,CrowdDis] = EnvironmentalSelection([Population,Offspring],Problem.N);
+                    
+                    % Calculate next Distribution
                     XDist = XDist.CalcDist(Population);
+
+                    % Save for statistics
                     run = run + 1;
                     Algorithm.SaveDist(XDist.Distribution, run);
                     continue;
                 end
 
-                % After a while, all Operators are evaluated through
-                % distribution. 2nd Evolution: Selection
+                %% First Transition: Dist. - Sel.                
                 if (firstTransition)
+                    % Only entered once
                     firstTransition = false;
-                    %disp("Current Rewards")
-                    %disp(XDist.Rewards)
+                    
+                    % Update Rewards for selection with current reward
                     XSel = XSel.SetRewards(XDist.Rewards);
+
+                    % Select the current best according to Rewards for the
+                    % first selection
                     [~, idx] = max(XSel.Rewards);
                     op = Operators{idx};
                     Operator = @op.Cross;
-                    %disp("Current Best Operator")
-                    %disp(op.TAG)
-                    %disp("Transistion to Second form")
                 end
+
+                %% Second Step "Cocoon"
+                % Selection of one Operator each generation
                 if and(Problem.FE >= p1*Problem.maxFE, Problem.FE < (1-p2)*Problem.maxFE)  
-                    %disp("Sel")
+                    % Execute selected Operator
                     Offspring = Operator(Population(MatingPool));
                     Offspring = MyMutation(Offspring);
+
+                    % Save for statistics
                     Algorithm.SaveTags(Offspring.tags, run);
+
+                    % Update Archive
                     XSel = XSel.SetOldPopulation(Population);
+
+                    % Finish this generation
                     [Population,FrontNo,CrowdDis] = EnvironmentalSelection([Population,Offspring],Problem.N);
+                    
+                    % Select next operator
                     [XSel, Operator] = XSel.SelectX(Population);
+
+                    % Save for statistics
                     run = run + 1;
                     Algorithm.SaveDist(XSel.Probabilities, run);
                     continue;
                 end
 
-                % Last evolution: Exploit the best operator so far
+                %% Second Transition: Sel. - Exploit 
                 if (secondTransition)
+                    % Only entered once
                     secondTransition = false;
+                    
+                    % Select the current best according to Rewards
                     [~, idx] = max(XSel.Rewards);
                     op = Operators{idx};
                     finalXOP = @op.Cross;
-                    %disp("Current Rewards")
-                    %disp(XSel.Rewards)
-                    %disp("Final XOP")
-                    %disp(op.TAG)
-                    %disp("Transition to final Form")
+
+                    % Set to fixed values for statistics
                     probabilities = zeros(size(Operators));
                     probabilities(idx) = 1;
                 end
-                %disp(op.TAG)
+                
+                %% Last Step "Butterfly":
+                % Exploit the best operator
+                % Execute evolutionary operators
                 Offspring = finalXOP(Population(MatingPool));
                 Offspring = MyMutation(Offspring);
+
+                % Save for statistics
                 Algorithm.SaveTags(Offspring.tags, run);
+
+                % Finish this generation
                 [Population,FrontNo,CrowdDis] = EnvironmentalSelection([Population,Offspring],Problem.N);
+
+                % Save for statistics
                 Algorithm.SaveDist(probabilities, run);
             end
         end

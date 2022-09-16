@@ -9,10 +9,10 @@ global_imagesize = [0 0 0.5 0.6];
 
 %% After Saving all Data, get those runs with median HV and median IGD
 fprintf('Get Median Runs')
-%GetMedianRuns;
+GetMedianRuns;
 
 %% Generate Plots of HV over Time (per Alg+Prob comination)
-fprintf('Get HV Plots')
+%fprintf('Get HV Plots')
 %GetHVPlots(global_fontsize, global_subfontsize, global_markersize, global_primeLine, global_seconLine, global_imagesize);
 
 %% Generate Plots of IGD over Time (per Alg+Prob comination)
@@ -21,4 +21,4 @@ GetIGDPlots(global_fontsize, global_subfontsize, global_markersize,global_primeL
 
 %% Generate Plots of Operator Selection Data
 fprintf('Get XOP Plots')
-%GetXOPPlots(global_fontsize, global_subfontsize, global_markersize, global_primeLine, global_seconLine, global_imagesize);
+GetXOPPlots(global_fontsize, global_subfontsize, global_markersize, global_primeLine, global_seconLine, global_imagesize);

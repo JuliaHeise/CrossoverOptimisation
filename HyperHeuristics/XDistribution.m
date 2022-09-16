@@ -96,6 +96,11 @@ classdef XDistribution
 
         function obj = SetRewards(obj, Rewards)
             obj.Rewards = Rewards;
+            if(all(obj.Rewards == obj.Rewards(1)))
+                obj.Distribution = ones(1, obj.Num_Operators)./obj.Num_Operators;
+            else
+                obj.Distribution = obj.Rewards./sum(obj.Rewards);
+            end
         end
 
     end
