@@ -22,6 +22,8 @@ classdef SRXDNSGAII < ALGORITHM
             Operators = {MyCMAX(), MyDE(), MyLCX(), MyLX(), MyRSBX(), MySBX(), MyUX()};
             XDist = XDistribution(Population, Operators, @SurvivalReward);
             [~,FrontNo,CrowdDis] = EnvironmentalSelection(Population,Problem.N);
+
+            % Save for statistics
             run = 1;
             Algorithm.SaveDist(XDist.Distribution, run);
 

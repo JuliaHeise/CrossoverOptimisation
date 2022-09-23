@@ -95,6 +95,7 @@ classdef ALGORITHM < handle & matlab.mixin.Heterogeneous
                 obj.pro    = Problem;
                 obj.result = {};
                 obj.xOpProbs = [];
+                obj.tagDist = [];
                 obj.metric = struct('runtime', 0);
                 obj.pro.FE = 0;
                 addpath(fileparts(which(class(obj))));
