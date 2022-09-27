@@ -3,7 +3,7 @@ function GetIGDPlots(global_fontsize, global_subfontsize, global_markersize, glo
     close all; clc;
 
     %% Setup Version + Prob + Algo combinations
-    prefix = 'Evaluation/MedianRuns/';
+    prefix = 'MedianRuns/';
     suffix1 = 'MEDIAN_';
     suffix2 = '_IGD_';
     darkGrey =  [0.1 0.1 0.1];
@@ -11,23 +11,23 @@ function GetIGDPlots(global_fontsize, global_subfontsize, global_markersize, glo
     blueGrey = [0.2 0.4 0.6];
     lightGrey = [0.85 0.85 0.85];
 
-    marker = ["-o" "-+" "-*" "-s" "-d" "-x" "-o" "--" ":"];
+    marker = ["-o" "-+" "-*" "-s" "-d" "-x" "-^" "--" ":"];
     lineColor2 = [0.1 0.1 0.1];
     lineColor = [0.1 0.9 0.1];
 
     TestSetting = TestSettings();
     
-    HHNames = ["HHX-A", "HHX-E", "HHX-S", "HHX-D"];
+    HHNames = [..."HHX-A", "HHX-E", 
+        "HHX-S", "HHX-D"];
 
     probNumber = 0;
 
     for exp = "HARDER" %["STD", "HARDER", "HARDEST"]
         for prob = [TestSetting.problemClasses]
-            for q = 1:length(prob)
+            for q = 1:length(prob.versions)
                 v = [prob.versions];
                 v = v(q);
-                probname = [prob.name];
-                probname = probname(q);
+                probname = prob.name;
                 %% Get All IGD in one Array
                 filenames = append(prefix, suffix1, exp, suffix2, probname, string(v), '*');
                 files_for_p = splitlines(string(ls(filenames)));
@@ -56,7 +56,7 @@ function GetIGDPlots(global_fontsize, global_subfontsize, global_markersize, glo
                 t = append(probname, string(v), ", M = ", string(M), ", D = ", string(D));
                 
                 %% Hypervolume over time for single algorithms        
-                f1 = figure('units','normalized','outerposition',global_imagesize);%, 'Visible', 'off');
+                f1 = figure('units','normalized','outerposition',global_imagesize, 'Visible', 'off');
                 axis tight;
                 xlabel('FEs','fontsize', global_subfontsize);
                 ylabel('IGD','fontsize', global_subfontsize);
@@ -87,7 +87,7 @@ function GetIGDPlots(global_fontsize, global_subfontsize, global_markersize, glo
                     p.MarkerSize = global_markersize;
                 end
                 
-                for q = 1:length(TestSetting.hhAlgorithms)
+                for q = 1:length(HHNames)%TestSetting.hhAlgorithms)
                     hold on
 
                     data = results(...
@@ -104,19 +104,19 @@ function GetIGDPlots(global_fontsize, global_subfontsize, global_markersize, glo
                 
                 set(gca ,'FontSize',global_subfontsize);
                 title(t, 'fontsize', global_subfontsize);
-                labels = [TestSetting.singleAlgorithms HHNames];
+                labels = [TestSetting.singleAlgorithms(3:4) HHNames];
                 labels(labels == 'NSGAII') = 'SBX';
                 legend(erase(labels, 'NSGAII'),'Location','best','fontsize', global_subfontsize, 'NumColumns',2);
 
                 plo = get(gca,'Position');
                 set(gca,'Position',[plo(1) plo(2)+0.1 plo(3)-0.2 plo(4)-0.2]);
                 
-                exportgraphics(f1, 'Evaluation/Plots/' + name(2) ...
+                exportgraphics(f1, 'Plots/' + name(2) ...
                 + '_' + name(3) + '_' + name(4) + '_S.pdf', 'ContentType', 'vector');
                 hold off
 
                 %% Hypervolume over time for HH algorithms
-                f2 = figure('units','normalized','outerposition', global_imagesize);%, 'Visible', 'off');
+                f2 = figure('units','normalized','outerposition', global_imagesize, 'Visible', 'off');
                
                 axis tight;
                 xlabel('FEs','fontsize',global_fontsize);
@@ -158,7 +158,7 @@ function GetIGDPlots(global_fontsize, global_subfontsize, global_markersize, glo
                 plo = get(gca,'Position');
                 set(gca,'Position',[plo(1) plo(2)+0.1 plo(3)-0.2 plo(4)-0.2]);
                                  
-                exportgraphics(f2, 'Evaluation/Plots/' + name(2) ...
+                exportgraphics(f2, 'Plots/' + name(2) ...
                 + '_' + name(3) + '_' + name(4) + '_HH.pdf', 'ContentType', 'vector');
                 hold off
                 
@@ -189,7 +189,7 @@ function GetIGDPlots(global_fontsize, global_subfontsize, global_markersize, glo
                 mind = min([[y.endResult]-[y.endIQR] [y.midResult]-[y.midIQR]]);
                 maxi = max([[y.endResult]+[y.endIQR] [y.midResult]+[y.midIQR]]);
 
-                f3 = figure('units','normalized','outerposition', [0 0 0.7 0.7]);%, 'Visible', 'off');  
+                f3 = figure('units','normalized','outerposition', [0 0 0.7 0.7], 'Visible', 'off');  
                 x = categorical(erase([y.name], "NSGAII"));
                 x = reordercats(x,string(x));
 
@@ -239,7 +239,7 @@ function GetIGDPlots(global_fontsize, global_subfontsize, global_markersize, glo
                 plo = get(gca,'Position');
                 set(gca,'Position',[plo(1) plo(2)+0.1 plo(3)-0.2 plo(4)-0.2]);
 
-                exportgraphics(f3, 'Evaluation/Plots/' + name(2) + '_' ... 
+                exportgraphics(f3, 'Plots/' + name(2) + '_' ... 
                 + name(3) + '_' + name(4) + '_Summary.pdf', 'ContentType', 'vector');
 
                 probNumber = probNumber + 1; 

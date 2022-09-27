@@ -1,6 +1,6 @@
 clc; close all;
 
-prefix = 'Data/';
+prefix = 'FinalData/';
 numberOfRuns = 31;
 Tests = TestSettings();
 settings = Tests.Get;
@@ -42,7 +42,7 @@ for set = settings
         'iqrMid', iqr(cell2mat(resultsMid(:,3))), ...
         'iqrEnd', iqr(cell2mat(resultsEnd(:,3))));
     
-    dest = append('Evaluation/MedianRuns/', 'MEDIAN_', ...
+    dest = append('MedianRuns/', 'MEDIAN_', ...
         setting.setup, '_', 'IGD_', setting.dataset, '_', ...
         setting.algorithm, '.mat');
     save(dest, 'res');

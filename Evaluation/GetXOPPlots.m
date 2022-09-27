@@ -3,7 +3,7 @@ function GetXOPPlots(global_fontsize, global_subfontsize, global_markersize, glo
     close all; clc;
 
     %% Setup Version + Prob + Algo combinations
-    prefix = 'Evaluation/MedianRuns/';
+    prefix = 'MedianRuns/';
     suffix1 = 'MEDIAN_';
     suffix2 = '_IGD_';
     darkGrey =  [0.1 0.1 0.1];
@@ -21,17 +21,16 @@ function GetXOPPlots(global_fontsize, global_subfontsize, global_markersize, glo
     betterOpNames = [betterOpNames(6), betterOpNames(1), betterOpNames(7), betterOpNames(5), betterOpNames(4), betterOpNames(2), betterOpNames(3)];
     Operators = ["CMAX", "DE", "LCX3", "LX", "RSBX", "SBX", "UX"];
     
-    HHNames = ["HHX-A", "HHX-E", "HHX-S", "HHX-D"];
+    HHNames = ["HHX-A", "HHX-E", "HHX-D", "HHX-S"];
     probNumber = 0;
 
 
     for exp = "HARDER" %["STD", "HARDER", "HARDEST"]
         for prob = [TestSetting.problemClasses]
-            for q = 1:length(prob)
+            for q = 1:length(prob.versions)
                 v = [prob.versions];
                 v = v(q);
-                probname = [prob.name];
-                probname = probname(q);
+                probname = prob.name;
                 %% Tidy up
                 close all;
                 %% Get All HV in one Array
@@ -61,7 +60,7 @@ function GetXOPPlots(global_fontsize, global_subfontsize, global_markersize, glo
                 end
 
                      
-                for i = 1%:length(TestSetting.hhAlgorithms)
+                for i = 1:length(TestSetting.hhAlgorithms)
                     t = append(HHNames(i), ", ", probname, string(v), ", M = ", string(M), ", D = ", string(D));
                     
                     data = results(join([results.problem; results.version],"",1)...
@@ -83,7 +82,7 @@ function GetXOPPlots(global_fontsize, global_subfontsize, global_markersize, glo
                     y.TagDist(y.TagDist == "DE0.5") = "DE";
                     y.TagDist(y.TagDist == "LX0.2") = "LX";
                     %% Dist/Sel probabilities  
-                    f1 = figure('units','normalized','outerposition',global_imagesize);%, 'Visible', 'off');   
+                    f1 = figure('units','normalized','outerposition',global_imagesize, 'Visible', 'off');   
                     
                     x = 0:100:length(y.OpDist)*100-1;
                     model_series = [opData.OpDist] .* 100;
@@ -123,13 +122,13 @@ function GetXOPPlots(global_fontsize, global_subfontsize, global_markersize, glo
                     plo = get(gca,'Position');
                     set(gca,'Position',[plo(1) plo(2)+0.1 plo(3)-0.1 plo(4)-0.2]);
                                         
-                    exportgraphics(f1,  'Evaluation/Plots/' + name(2) ...
+                    exportgraphics(f1,  'Plots/' + name(2) ...
                        + '_OPDIST_' + TestSetting.hhAlgorithms(i) ...
                        + '_' + name(4) + '.pdf', 'ContentType', 'vector');
 
 
                     %% Cummaltive Pickrate    
-                    f2 = figure('units','normalized','outerposition',global_imagesize);%, 'Visible', 'off');    
+                    f2 = figure('units','normalized','outerposition',global_imagesize, 'Visible', 'off');    
                     x = 0:100:(length(y.TagDist)-1)*100;
 
                     p = {};
@@ -161,7 +160,7 @@ function GetXOPPlots(global_fontsize, global_subfontsize, global_markersize, glo
                     grid on
                     hold off
                 
-                    exportgraphics(f2, 'Evaluation/Plots/' + name(2) ...
+                    exportgraphics(f2, 'Plots/' + name(2) ...
                         + '_CUMPROD_' + TestSetting.hhAlgorithms(i) ...
                         + '_' + name(4) + '.pdf', 'ContentType', 'vector');
                 end
