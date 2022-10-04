@@ -1,4 +1,4 @@
-function GetXOPPlots2(global_fontsize, global_subfontsize, global_markersize, global_primeLine, global_seconLine, global_imagesize)
+function GetXOPPlots3(global_fontsize, global_subfontsize, global_markersize, global_primeLine, global_seconLine, global_imagesize)
     %% Tidy up
     close all; clc;
 
@@ -21,7 +21,7 @@ function GetXOPPlots2(global_fontsize, global_subfontsize, global_markersize, gl
     betterOpNames = [betterOpNames(6), betterOpNames(1), betterOpNames(7), betterOpNames(5), betterOpNames(4), betterOpNames(2), betterOpNames(3)];
     Operators = ["LCX3", "DEX", "LX", "RSBX", "UX", "CMAX", "SBX"];
     
-    HHNames = ["HHX-A", "HHX-E", "HHX-D", "HHX-S"];
+    HHNames = ["HHX-D", "HHX-S","HHX-A", "HHX-E"];
     probNumber = 0;
 
 
@@ -59,14 +59,13 @@ function GetXOPPlots2(global_fontsize, global_subfontsize, global_markersize, gl
                     D = p.D * 6;
                 end
 
-                
-                 
+                     
                 for i = 1:length(TestSetting.hhAlgorithms)
-                    if(i == 1 | i == 3)
-                        f2 = figure('units','normalized','outerposition',global_imagesize);%, 'Visible', 'off');  
-                        t2 = tiledlayout(1,2,'TileSpacing','Compact','Padding','Compact');
+                    if(i == 1)
+                        f1 = figure('units','normalized','outerposition',global_imagesize);%, 'Visible', 'off');  
+                        t2 = tiledlayout(2,2,'TileSpacing','Compact','Padding','Compact');
                     end
-                    t = append(HHNames(i), ", ", probname, string(v), ", M = ", string(M), ", D = ", string(D));
+                    t = HHNames(i);
                     
                     data = results(join([results.problem; results.version],"",1)...
                             == append(probname, string(v))...
@@ -86,60 +85,55 @@ function GetXOPPlots2(global_fontsize, global_subfontsize, global_markersize, gl
                     y.TagDist(y.TagDist == "CMAX1") = "CMAX";
                     y.TagDist(y.TagDist == "DE0.5") = "DEX";
                     y.TagDist(y.TagDist == "LX0.2") = "LX";
-            
-                    %% Cummaltive Pickrate    
-                    x = 0:100:(length(y.TagDist)-1)*100;
-                    nexttile 
-                    p = {};
+                    %% Dist/Sel probabilities  
+                    %f1 = figure('units','normalized','outerposition',global_imagesize);%, 'Visible', 'off');   
+                    nexttile;
+                    x = 0:100:length(y.OpDist)*100-1;
+                    model_series = [opData.OpDist] .* 100;
+                    b = bar(x, model_series, 'stacked');
                     for j = 1:length(Operators)
-                        model_series = [0; cumsum(sum(y.TagDist == opData(j).Operator, 2))]';
-                        p{j} = plot(x, model_series, marker(j),'LineWidth', global_primeLine, 'MarkerIndices',j*2:10:length(model_series)-2);
-                        p{j}.MarkerSize = global_markersize;
                         if(j==1)
                             color = [1-lineColor(1) 1-lineColor(2) lineColor(3)];
                         else
                             color = [lineColor(1)*(length(Operators)/(j-1)), lineColor(2)/(length(Operators)/(j-1)), 1-lineColor(3)*(length(Operators)/(j-1))];
                         end
-                        p{j}.MarkerFaceColor = color;
-                        p{j}.Color = [color 0.5];
-                        hold on
+                        b(j).FaceColor = color;
+                        b(j).LineWidth = 0.0001;
+                        b(j).EdgeAlpha = 0.5;
                     end
+                    hold on
 
+                    %legend(flip(b), flip(betterOpNames), 'fontsize',global_subfontsize, 'Location','bestoutside') 
 
                     set(gca,'FontSize', global_fontsize) 
-                    if(i == 1 || i == 3)
-                        ylabel('Offsprings produced','fontsize', global_fontsize);
-                    end
-                    xlabel('FEs','fontsize', global_fontsize);          
+                    ylim([0 100])
                     xlim([min(x) max(x)])
+                    ytickformat('percentage')
+                    if(i == 1 || i == 3)
+                        %ylabel('Score Distribution','fontsize', global_fontsize);
+                    end
+
+                    if(i == 3 || i == 4)
+                        xlabel('FEs','fontsize', global_fontsize);
+                    end
                     
-                    title(t, 'fontsize', global_fontsize);
-                    
-                   % plo = get(gca,'Position');
-                    %set(gca,'Position',[plo(1) plo(2)+0.1 plo(3)-0.1 plo(4)-0.2]);
-    
                     grid on
                     hold off
 
-                    labels = [TestSetting.singleAlgorithms];
-                    labels(labels == 'NSGAII') = 'SBX';  
-
+                    title(t, 'fontsize', global_subfontsize);
+                    
                     if(i == 2)
-                        legend(Operators,'Location','bestoutside','fontsize', global_subfontsize);
+                        legend(flip(b), flip(betterOpNames),'Location','bestoutside','fontsize', global_subfontsize);
+                    end
+
+                    if (i==4)
                         %legend( flip([p{1:end}]), flip(betterOpNames), 'fontsize',global_subfontsize, 'Location','bestoutside') 
-                        exportgraphics(f2, 'Plots/' + name(2) ...
-                            + '_CUMPROD_' + "Old" ...
-                            + '_' + name(4) + '.pdf', 'ContentType', 'vector');
-                    elseif (i==4)
-                        legend(Operators,'Location','bestoutside','fontsize', global_subfontsize);
-                        %legend( flip([p{1:end}]), flip(betterOpNames), 'fontsize',global_subfontsize, 'Location','bestoutside') 
-                        exportgraphics(f2, 'Plots/' + name(2) ...
-                            + '_CUMPROD_' + "New" ...
+                        sgtitle(append('Score Distribution on ', probname, string(v), ", M = ", string(M), ", D = ", string(D)), 'Fontsize', global_fontsize)
+                        exportgraphics(f1, 'Plots/' + name(2) ...
+                            + '_OPDIST_' + "New" ...
                             + '_' + name(4) + '.pdf', 'ContentType', 'vector');
                     end
-               
                 end
-
             end
         end
     end

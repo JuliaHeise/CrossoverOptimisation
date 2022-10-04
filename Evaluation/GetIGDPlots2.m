@@ -11,7 +11,7 @@ function GetIGDPlots(global_fontsize, global_subfontsize, global_markersize, glo
     blueGrey = [0.2 0.4 0.6];
     lightGrey = [0.85 0.85 0.85];
 
-    marker = ["-o" "-+" "-*" "-s" "-d" "-x" "-^" "--" ":"];
+    marker = ["-o" "-+" "-^" "-s" "-d" "-x" "-*" "--" ":"];
     lineColor2 = [0.1 0.1 0.1];
     lineColor = [0.1 0.9 0.1];
 
@@ -24,8 +24,10 @@ function GetIGDPlots(global_fontsize, global_subfontsize, global_markersize, glo
     for exp = "HARDER" %["STD", "HARDER", "HARDEST"]
         f1 = figure('units','normalized','outerposition',global_imagesize);%, 'Visible', 'off');
         t2 = tiledlayout(1,2,'TileSpacing','Compact','Padding','Compact');
+        j = 0;
         for prob = [TestSetting.problemClasses]
             for q = 1:length(prob.versions)
+                j = j +1;
                 v = [prob.versions];
                 v = v(q);
                 probname = prob.name;
@@ -56,7 +58,7 @@ function GetIGDPlots(global_fontsize, global_subfontsize, global_markersize, glo
                  end
                 t = append(probname, string(v), ", M = ", string(M), ", D = ", string(D));
                 
-                if false
+                if true
                     HHNames = ["HHX-D", "HHX-S"];
                     HHAlgs = TestSetting.hhAlgorithms(3:4);
 
@@ -73,48 +75,60 @@ function GetIGDPlots(global_fontsize, global_subfontsize, global_markersize, glo
                     singleResults = struct('Algorithm',{},'FEs',{},'FullIGD',{},'LastIGD',{});
                     hold on
                     grid on
-                    for i = 1:length(TestSetting.singleAlgorithms)
+                    singleAlgs = flip(TestSetting.singleAlgorithms);
+                    p = {};
+                    for i = 1:length(singleAlgs)
                         data = results(...
                         join([results.problem; results.version],"",1) == append(probname, string(v))...
-                        & [results.algorithm] == TestSetting.singleAlgorithms(i));
+                        & [results.algorithm] == singleAlgs(i));
     
                         singleResults(i) = ...
-                            struct('Algorithm', TestSetting.singleAlgorithms(i), ...
+                            struct('Algorithm', singleAlgs(i), ...
                             'FEs', [data.data.median_run.result{:,1}], ...
                             'FullIGD',  data.data.median_run.metric.IGD, ...
                             'LastIGD', data.data.median_run.metric.IGD(end));
     
-                        p = plot(singleResults(i).FEs, singleResults(i).FullIGD,...
+                        p{i} = plot(singleResults(i).FEs, singleResults(i).FullIGD,...
                             marker(i),'LineWidth',global_primeLine);
                         if(i==1)
                             color = [1-lineColor(1) 1-lineColor(2) lineColor(3)];
                         else
-                            color = [lineColor(1)*(length(TestSetting.singleAlgorithms)/(i-1)), lineColor(2)/(length(TestSetting.singleAlgorithms)/(i-1)), 1-lineColor(3)*(length(TestSetting.singleAlgorithms)/(i-1))];
+                            color = [lineColor(1)*(length(singleAlgs)/(i-1)), lineColor(2)/(length(singleAlgs)/(i-1)), 1-lineColor(3)*(length(singleAlgs)/(i-1))];
                         end
-                        p.Color = color;
-                        p.MarkerFaceColor = color;
-                        p.MarkerSize = global_markersize;
+                        p{i}.Color = color;
+                        p{i}.MarkerFaceColor = color;
+                        p{i}.MarkerSize = global_markersize;
                     end
                     
+                    p = flip(p);
+
                     for q = 1:length(HHAlgs)
+                        i = i +1;
                         hold on
     
                         data = results(...
                         join([results.problem; results.version],"",1) == append(probname, string(v))...
                         & [results.algorithm] == HHAlgs(q));
     
-                        p = plot([data.data.median_run.result{:,1}],...
+                        p{i} = plot([data.data.median_run.result{:,1}],...
                             data.data.median_run.metric.IGD,...
-                            marker(i+q),'LineWidth',global_primeLine*1.5);
-                        p.Color = lineColor2; 
-                        p.MarkerFaceColor = lineColor2; 
-                        p.MarkerSize = global_markersize;
+                            marker(i),'LineWidth',global_primeLine*1.5);
+                        p{i} .Color = lineColor2; 
+                        p{i} .MarkerFaceColor = lineColor2; 
+                        p{i} .MarkerSize = global_markersize;
                     end
                     
                     set(gca ,'FontSize',global_subfontsize);
                     title(t, 'fontsize', global_subfontsize);
-                    labels = [TestSetting.singleAlgorithms HHNames];
-                    labels(labels == 'NSGAII') = 'SBX';                    
+                    labels = [flip(singleAlgs) HHNames];
+                    labels(labels == 'NSGAII') = 'SBX';    
+                    labels = erase(labels, 'NSGAII');
+                    if(j == 2)
+                        %legend(erase(labels, 'NSGAII'),'Location','bestoutside','fontsize', global_subfontsize);
+                        legend([p{1:end}], labels,'Location','bestoutside','fontsize',global_subfontsize);
+                        exportgraphics(f1, 'Plots/' + name(2) ...
+                            + '_' + name(3) + '_New.pdf', 'ContentType', 'vector');
+                    end
 
                 %% Hypervolume over time for HH algorithms
                 else
@@ -178,10 +192,7 @@ function GetIGDPlots(global_fontsize, global_subfontsize, global_markersize, glo
             end
             probNumber = 0;
         end
-        %legend(erase(labels, 'NSGAII'),'Location','bestoutside','fontsize', global_subfontsize);
-        legend(erase(labels, 'NSGAII'),'Location','bestoutside','fontsize',global_subfontsize);
-        exportgraphics(f1, 'Plots/' + name(2) ...
-            + '_' + name(3) + '_New.pdf', 'ContentType', 'vector');
+
     end
 end
 
