@@ -21,7 +21,7 @@ function DistSubplots(global_fontsize, global_subfontsize, global_markersize, gl
     betterOpNames = [betterOpNames(6), betterOpNames(1), betterOpNames(7), betterOpNames(5), betterOpNames(4), betterOpNames(2), betterOpNames(3)];
     Operators = ["LCX3", "DEX", "LX", "RSBX", "UX", "CMAX", "SBX"];
     
-    HHNames = ["HHX-D", "HHX-S","HHX-A", "HHX-E"];
+    HHNames = ["HHX-D", "HHX-S", "HHX-E", "HHX-A"];
     probNumber = 0;
 
     probname = "WFG5";
