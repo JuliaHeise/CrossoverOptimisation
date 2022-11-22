@@ -1,0 +1,59 @@
+\documentclass[journal]{IEEEtran}
+\usepackage{multirow,booktabs,color,soul,threeparttable}
+\definecolor{hl}{rgb}{0.75,0.75,0.75}
+\sethlcolor{hl}
+\begin{document}
+\begin{table*}[htbp]
+\renewcommand{\arraystretch}{1.2}
+\centering
+\caption{No Title}
+\begin{tabular}{cccccccccc}
+\toprule
+Problem&$M$&$D$&LINEAR\_NCRXSNSGAII&LOGISTIC\_NCRXSNSGAII&MINR0\_NCRXSNSGAII&MINR5\_NCRXSNSGAII&XOP16\_NCRXSNSGAII&XOP3\_NCRXSNSGAII&NCRXSNSGAII\\
+\midrule
+\multirow{1}{*}{DTLZ1}&3&28&3.4699e+1 (1.47e+1) $\approx$&5.3110e+1 (3.02e+1) $-$&2.8689e+1 (1.12e+1) $+$&4.2400e+1 (1.81e+1) $-$&\hl{1.8563e+1 (1.79e+1) $+$}&\hl{2.1156e+1 (8.80e+0) $+$}&3.7672e+1 (1.29e+1)\\
+\hline
+\multirow{1}{*}{DTLZ2}&3&48&7.9209e-2 (4.53e-3) $\approx$&8.0612e-2 (7.22e-3) $\approx$&7.8860e-2 (4.97e-3) $\approx$&8.1656e-2 (7.73e-3) $\approx$&8.0436e-2 (4.11e-3) $\approx$&\hl{7.3397e-2 (3.04e-3) $+$}&7.9526e-2 (5.47e-3)\\
+\hline
+\multirow{1}{*}{DTLZ3}&3&48&4.6450e+2 (1.24e+2) $\approx$&4.9369e+2 (1.48e+2) $-$&4.3711e+2 (9.83e+1) $\approx$&4.5555e+2 (1.43e+2) $\approx$&\hl{9.9844e+1 (9.49e+1) $+$}&2.4691e+2 (5.63e+1) $+$&4.4765e+2 (1.40e+2)\\
+\hline
+\multirow{1}{*}{DTLZ4}&3&48&9.0819e-2 (1.27e-2) $\approx$&8.9649e-2 (1.62e-2) $\approx$&8.8712e-2 (1.23e-2) $\approx$&9.2664e-2 (1.84e-2) $-$&9.9540e-2 (3.32e-2) $-$&\hl{7.5968e-2 (1.15e-2) $+$}&8.4983e-2 (1.22e-2)\\
+\hline
+\multirow{1}{*}{DTLZ5}&3&48&1.9540e-2 (6.33e-3) $\approx$&1.9045e-2 (5.10e-3) $\approx$&2.0406e-2 (7.52e-3) $\approx$&1.9654e-2 (4.78e-3) $\approx$&1.7209e-2 (4.73e-3) $\approx$&\hl{1.2353e-2 (2.40e-3) $+$}&1.9011e-2 (7.19e-3)\\
+\hline
+\multirow{1}{*}{DTLZ6}&3&48&\hl{6.2403e-3 (1.20e-3) $\approx$}&\hl{6.0197e-3 (2.52e-3) $\approx$}&\hl{6.4984e-3 (1.47e-3) $\approx$}&\hl{6.5848e-3 (2.05e-3) $\approx$}&\hl{6.1266e-3 (9.78e-1) $\approx$}&3.5542e+0 (2.00e+0) $-$&\hl{6.2667e-3 (1.26e-3)}\\
+\hline
+\multirow{1}{*}{DTLZ7}&3&88&1.4963e+0 (4.72e-1) $\approx$&1.5477e+0 (5.01e-1) $\approx$&1.3680e+0 (4.38e-1) $\approx$&1.4913e+0 (4.40e-1) $\approx$&2.5895e+0 (7.34e-1) $-$&\hl{1.2196e+0 (2.21e-1) $+$}&1.4459e+0 (4.00e-1)\\
+\hline
+\multirow{1}{*}{RM1}&2&120&1.7906e-1 (1.06e-2) $\approx$&1.7471e-1 (1.13e-2) $+$&1.8102e-1 (7.74e-3) $\approx$&1.8145e-1 (1.08e-2) $\approx$&\hl{1.7063e-1 (5.30e-3) $+$}&1.8345e-1 (7.23e-3) $\approx$&1.8027e-1 (9.06e-3)\\
+\hline
+\multirow{1}{*}{RM2}&2&120&2.8818e-1 (1.01e-2) $\approx$&2.9188e-1 (1.61e-2) $\approx$&2.9068e-1 (1.47e-2) $\approx$&2.9385e-1 (8.17e-3) $\approx$&\hl{2.6716e-1 (6.58e-3) $+$}&2.9613e-1 (1.06e-2) $\approx$&2.9241e-1 (8.49e-3)\\
+\hline
+\multirow{1}{*}{RM3}&2&40&2.4653e+0 (3.55e-1) $\approx$&2.4166e+0 (2.45e-1) $\approx$&2.4017e+0 (3.57e-1) $\approx$&2.4188e+0 (2.76e-1) $\approx$&\hl{1.9989e+0 (1.69e-1) $+$}&2.3156e+0 (2.58e-1) $+$&2.4102e+0 (3.75e-1)\\
+\hline
+\multirow{1}{*}{RM4}&3&48&4.7425e-1 (8.84e-2) $\approx$&\hl{4.3893e-1 (8.33e-2) $\approx$}&\hl{4.7366e-1 (1.05e-1) $\approx$}&\hl{4.2222e-1 (1.18e-1) $\approx$}&4.9223e-1 (1.16e-1) $-$&\hl{4.1262e-1 (1.29e-1) $\approx$}&\hl{4.3664e-1 (7.89e-2)}\\
+\hline
+\multirow{1}{*}{WFG1}&3&48&1.2723e+0 (7.19e-2) $-$&1.2669e+0 (6.30e-2) $-$&\hl{1.1881e+0 (6.04e-2) $\approx$}&1.2314e+0 (6.56e-2) $-$&1.3404e+0 (7.27e-2) $-$&1.3010e+0 (2.02e-1) $-$&\hl{1.1623e+0 (8.29e-2)}\\
+\hline
+\multirow{1}{*}{WFG2}&3&48&2.6412e-1 (1.85e-2) $\approx$&2.7098e-1 (1.71e-2) $\approx$&2.7016e-1 (2.28e-2) $\approx$&2.6753e-1 (8.95e-3) $\approx$&2.8870e-1 (1.29e-2) $-$&\hl{2.4350e-1 (1.63e-2) $+$}&2.6356e-1 (1.62e-2)\\
+\hline
+\multirow{1}{*}{WFG3}&3&48&2.7355e-1 (3.73e-2) $\approx$&2.7832e-1 (4.23e-2) $\approx$&2.7075e-1 (3.43e-2) $\approx$&2.7738e-1 (4.39e-2) $\approx$&3.0595e-1 (3.64e-2) $-$&\hl{2.4658e-1 (2.96e-2) $+$}&2.7838e-1 (2.45e-2)\\
+\hline
+\multirow{1}{*}{WFG4}&3&48&2.9501e-1 (1.30e-2) $-$&3.0563e-1 (1.83e-2) $-$&\hl{2.8529e-1 (1.23e-2) $\approx$}&3.0067e-1 (1.16e-2) $-$&3.0214e-1 (1.17e-2) $-$&\hl{2.8232e-1 (1.51e-2) $\approx$}&\hl{2.8513e-1 (1.29e-2)}\\
+\hline
+\multirow{1}{*}{WFG5}&3&48&2.9002e-1 (1.42e-2) $-$&2.9072e-1 (1.24e-2) $-$&\hl{2.8227e-1 (9.91e-3) $\approx$}&2.9479e-1 (1.32e-2) $-$&\hl{2.8405e-1 (1.66e-2) $\approx$}&2.9635e-1 (2.06e-2) $-$&\hl{2.7827e-1 (9.68e-3)}\\
+\hline
+\multirow{1}{*}{WFG6}&3&48&3.1561e-1 (1.87e-2) $-$&3.2818e-1 (2.67e-2) $-$&\hl{3.0711e-1 (1.62e-2) $\approx$}&3.2517e-1 (1.55e-2) $-$&3.2725e-1 (2.57e-2) $-$&3.2376e-1 (1.98e-2) $-$&\hl{3.0952e-1 (1.37e-2)}\\
+\hline
+\multirow{1}{*}{WFG7}&3&48&3.3539e-1 (2.85e-2) $\approx$&3.3667e-1 (3.09e-2) $\approx$&3.3185e-1 (2.57e-2) $\approx$&\hl{3.2852e-1 (2.92e-2) $\approx$}&3.6305e-1 (3.11e-2) $-$&\hl{3.2174e-1 (1.88e-2) $+$}&3.4115e-1 (4.07e-2)\\
+\hline
+\multirow{1}{*}{WFG8}&3&48&4.1095e-1 (1.55e-2) $-$&4.1719e-1 (1.77e-2) $-$&4.0621e-1 (1.78e-2) $-$&4.0695e-1 (1.40e-2) $-$&4.3172e-1 (1.80e-2) $-$&\hl{3.7546e-1 (1.57e-2) $+$}&3.9996e-1 (1.64e-2)\\
+\hline
+\multirow{1}{*}{WFG9}&3&48&\hl{3.0808e-1 (1.90e-2) $\approx$}&\hl{3.1239e-1 (2.05e-2) $\approx$}&\hl{3.0813e-1 (1.53e-2) $\approx$}&\hl{3.0755e-1 (2.18e-2) $\approx$}&\hl{3.0492e-1 (1.95e-2) $\approx$}&\hl{3.0972e-1 (1.55e-2) $\approx$}&\hl{3.0821e-1 (2.03e-2)}\\
+\hline
+\multicolumn{3}{c}{$+/-/\approx$}&0/5/15&1/7/12&1/1/18&0/7/13&5/10/5&11/4/5&\\
+\bottomrule
+\end{tabular}
+\label{No Label}
+\end{table*}
+\end{document}

@@ -56,7 +56,7 @@ classdef XDistributionTuned
             [~,~,ranking] = unique(value, 'sorted');            
             % Scoring Function
             for j=1:obj.Num_Operators
-                obj.Rewards(j) = max([0 obj.Rewards(j) + obj.Score_Handle(ranking(j), floor(obj.Num_Operators/2))]);
+                obj.Rewards(j) = max([0 obj.Rewards(j) + obj.Score_Handle(ranking(j), floor(sum(value~=0)/2))]);
             end
             if(all(obj.Rewards == obj.Rewards(1)))
                 obj.Distribution = ones(1, obj.Num_Operators)./obj.Num_Operators;
@@ -85,7 +85,7 @@ classdef XDistributionTuned
                 m = toDistribute - sum(numParents);
                 u = randperm(obj.Num_Operators, m);
                 if(obj.Let_Op_Die)
-                    while(numParents(u) == 0)
+                    while(any(numParents(u) == 0))
                         u = randperm(obj.Num_Operators, m);
                     end
                 end
