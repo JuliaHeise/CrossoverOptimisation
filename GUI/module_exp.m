@@ -242,7 +242,11 @@ classdef module_exp < handle
                 if ~obj.cb_filepath([],[],obj.app.editA(3).Value)
                     return;
                 end
-                obj.data = struct('ALG',ALG,'PRO',PRO,'folder',fileparts(obj.app.editA(3).Value),'result',{cell(length(PRO),length(ALG),obj.app.editA(1).Value)},'metric',{cell(length(PRO),length(ALG),obj.app.editA(1).Value)},'xOpProbs',{cell(length(PRO),length(ALG),obj.app.editA(1).Value)});
+                obj.data = struct('ALG',ALG,'PRO',PRO,'folder',fileparts(obj.app.editA(3).Value),...
+                    'result',{cell(length(PRO),length(ALG),obj.app.editA(1).Value)},...
+                    'metric',{cell(length(PRO),length(ALG),obj.app.editA(1).Value)},...
+                    'xOpProbs',{cell(length(PRO),length(ALG),obj.app.editA(1).Value)}, ...
+                    'tagDist',{cell(length(PRO),length(ALG),obj.app.editA(1).Value)});
                 % Initialize the table
                 rowName = arrayfun(@class,PRO,'UniformOutput',false);
                 for i = length(rowName) : -1 : 2
@@ -278,7 +282,7 @@ classdef module_exp < handle
                             try
                                 for r = runIndex
                                     ALG(a).Solve(PRO(p));
-                                    obj.ResultSave(p,a,r,ALG(a).result,ALG(a).metric, ALG(a).xOpProbs);
+                                    obj.ResultSave(p,a,r,ALG(a).result,ALG(a).metric, ALG(a).xOpProbs, ALG(a).tagDist);
                                     obj.ResultLoad(p,a,r);
                                     obj.TableUpdate([],[],p);
                                     if strcmp(obj.app.buttonC(2).Enable,'off')
@@ -307,9 +311,9 @@ classdef module_exp < handle
                                         cancel(Future);
                                         return;
                                     end
-                                    [r,result,metric,xOpProbs] = fetchNext(Future,0.01);
+                                    [r,result,metric,xOpProbs,tagDist] = fetchNext(Future,0.01);
                                     if ~isempty(r)
-                                        obj.ResultSave(p,a,runIndex(r),result,metric,xOpProbs);
+                                        obj.ResultSave(p,a,runIndex(r),result,metric,xOpProbs,tagDist);
                                         obj.ResultLoad(p,a,runIndex(r));
                                         obj.TableUpdate([],[],p);
                                     end
@@ -339,7 +343,7 @@ classdef module_exp < handle
             obj.app.buttonC(2).Enable   = 'off';
         end
         %% Output function
-        function outputFcn(obj,Algorithm,Problem)
+        function outputFcn(obj,Algorithm,Problem,savePath)
             assert(strcmp(obj.app.buttonC(2).Enable,'on'),'PlatEMO:Termination','');
             if strcmp(obj.app.buttonC(1).Text,'Continue')
                 waitfor(obj.app.buttonC(1),'Text');
@@ -501,19 +505,20 @@ classdef module_exp < handle
         function ResultLoad(obj,p,a,r)
             try
                 filename = fullfile(obj.data.folder,class(obj.data.ALG(a)),sprintf('%s_%s_M%d_D%d_%d.mat',class(obj.data.ALG(a)),class(obj.data.PRO(p)),obj.data.PRO(p).M,obj.data.PRO(p).D,r));
-                load(filename,'-mat','result','metric','xOpProbs');
+                load(filename,'-mat','result','metric','xOpProbs','tagDist');
                 obj.data.result{p,a,r} = result;
                 obj.data.metric{p,a,r} = metric;
                 obj.data.xOpProbs{p,a,r} = xOpProbs;
+                obj.data.tagDist{p,a,r} = tagDist;
             catch
             end
         end
         %% Save the result file
-        function ResultSave(obj,p,a,r,result,metric,xOpProbs)
+        function ResultSave(obj,p,a,r,result,metric,xOpProbs,tagDist)
             folder   = fullfile(obj.data.folder,class(obj.data.ALG(a)));
             [~,~]    = mkdir(folder);
             filename = fullfile(folder,sprintf('%s_%s_M%d_D%d_%d.mat',class(obj.data.ALG(a)),class(obj.data.PRO(p)),obj.data.PRO(p).M,obj.data.PRO(p).D,r));
-            save(filename,'result','metric','xOpProbs');
+            save(filename,'result','metric','xOpProbs','tagDist');
         end
         %% Get the metric value 
         function score = GetMetricValue(obj,p,a,metricName,showAll)

@@ -1,0 +1,61 @@
+\documentclass[journal]{IEEEtran}
+\usepackage{multirow,booktabs,color,soul,threeparttable}
+\definecolor{hl}{rgb}{0.75,0.75,0.75}
+\sethlcolor{hl}
+\begin{document}
+\begin{table*}[htbp]
+\renewcommand{\arraystretch}{1.2}
+\centering
+\caption{No Title}
+\begin{tabular}{ccccccc}
+\toprule
+Problem&$M$&$D$&AlternatingHHXNSGAII&CaterpillarHHXNSGAII&SRXDNSGAII&UXNSGAII\\
+\midrule
+\multirow{1}{*}{DTLZ1}&3&28&4.2961e+1 (2.14e+1) $-$&3.9691e+1 (1.56e+1) $-$&3.5948e+1 (1.51e+1) $-$&\hl{2.4737e+1 (9.57e+0)}\\
+\hline
+\multirow{1}{*}{DTLZ2}&3&48&9.8555e-2 (1.48e-2) $-$&1.1057e-1 (2.39e-2) $-$&1.0440e-1 (1.81e-2) $-$&\hl{8.6873e-2 (6.46e-3)}\\
+\hline
+\multirow{1}{*}{DTLZ3}&3&48&3.9664e+2 (1.93e+2) $-$&4.5935e+2 (1.11e+2) $-$&4.3394e+2 (1.50e+2) $-$&\hl{2.2892e+2 (5.21e+1)}\\
+\hline
+\multirow{1}{*}{DTLZ4}&3&48&\hl{9.6731e-2 (1.34e-2) $+$}&\hl{9.8610e-2 (2.27e-2) $\approx$}&1.0498e-1 (2.98e-2) $\approx$&5.4353e-1 (4.58e-1)\\
+\hline
+\multirow{1}{*}{DTLZ5}&3&48&\hl{2.3905e-2 (7.92e-3) $+$}&2.9282e-2 (1.04e-2) $\approx$&3.1162e-2 (7.59e-3) $\approx$&2.8337e-2 (1.18e-2)\\
+\hline
+\multirow{1}{*}{DTLZ6}&3&48&\hl{6.4028e-3 (9.52e-1) $+$}&8.2228e-3 (9.82e-3) $+$&\hl{5.8280e-3 (9.30e-1) $+$}&2.7478e+1 (8.34e-1)\\
+\hline
+\multirow{1}{*}{DTLZ7}&3&88&1.1940e+0 (2.33e-1) $-$&9.5052e-1 (3.62e-1) $-$&8.9030e-1 (2.75e-1) $-$&\hl{6.5082e-1 (1.09e-1)}\\
+\hline
+\multirow{1}{*}{RM1}&2&120&\hl{1.7607e-1 (6.94e-3) $+$}&1.8320e-1 (8.93e-3) $+$&1.8590e-1 (5.37e-3) $+$&2.9808e-1 (3.69e-2)\\
+\hline
+\multirow{1}{*}{RM2}&2&120&\hl{2.8288e-1 (7.22e-3) $+$}&2.9107e-1 (6.81e-3) $+$&2.8974e-1 (1.12e-2) $+$&5.1133e-1 (1.80e-2)\\
+\hline
+\multirow{1}{*}{RM3}&2&40&\hl{2.1576e+0 (2.35e-1) $\approx$}&\hl{2.2505e+0 (2.64e-1) $\approx$}&\hl{2.2197e+0 (3.27e-1) $\approx$}&\hl{2.1443e+0 (5.21e-1)}\\
+\hline
+\multirow{1}{*}{RM4}&3&48&\hl{5.2202e-1 (9.81e-2) $\approx$}&\hl{5.5466e-1 (1.20e-1) $\approx$}&\hl{5.5549e-1 (7.95e-2) $\approx$}&\hl{5.2676e-1 (5.38e-2)}\\
+\hline
+\multirow{1}{*}{WFG1}&3&48&\hl{1.2513e+0 (9.47e-2) $+$}&\hl{1.2236e+0 (1.46e-1) $+$}&\hl{1.2408e+0 (6.78e-2) $+$}&1.5849e+0 (7.04e-2)\\
+\hline
+\multirow{1}{*}{WFG2}&3&48&2.7654e-1 (2.15e-2) $-$&2.8238e-1 (2.05e-2) $-$&2.8108e-1 (2.64e-2) $-$&\hl{2.4958e-1 (2.75e-2)}\\
+\hline
+\multirow{1}{*}{WFG3}&3&48&3.1925e-1 (2.43e-2) $-$&3.1558e-1 (4.59e-2) $-$&3.1363e-1 (3.88e-2) $-$&\hl{2.5565e-1 (3.47e-2)}\\
+\hline
+\multirow{1}{*}{WFG4}&3&48&3.1918e-1 (1.43e-2) $-$&3.2702e-1 (2.10e-2) $-$&3.1987e-1 (1.96e-2) $-$&\hl{2.6904e-1 (1.62e-2)}\\
+\hline
+\multirow{1}{*}{WFG5}&3&48&\hl{2.8768e-1 (1.86e-2) $+$}&\hl{2.8894e-1 (3.00e-2) $+$}&\hl{2.9196e-1 (1.71e-2) $+$}&3.0737e-1 (7.77e-3)\\
+\hline
+\multirow{1}{*}{WFG6}&3&48&3.4394e-1 (3.49e-2) $-$&3.6968e-1 (4.57e-2) $-$&3.7308e-1 (2.73e-2) $-$&\hl{3.1948e-1 (1.81e-2)}\\
+\hline
+\multirow{1}{*}{WFG7}&3&48&\hl{3.5342e-1 (3.56e-2) $+$}&3.7009e-1 (3.68e-2) $+$&\hl{3.6724e-1 (4.73e-2) $+$}&4.0745e-1 (9.64e-2)\\
+\hline
+\multirow{1}{*}{WFG8}&3&48&4.4250e-1 (1.22e-2) $-$&4.5588e-1 (1.79e-2) $-$&4.4599e-1 (1.87e-2) $-$&\hl{3.3756e-1 (1.72e-2)}\\
+\hline
+\multirow{1}{*}{WFG9}&3&48&\hl{3.1322e-1 (1.72e-2) $+$}&\hl{3.2711e-1 (2.96e-2) $+$}&\hl{3.1805e-1 (2.56e-2) $+$}&3.8912e-1 (3.97e-2)\\
+\hline
+\multirow{1}{*}{universalMOPF}&5&27&\hl{5.3982e+0 (4.04e+0)}&&&\\
+\hline
+\multicolumn{3}{c}{$+/-/\approx$}&9/9/2&7/9/4&7/9/4&\\
+\bottomrule
+\end{tabular}
+\label{No Label}
+\end{table*}
+\end{document}

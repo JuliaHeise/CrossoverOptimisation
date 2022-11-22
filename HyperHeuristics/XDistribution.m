@@ -56,11 +56,7 @@ classdef XDistribution
                 obj.Distribution = obj.Rewards./sum(obj.Rewards);
             end
         end
-        
-        function obj = SetOldPopulation(obj, New_Population)
-            obj.Old_Population = New_Population;
-        end
-        
+                
         function Offspring = ExecX(obj, Parents)
             N = size(Parents, 2);
             last = 1;
@@ -93,6 +89,20 @@ classdef XDistribution
                 last = last+nP;
             end
         end
+
+        function obj = SetOldPopulation(obj, New_Population)
+            obj.Old_Population = New_Population;
+        end
+
+        function obj = SetRewards(obj, Rewards)
+            obj.Rewards = Rewards;
+            if(all(obj.Rewards == obj.Rewards(1)))
+                obj.Distribution = ones(1, obj.Num_Operators)./obj.Num_Operators;
+            else
+                obj.Distribution = obj.Rewards./sum(obj.Rewards);
+            end
+        end
+
     end
 end
 
